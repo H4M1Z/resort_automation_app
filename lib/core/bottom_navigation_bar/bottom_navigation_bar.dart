@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 AnimatedNotchBottomBar animatedNotchBottomNavigationBar(BuildContext context) {
   return AnimatedNotchBottomBar(
+      color: Theme.of(context).colorScheme.primary,
       notchBottomBarController: NotchBottomBarController(),
       bottomBarItems: const [
         BottomNavigationBarItems.item1,
@@ -17,6 +18,7 @@ AnimatedNotchBottomBar animatedNotchBottomNavigationBar(BuildContext context) {
         context.read<BottomStateChangeNotifier>().changeIndex(value);
       },
       kIconSize: 20,
+      removeMargins: true,
       bottomBarWidth: ScreenMetaData.getWidth(context),
       kBottomRadius: 0);
 }

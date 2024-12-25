@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:home_automation_app/core/dialogs/dialogs.dart';
 import 'package:home_automation_app/pages/add_device_tab/new_tab_view.dart';
+import 'package:home_automation_app/providers/add_device_type_provider.dart';
+import 'package:provider/provider.dart';
 
-class ControlTab extends StatelessWidget {
+class ControlTab extends StatefulWidget {
   const ControlTab({super.key});
 
   @override
+  State<ControlTab> createState() => _ControlTabState();
+}
+
+class _ControlTabState extends State<ControlTab> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AddDeviceTypeAdditionProvider>().getAllDevices();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final deviceProvider = context.watch<AddDeviceTypeAdditionProvider>();
     return Scaffold(
       appBar: AppBar(title: const Text("Control Devices")),
       body: Padding(
@@ -13,49 +28,48 @@ class ControlTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              "Devices",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 16),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.lightbulb),
-                title: const Text("Living Room Light"),
-                trailing: Switch(value: false, onChanged: (value) {}),
+            Expanded(
+              flex: 5,
+              child: Text(
+                "Devices",
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.ac_unit),
-                title: const Text("Fan"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Switch(value: false, onChanged: (value) {}),
-                    const SizedBox(width: 8),
-                    Slider(
-                      value: 50,
-                      min: 0,
-                      max: 100,
-                      divisions: 10,
-                      label: "50%",
-                      onChanged: (value) {},
+            const Spacer(flex: 5),
+            Expanded(
+              flex: 70,
+              child: ListView.builder(
+                itemCount: deviceProvider.devicesList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      leading: const Icon(
+                          Icons.device_hub), // Add custom icons if needed
+                      title: Text(
+                        deviceProvider.devicesList[index].deviceName,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      trailing: const Icon(Icons.settings),
+                      onTap: () => showDeviceDialog(context, index),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Navigate to Add Devices Tab
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const AddDevicesTab()));
-              },
-              icon: const Icon(Icons.add),
-              label: const Text("Add Devices"),
+            const Spacer(flex: 5),
+            Expanded(
+              flex: 10,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const AddDevicesTab(),
+                  ));
+                },
+                icon: const Icon(Icons.add),
+                label: const Text("Add Devices"),
+              ),
             ),
+            const Spacer(flex: 15),
           ],
         ),
       ),

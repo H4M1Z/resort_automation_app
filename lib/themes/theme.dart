@@ -1,6 +1,5 @@
 // Light Theme
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/themes/constants.dart';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,

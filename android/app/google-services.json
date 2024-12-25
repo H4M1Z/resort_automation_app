@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "959949539242",
+    "project_id": "iot-app-ffa8e",
+    "storage_bucket": "iot-app-ffa8e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959949539242:android:65daf268ff416dd06a8dd3",
+        "android_client_info": {
+          "package_name": "com.example.home_automation_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV8aLATWWICERCvwSPY3xfGXtC2jEMo5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
