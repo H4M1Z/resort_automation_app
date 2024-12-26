@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/core/dialogs/dialogs.dart';
+import 'package:home_automation_app/core/dialogs/device_info_dialog.dart';
 import 'package:home_automation_app/pages/add_device_tab/new_tab_view.dart';
 import 'package:home_automation_app/providers/add_device_type_provider.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +50,8 @@ class _ControlTabState extends State<ControlTab> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       trailing: const Icon(Icons.settings),
-                      onTap: () => showDeviceDialog(context, index),
+                      onTap: () =>
+                          showDeviceInfoDialog(context, index, "user1"),
                     ),
                   );
                 },

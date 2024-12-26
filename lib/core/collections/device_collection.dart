@@ -90,4 +90,36 @@ class DeviceCollection {
       return [];
     }
   }
+
+  Future<bool> updateDeviceStatus(
+      String userId, String deviceId, String status) async {
+    try {
+      await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceCollection)
+          .doc(deviceId)
+          .update({"status": status});
+      return true;
+    } catch (e) {
+      log("Error updating device status: $e");
+      return false;
+    }
+  }
+
+  Future<bool> updateDeviceAttribute(String userId, String deviceId,
+      String attribute, String attributeType) async {
+    try {
+      await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceCollection)
+          .doc(deviceId)
+          .update({
+        "attributes": {attributeType: attribute}
+      });
+      return true;
+    } catch (e) {
+      log("Error updating device status: $e");
+      return false;
+    }
+  }
 }
