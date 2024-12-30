@@ -1,24 +1,31 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/bottom_navigation_bar/items.dart';
 import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
-import 'package:home_automation_app/utils/screen_meta_data.dart';
 import 'package:provider/provider.dart';
 
-AnimatedNotchBottomBar animatedNotchBottomNavigationBar(BuildContext context) {
-  return AnimatedNotchBottomBar(
-      color: Theme.of(context).colorScheme.primary,
-      notchBottomBarController: NotchBottomBarController(),
-      bottomBarItems: const [
-        BottomNavigationBarItems.item1,
-        BottomNavigationBarItems.item2,
-        BottomNavigationBarItems.item3
-      ],
-      onTap: (value) {
-        context.read<BottomStateChangeNotifier>().changeIndex(value);
-      },
-      kIconSize: 20,
-      removeMargins: true,
-      bottomBarWidth: ScreenMetaData.getWidth(context),
-      kBottomRadius: 0);
+BottomNavigationBar getBottomNavigationBar(
+    BuildContext context, WidgetRef ref) {
+  return BottomNavigationBar(
+    currentIndex: ref.watch(bottomBarStateProvider),
+    onTap: (value) {
+      ref.read(bottomBarStateProvider.notifier).changeIndex(value);
+    },
+    items: const [
+      BottomNavigationBarItems.item1,
+      BottomNavigationBarItems.item2,
+      BottomNavigationBarItems.item3,
+    ],
+    backgroundColor: Theme.of(context).colorScheme.primary,
+    elevation: 10,
+    type: BottomNavigationBarType.fixed,
+    selectedItemColor: Colors.white, // Highlight selected items
+    unselectedItemColor: Colors.grey.shade400,
+    selectedFontSize: 14,
+    unselectedFontSize: 12,
+    showUnselectedLabels: true, // Ensure labels are always shown
+    iconSize: 26,
+    selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+    unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+  );
 }

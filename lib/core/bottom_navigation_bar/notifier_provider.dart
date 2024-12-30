@@ -1,10 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BottomStateChangeNotifier extends ChangeNotifier {
-  int _currentIndex = 0;
-  int get currentIndex => _currentIndex;
+// Define the NotifierProvider for managing the bottom navigation state
+final bottomBarStateProvider =
+    NotifierProvider<BottomStateNotifier, int>(BottomStateNotifier.new);
+
+// Implement the Notifier for the bottom navigation state
+class BottomStateNotifier extends Notifier<int> {
+  int index = 0;
+  @override
+  int build() {
+    // Initial index for the bottom navigation bar
+    return index;
+  }
+
+  // Method to update the current index
   void changeIndex(int index) {
-    _currentIndex = index;
-    notifyListeners();
+    state = index;
   }
 }

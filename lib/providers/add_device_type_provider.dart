@@ -3,13 +3,43 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
+import 'package:home_automation_app/providers/device_state_change_provider.dart';
+import 'package:home_automation_app/utils/hexa_into_number.dart';
 
 class AddDeviceTypeAdditionProvider extends ChangeNotifier {
-  List<Device> _devicesList = [];
+  Map<String, bool> deviceSwitchState =
+      {}; // Device ID as the key, switch state as value
+  Map<String, double> deviceSliderValue =
+      {}; // Device ID as the key, slider value as value
+
   DeviceCollection deviceCollection = DeviceCollection();
+  List<Device> _devicesList = [];
+
   List<Device> get devicesList => _devicesList;
   final List<Map<String, dynamic>> _devices = [];
   final Map<String, TextEditingController> _controllers = {};
+
+  void updateDeviceStateFromFetchedDevices(List<Device> devices) {
+    log("Lenght of devices ${devices.length}");
+    for (var device in devices) {
+      final attribute = getDeviceAttributeAccordingToDeviceType(device.type);
+      log("device status = ${device.status}  map Device type = ${mapDeviceType(device.type)}");
+      log("Comparing both string ${device.status == mapDeviceType(device.type)}");
+      // Initialize the state with the fetched device data
+      deviceSwitchState[device.deviceId] =
+          device.status == mapDeviceType(device.type);
+      deviceSliderValue[device.deviceId] = double.parse(
+              GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
+                  device.type, device.attributes[attribute])) ??
+          0.0; // Or use appropriate attribute for the device
+
+      log("device switch state at id ${device.deviceId}} = ${deviceSwitchState[device.deviceId]}");
+      log("device slider state at id ${device.deviceId}} = ${deviceSliderValue[device.deviceId]}");
+    }
+    log("Device Switch State all values = ${deviceSwitchState.values.toString()}");
+    log("Device Slider State all values = ${deviceSliderValue.values.toString()}");
+    notifyListeners();
+  }
 
   AddDeviceTypeAdditionProvider() {
     // Add default devices (Fan and Bulb)
@@ -50,9 +80,12 @@ class AddDeviceTypeAdditionProvider extends ChangeNotifier {
     Device device = Device(
         type: deviceType,
         group: "Null",
-        status: "Off",
+        status: deviceType == "Bulb" ? "0x0200" : "0x0100",
         deviceName: deviceName,
-        attributes: {'${attribute['attribute']}': 0},
+        attributes: {
+          '${attribute['attribute']}':
+              deviceType == "Bulb" ? "0x0219" : "0x0119"
+        },
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         deviceId: "0${listOfDevices.length + 1} ${deviceName}");
@@ -62,8 +95,13 @@ class AddDeviceTypeAdditionProvider extends ChangeNotifier {
   }
 
   Future<void> getAllDevices() async {
+    log("In get all Devices method");
     try {
       _devicesList = await deviceCollection.getAllDevices("user1");
+      // Update the device state in DeviceStateChangeProvider
+      log("Device List ${_devicesList.toString()}");
+
+      updateDeviceStateFromFetchedDevices(_devicesList);
     } catch (e) {
       log("Error getting all devices: $e");
     }

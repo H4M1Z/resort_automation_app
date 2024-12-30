@@ -84,6 +84,7 @@ class DeviceCollection {
         Map<String, dynamic> deviceData = doc.data() as Map<String, dynamic>;
         devices.add(Device.fromJson(deviceData));
       }
+      log("In get all Devices method ${devices.length}");
       return devices;
     } catch (e) {
       log("Error getting all devices: $e");
@@ -120,6 +121,47 @@ class DeviceCollection {
     } catch (e) {
       log("Error updating device status: $e");
       return false;
+    }
+  }
+
+  Future<String> getDeviceStatus(String userId, String deviceId) async {
+    try {
+      DocumentSnapshot deviceDoc = await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceCollection)
+          .doc(deviceId)
+          .get();
+      if (deviceDoc.exists) {
+        Map<String, dynamic> deviceData =
+            deviceDoc.data() as Map<String, dynamic>;
+        return deviceData['status'] as String;
+      }
+      log("Device with ID $deviceId not found.");
+      return '';
+    } catch (e) {
+      log("Error getting device status: $e");
+      return '';
+    }
+  }
+
+  Future<Map<String, dynamic>> getDeviceAttributes(
+      String userId, String deviceId) async {
+    try {
+      DocumentSnapshot deviceDoc = await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceCollection)
+          .doc(deviceId)
+          .get();
+      if (deviceDoc.exists) {
+        Map<String, dynamic> deviceData =
+            deviceDoc.data() as Map<String, dynamic>;
+        return deviceData['attributes'] as Map<String, dynamic>;
+      }
+      log("Device with ID $deviceId not found.");
+      return {};
+    } catch (e) {
+      log("Error getting device attributes: $e");
+      return {};
     }
   }
 }

@@ -2,37 +2,37 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarItems {
-  static const item1 = BottomBarItem(
-    inActiveItem: Icon(
+  static const item1 = BottomNavigationBarItem(
+    icon: Icon(
       Icons.toggle_on_outlined,
       color: Colors.blueGrey,
     ),
-    activeItem: Icon(
+    activeIcon: Icon(
       Icons.toggle_on,
-      color: Colors.blueAccent,
+      color: Colors.blue,
     ),
-    itemLabel: 'Control',
+    label: 'Control',
   );
-  static const item2 = BottomBarItem(
-    inActiveItem: Icon(
+  static const item2 = BottomNavigationBarItem(
+    icon: Icon(
       Icons.group_outlined,
       color: Colors.blueGrey,
     ),
-    activeItem: Icon(
+    activeIcon: Icon(
       Icons.group,
-      color: Colors.blueAccent,
+      color: Colors.blue,
     ),
-    itemLabel: 'Group',
+    label: 'Group',
   );
-  static const item3 = BottomBarItem(
-    inActiveItem: Icon(
+  static const item3 = BottomNavigationBarItem(
+    icon: Icon(
       Icons.settings_outlined,
       color: Colors.blueGrey,
     ),
-    activeItem: Icon(
+    activeIcon: Icon(
       Icons.settings,
-      color: Colors.blueAccent,
+      color: Colors.blue,
     ),
-    itemLabel: 'Setting',
+    label: 'Setting',
   );
 }

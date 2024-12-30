@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
 import 'package:home_automation_app/pages/control_tab/control_tab_view.dart';
 import 'package:home_automation_app/pages/group_tab/group_tab_view.dart';
 import 'package:home_automation_app/pages/setting_tab/setting_tab_view.dart';
+import 'package:home_automation_app/providers/add_device_type_provider.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = const [
     ControlTab(),
     GroupTab(),
@@ -21,11 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context , WidgetRef ref) {
+    var state = ref.watch(bottomBarStateProvider);
     return Scaffold(
-      body: Consumer<BottomStateChangeNotifier>(
-          builder: (context, value, child) => _pages[value.currentIndex]),
-      bottomNavigationBar: animatedNotchBottomNavigationBar(context),
+      body: _pages[state]  ,
+      bottomNavigationBar: getBottomNavigationBar(context , ref),
     );
   }
 }

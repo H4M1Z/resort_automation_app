@@ -1,79 +1,88 @@
+// control_tab.dart
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/core/dialogs/device_info_dialog.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/core/protocol/mqt_service.dart';
 import 'package:home_automation_app/pages/add_device_tab/new_tab_view.dart';
-import 'package:home_automation_app/providers/add_device_type_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:home_automation_app/pages/control_tab/widgets/device_item.dart';
+import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
+import 'package:home_automation_app/providers/device_state_notifier/device_states.dart';
 
-class ControlTab extends StatefulWidget {
+import 'widgets/sliver_header.dart'; // Custom Sliver header
+
+class ControlTab extends ConsumerStatefulWidget {
   const ControlTab({super.key});
 
   @override
-  State<ControlTab> createState() => _ControlTabState();
+  ConsumerState<ControlTab> createState() => _ControlTabState();
 }
 
-class _ControlTabState extends State<ControlTab> {
+class _ControlTabState extends ConsumerState<ControlTab> {
+  final MqttService _mqttService = MqttService.instance;
+
   @override
   void initState() {
     super.initState();
-    context.read<AddDeviceTypeAdditionProvider>().getAllDevices();
+
+    // startListeningToFirestore(
+    //     context, "user1", _mqttService); // Listen to Firestore changes
+    // // Connect to MQTT and subscribe to topics
+    // _mqttService.connect().then((_) {
+    //   // Subscribe to user-specific topics using wildcards
+    //   const userId =
+    //       "user1"; // Replace with dynamic user ID for multi-user apps
+    //   const topic =
+    //       'user/$userId/device/+/status'; // Wildcard for all user devices
+    //   _mqttService.subscribeToTopic(topic, context);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    final deviceProvider = context.watch<AddDeviceTypeAdditionProvider>();
-    return Scaffold(
-      appBar: AppBar(title: const Text("Control Devices")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Text(
-                "Devices",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            const Spacer(flex: 5),
-            Expanded(
-              flex: 70,
-              child: ListView.builder(
-                itemCount: deviceProvider.devicesList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      leading: const Icon(
-                          Icons.device_hub), // Add custom icons if needed
-                      title: Text(
-                        deviceProvider.devicesList[index].deviceName,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      trailing: const Icon(Icons.settings),
-                      onTap: () =>
-                          showDeviceInfoDialog(context, index, "user1"),
+    var state = ref.read(deviceStateProvider);
+    return Builder(
+      builder: (context) {
+        if (state is DeviceDataInitialState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is DeviceDataLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is DeviceDataLoadedState) {
+          return SafeArea(
+            child: Scaffold(
+              body: CustomScrollView(
+                slivers: [
+                  SliverPersistentHeader(
+                    delegate: CustomSliverDelegate(
+                      expandedHeight: 150,
+                      onAddDevice: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const AddDevicesTab()));
+                      },
                     ),
-                  );
-                },
+                  ),
+                  SliverGrid.builder(
+                    itemCount: state.list.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1.7, crossAxisCount: 1),
+                    itemBuilder: (context, index) {
+                      var currentDevice = state.list[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DeviceItem(
+                          device: currentDevice,
+                        ),
+                      );
+                    },
+                  )
+                ],
               ),
             ),
-            const Spacer(flex: 5),
-            Expanded(
-              flex: 10,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const AddDevicesTab(),
-                  ));
-                },
-                icon: const Icon(Icons.add),
-                label: const Text("Add Devices"),
-              ),
-            ),
-            const Spacer(flex: 15),
-          ],
-        ),
-      ),
+          );
+        } else {
+          var error = state as DeviceDataErrorState;
+          return Center(child: Text(error.toString()));
+        }
+      },
     );
   }
 }
