@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/providers/add_device_type_provider.dart';
+import 'package:home_automation_app/providers/device_addition_provder.dart';
 import 'package:home_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
 import 'package:home_automation_app/utils/icons.dart';
 import 'package:provider/provider.dart';
@@ -62,13 +63,10 @@ class AddDevicesTab extends ConsumerWidget {
                       ),
                       trailing: ElevatedButton(
                         onPressed: () {
-                          log("clicked on Button");
-                          ref
-                              .read(newDevicetypeAdditionProvider.notifier)
-                              .addDeviceType(
-                                device['deviceType'],
-                                device['attribute'],
-                              );
+                          ref.read(deviceAdditionProvider.notifier).addDevice(
+                              deviceType: device['deviceType'],
+                              ref: ref,
+                              context: context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:

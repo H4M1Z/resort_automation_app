@@ -1,7 +1,9 @@
 // control_tab.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/core/protocol/Firestore_mqtt_Bridge.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
+import 'package:home_automation_app/main.dart';
 import 'package:home_automation_app/pages/add_device_tab/new_tab_view.dart';
 import 'package:home_automation_app/pages/control_tab/widgets/device_item.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
@@ -23,22 +25,22 @@ class _ControlTabState extends ConsumerState<ControlTab> {
   void initState() {
     super.initState();
 
-    // startListeningToFirestore(
-    //     context, "user1", _mqttService); // Listen to Firestore changes
-    // // Connect to MQTT and subscribe to topics
-    // _mqttService.connect().then((_) {
-    //   // Subscribe to user-specific topics using wildcards
-    //   const userId =
-    //       "user1"; // Replace with dynamic user ID for multi-user apps
-    //   const topic =
-    //       'user/$userId/device/+/status'; // Wildcard for all user devices
-    //   _mqttService.subscribeToTopic(topic, context);
-    // });
+    startListeningToFirestore(
+        context, "user1", _mqttService); // Listen to Firestore changes
+    // Connect to MQTT and subscribe to topics
+    _mqttService.connect().then((_) {
+      // Subscribe to user-specific topics using wildcards
+      final userId =
+          globalUserId; // Replace with dynamic user ID for multi-user apps
+      final topic =
+          'user/$userId/device/+/status'; // Wildcard for all user devices
+      _mqttService.subscribeToTopic(topic, context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var state = ref.read(deviceStateProvider);
+    var state = ref.watch(deviceStateProvider);
     return Builder(
       builder: (context) {
         if (state is DeviceDataInitialState) {

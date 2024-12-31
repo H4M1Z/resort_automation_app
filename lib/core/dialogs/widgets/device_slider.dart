@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/main.dart';
+import 'package:home_automation_app/pages/control_tab/controllers/slide_value_controller.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
+import 'package:home_automation_app/utils/hexa_into_number.dart';
 
-class DeviceSlider extends ConsumerWidget {
+class DeviceSlider extends ConsumerStatefulWidget {
   final Device device;
   final bool isDarkMode;
   final ThemeData theme;
@@ -17,12 +20,31 @@ class DeviceSlider extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var state = ref.watch(deviceStateProvider);
+  ConsumerState<DeviceSlider> createState() => _DeviceSliderState();
+}
 
-    // Get the current slider value for the device
-    double value = device.attributes['sliderValue']?.toDouble() ?? 0;
+class _DeviceSliderState extends ConsumerState<DeviceSlider> {
+  double sliderValue = 0;
+  @override
+  void initState() {
+    super.initState();
 
+    sliderValue = double.parse(
+        GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
+            widget.device.type, widget.device.attributes.values.first));
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      ref.read(sliderValueProvider.notifier).intialSliderValue(sliderValue);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.watch(sliderValueProvider);
+    double value = ref
+            .read(sliderValueProvider.notifier)
+            .mapOfSliderValues[widget.device.deviceId] ??
+        0;
     return Slider(
       value: value,
       min: 0,
@@ -32,9 +54,11 @@ class DeviceSlider extends ConsumerWidget {
       onChanged: (newValue) {
         ref
             .read(deviceStateProvider.notifier)
-            .updateSliderValue(newValue, device, globalUserId, context);
+            .updateSliderValue(newValue, widget.device, globalUserId, context);
       },
-      activeColor: isDarkMode ? const Color(0xFF4FC0E7) : theme.primaryColor,
+      activeColor: widget.isDarkMode
+          ? const Color(0xFF4FC0E7)
+          : widget.theme.primaryColor,
       inactiveColor: Colors.grey,
     );
   }

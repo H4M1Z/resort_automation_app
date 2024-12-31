@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
@@ -56,11 +58,20 @@ Future<void> startListeningToFirestore(
   });
 }
 
-void publishDeviceUpdate(String userId, String deviceId, String status,
-    String deviceType, String? attributeValue, MqttService mqttService) {
-  // Use userId in the topic for user-specific messages
+void publishDeviceUpdate(
+  String userId,
+  String deviceId,
+  String status,
+  String deviceType,
+  String? attributeValue,
+  MqttService mqttService,
+) {
   final topic = 'user/$userId/device/$deviceId/status';
-  final message =
-      'Device: $deviceId, Type: $deviceType, Status: $status, Attribute: $attributeValue';
-  mqttService.publishMessage(topic, message);
+  final message = {
+    'status': status,
+    'type': deviceType,
+    'attribute': attributeValue ?? '',
+  };
+  mqttService.publishMessage(topic, message.toString());
+  log('Published device update: $message');
 }

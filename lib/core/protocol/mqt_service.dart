@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
@@ -17,8 +19,8 @@ class MqttService {
   // Private constructor
   MqttService._internal()
       : client = MqttServerClient('broker.hivemq.com', 'flutter_client') {
-    client.port = 1883;
-    client.keepAlivePeriod = 20;
+    client.port = 1833;
+    client.keepAlivePeriod = 120;
     client.logging(on: true);
     client.onDisconnected = _onDisconnected;
     client.onConnected = _onConnected;
@@ -56,9 +58,17 @@ class MqttService {
     }
   }
 
+  int retryCount = 0;
+  final maxRetries = 5;
+
   void _scheduleReconnect() {
-    log('Scheduling reconnect in $_reconnectDelay...');
-    Future.delayed(_reconnectDelay, () => connect());
+    if (retryCount < maxRetries) {
+      log('Scheduling reconnect in $_reconnectDelay...');
+      retryCount++;
+      Future.delayed(_reconnectDelay, () => connect());
+    } else {
+      log('Max reconnection attempts reached. Giving up.');
+    }
   }
 
   static void _onConnected() {
@@ -69,7 +79,14 @@ class MqttService {
   static void _onDisconnected() {
     log('Disconnected from the MQTT broker.');
     _instance.isConnected = false;
-    _instance._scheduleReconnect(); // Attempt to reconnect when disconnected
+    // Notify user about the disconnection
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('MQTT disconnected. Reconnecting...')),
+      // );
+      Fluttertoast.showToast(msg: "MQTT disconnected. Reconnecting...");
+    });
+    _instance._scheduleReconnect();
   }
 
   void subscribeToTopic(String topic, BuildContext context) {
@@ -92,6 +109,7 @@ class MqttService {
   }
 
   void publishMessage(String topic, String message) {
+    log("Publishing message");
     if (isConnected) {
       final builder = MqttClientPayloadBuilder();
       builder.addString(message);

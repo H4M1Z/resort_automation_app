@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,15 +34,19 @@ class _DeviceSwitchState extends ConsumerState<DeviceSwitch> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(switchStateProvider);
     // var state = ref.watch(deviceStateProvider);
 
     // Get the current switch value for the device
 
-    log("Value in Switch Widget = ${GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(widget.device.type, widget.device.status)}");
-    log("Device Switch Widget = $isSwitchOn");
+    // log("Value in Switch Widget = ${GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(widget.device.type, widget.device.status)}");
+    // log("Device Switch Widget = $isSwitchOn");
 
     return Switch(
-      value: ref.watch(switchStateProvider),
+      value: ref
+              .read(switchStateProvider.notifier)
+              .mapOfSwitchStates[widget.device.deviceId] ??
+          isSwitchOn,
       onChanged: (value) {
         ref
             .read(deviceStateProvider.notifier)

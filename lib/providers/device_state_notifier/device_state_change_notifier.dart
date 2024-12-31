@@ -7,7 +7,7 @@ import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
-import 'package:home_automation_app/main.dart';
+import 'package:home_automation_app/pages/control_tab/controllers/slide_value_controller.dart';
 import 'package:home_automation_app/pages/control_tab/controllers/switch_state_controller.dart';
 import 'package:home_automation_app/providers/device_state_change_provider.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_states.dart';
@@ -38,6 +38,13 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
   // When the switch is toggeled
   void toggleSwitch(bool value, Device device, String userId,
       BuildContext context, WidgetRef ref) async {
+    if (!mqttService.isConnected) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("MQTT is not connected. Cannot send the command.")));
+      log('MQTT is not connected. Cannot send the command.');
+      return;
+    }
     showProgressDialog(
         context: context,
         message: "Turning ${device.deviceName} ${value ? "On" : "Off"}");
@@ -57,10 +64,17 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
 
   void updateSliderValue(
       double value, Device device, String userId, BuildContext context) async {
-    bool isSwitchOn =
-        GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
-                device.type, device.attributes.values.first) ==
-            "On";
+    if (!mqttService.isConnected) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text("MQTT is not connected. Cannot send the command.")));
+      log('MQTT is not connected. Cannot send the command.');
+      return;
+    }
+    bool isSwitchOn = ref
+            .read(switchStateProvider.notifier)
+            .mapOfSwitchStates[device.deviceId] ??
+        false;
     if (isSwitchOn) {
       showProgressDialog(
           context: context,
@@ -75,6 +89,9 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
       // Fetch updated devices list and update state
       List<Device> list = await deviceCollection.getAllDevices(userId);
       state = DeviceDataLoadedState(list: list);
+      await ref
+          .read(sliderValueProvider.notifier)
+          .updateSliderValue(value, device);
 
       Navigator.of(context).pop();
     } else {
@@ -98,7 +115,19 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
           GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
                   device.type, device.status) ==
               "On";
+
+      ref
+              .read(sliderValueProvider.notifier)
+              .mapOfSliderValues[device.deviceId] =
+          double.parse(
+              GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
+                  device.type, device.attributes.values.first));
     }
     state = DeviceDataLoadedState(list: list);
+  }
+
+  Future<void> deleteAllDevices(Device device, WidgetRef ref) async {
+    await FirebaseServices.deleteDevice(device.deviceName, device.deviceId);
+    getAllDevices(ref);
   }
 }

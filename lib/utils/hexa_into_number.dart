@@ -25,6 +25,8 @@ class GerenrateNumberFromHexa {
         return "On";
       case "0x0100":
         return "Off";
+      case "0x0110":
+        return "0";
       case "0x0119":
         return "25";
       case "0x0132":
@@ -44,6 +46,8 @@ class GerenrateNumberFromHexa {
         return "On";
       case "0x0200":
         return "Off";
+      case "0x0210":
+        return "0";
       case "0x0219":
         return "25";
       case "0x0232":

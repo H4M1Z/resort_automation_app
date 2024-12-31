@@ -159,6 +159,7 @@ String getCommand(String deviceType, String action) {
 const Map<String, String> _fanCommands = {
   "On": "0x0101",
   "Off": "0x0100",
+  "0": "0x0110",
   "25": "0x0119",
   "50": "0x0132",
   "75": "0x014B",
@@ -168,6 +169,7 @@ const Map<String, String> _fanCommands = {
 const Map<String, String> _bulbCommands = {
   "On": "0x0201",
   "Off": "0x0200",
+  "0": "0x0210",
   "25": "0x0219",
   "50": "0x0232",
   "75": "0x024B",

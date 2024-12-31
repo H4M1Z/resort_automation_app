@@ -15,6 +15,8 @@ class DeviceCollection {
   Future<bool> addDevice(
       {required String userId, required Device device}) async {
     try {
+      log("Device id in add device method ${device.deviceId}");
+      log("DeviceName in add device method ${device.deviceName}");
       await UserCollection.userCollection
           .doc(userId)
           .collection(deviceCollection)
@@ -124,7 +126,9 @@ class DeviceCollection {
     }
   }
 
-  Future<String> getDeviceStatus(String userId, String deviceId) async {
+  Future<String> getDeviceStatus(
+      String userId, String deviceId, String deviceName) async {
+    log("User ");
     try {
       DocumentSnapshot deviceDoc = await UserCollection.userCollection
           .doc(userId)
@@ -145,7 +149,7 @@ class DeviceCollection {
   }
 
   Future<Map<String, dynamic>> getDeviceAttributes(
-      String userId, String deviceId) async {
+      String userId, String deviceId, String deviceName) async {
     try {
       DocumentSnapshot deviceDoc = await UserCollection.userCollection
           .doc(userId)

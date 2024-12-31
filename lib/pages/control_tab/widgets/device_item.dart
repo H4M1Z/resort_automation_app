@@ -4,7 +4,9 @@ import 'package:home_automation_app/core/dialogs/remove_device_dialog.dart';
 import 'package:home_automation_app/core/dialogs/widgets/device_slider.dart';
 import 'package:home_automation_app/core/dialogs/widgets/device_switch.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/utils/hexa_into_number.dart';
+import 'package:home_automation_app/pages/control_tab/widgets/attribute_value.dart';
+import 'package:home_automation_app/pages/control_tab/widgets/device_status.dart';
+import 'package:home_automation_app/pages/control_tab/widgets/slider_percentage_value.dart';
 import 'package:home_automation_app/utils/icons.dart';
 
 class DeviceItem extends ConsumerWidget {
@@ -137,14 +139,8 @@ class DeviceItem extends ConsumerWidget {
                     ),
                     Expanded(
                       flex: 15,
-                      child: Text(
-                        "${double.parse(GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(device.type, device.attributes.values.first)) ?? 0}%",
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                        textAlign: TextAlign.end,
-                      ),
+                      child: SliderPercentageValue(
+                          device: device, theme: theme, isDarkMode: isDarkMode),
                     ),
                     const Spacer(
                       flex: 10,
@@ -181,22 +177,9 @@ class DeviceItem extends ConsumerWidget {
                             ),
                           ),
                           Expanded(
-                            flex: 20,
-                            child: Text(
-                              GerenrateNumberFromHexa
-                                  .hexaIntoStringAccordingToDeviceType(
-                                      device.type, device.status),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: GerenrateNumberFromHexa
-                                            .hexaIntoStringAccordingToDeviceType(
-                                                device.type, device.status) ==
-                                        "On"
-                                    ? Colors.green
-                                    : Colors.red,
-                              ),
-                            ),
-                          ),
+                              flex: 20,
+                              child:
+                                  DeviceStatus(device: device, theme: theme)),
                           const Spacer(
                             flex: 20,
                           )
@@ -211,7 +194,7 @@ class DeviceItem extends ConsumerWidget {
                               flex: 25,
                             ),
                             Expanded(
-                              flex: 55,
+                              flex: 50,
                               child: Text(
                                 " ${device.attributes.keys.first}:",
                                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -223,20 +206,14 @@ class DeviceItem extends ConsumerWidget {
                               ),
                             ),
                             Expanded(
-                              flex: 20,
-                              child: Text(
-                                GerenrateNumberFromHexa
-                                    .hexaIntoStringAccordingToDeviceType(
-                                        device.type,
-                                        device.attributes.values.first),
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: isDarkMode
-                                      ? Colors.white
-                                      : Colors.black87,
-                                ),
-                              ),
-                            ),
+                                flex: 20,
+                                child: AttributeValue(
+                                    device: device,
+                                    theme: theme,
+                                    isDarkMode: isDarkMode)),
+                            const Spacer(
+                              flex: 5,
+                            )
                           ],
                         )),
                   ],
@@ -249,7 +226,7 @@ class DeviceItem extends ConsumerWidget {
             right: 0,
             child: InkWell(
               onTap: () {
-                showRemoveDialog(context, device);
+                showRemoveDialog(context, device, ref);
               },
               child: const Icon(
                 Icons.remove_circle,
