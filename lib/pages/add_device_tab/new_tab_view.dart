@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/providers/add_device_type_provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_automation_app/providers/device_addition_provder.dart';
 import 'package:home_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
 import 'package:home_automation_app/utils/icons.dart';
-import 'package:provider/provider.dart';
 
 class AddDevicesTab extends ConsumerWidget {
   const AddDevicesTab({super.key});
@@ -90,7 +87,8 @@ class AddDevicesTab extends ConsumerWidget {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                showDeviceTypeSelector(context, ref);
+                // showDeviceTypeSelector(context, ref);
+                Fluttertoast.showToast(msg: "Available soon");
               },
               icon: Icon(Icons.add,
                   color: theme.iconTheme.color), // Adapt icon color

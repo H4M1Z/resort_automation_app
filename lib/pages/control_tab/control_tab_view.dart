@@ -19,23 +19,9 @@ class ControlTab extends ConsumerStatefulWidget {
 }
 
 class _ControlTabState extends ConsumerState<ControlTab> {
-  final MqttService _mqttService = MqttService.instance;
-
   @override
   void initState() {
     super.initState();
-
-    startListeningToFirestore(
-        context, "user1", _mqttService); // Listen to Firestore changes
-    // Connect to MQTT and subscribe to topics
-    _mqttService.connect().then((_) {
-      // Subscribe to user-specific topics using wildcards
-      final userId =
-          globalUserId; // Replace with dynamic user ID for multi-user apps
-      final topic =
-          'user/$userId/device/+/status'; // Wildcard for all user devices
-      _mqttService.subscribeToTopic(topic, context);
-    });
   }
 
   @override
@@ -56,6 +42,8 @@ class _ControlTabState extends ConsumerState<ControlTab> {
                     delegate: CustomSliverDelegate(
                       expandedHeight: 150,
                       onAddDevice: () {
+                        MqttService mqttService = MqttService();
+
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const AddDevicesTab()));
                       },

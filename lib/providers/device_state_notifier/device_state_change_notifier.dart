@@ -19,7 +19,7 @@ final deviceStateProvider =
         DeviceStateChangeNotifier.new);
 
 class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
-  final MqttService mqttService = MqttService.instance;
+  final MqttService mqttService = MqttService();
   final DeviceCollection deviceCollection = DeviceCollection.instance;
   //Controllers for adding new devices
   final Map<String, TextEditingController> controllers = {};
@@ -128,6 +128,6 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
 
   Future<void> deleteAllDevices(Device device, WidgetRef ref) async {
     await FirebaseServices.deleteDevice(device.deviceName, device.deviceId);
-    getAllDevices(ref);
+    await getAllDevices(ref);
   }
 }

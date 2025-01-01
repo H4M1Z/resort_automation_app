@@ -1,14 +1,18 @@
+// Updated Firestore Listener
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/collections/user_collection.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
 
 Future<void> startListeningToFirestore(
     BuildContext context, String userId, MqttService mqttService) async {
-  await mqttService.connect();
+  if (!mqttService.isConnected) {
+    await mqttService.connect();
+  }
 
   UserCollection.userCollection
       .doc(userId)
@@ -26,12 +30,18 @@ Future<void> startListeningToFirestore(
 
           if (deviceId != null && status != null && attributes != null) {
             final deviceType = deviceData['type'];
-
             String? attributeValue;
-            if (deviceType == 'Bulb') {
-              attributeValue = attributes['Brightness'];
-            } else if (deviceType == 'Fan') {
-              attributeValue = attributes['Speed'];
+
+            switch (deviceType) {
+              case 'Bulb':
+                attributeValue = attributes['Brightness'];
+                break;
+              case 'Fan':
+                attributeValue = attributes['Speed'];
+                break;
+              default:
+                attributeValue = attributes['CustomAttribute'];
+                break;
             }
 
             if (mqttService.isConnected) {
@@ -44,12 +54,8 @@ Future<void> startListeningToFirestore(
                 mqttService,
               );
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                      'MQTT not connected. Skipping device update for $deviceId.'),
-                ),
-              );
+              Fluttertoast.showToast(
+                  msg: 'MQTT not connected. Skipping update for $deviceId.');
             }
           }
         }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/providers/add_device_type_provider.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
-import 'package:provider/provider.dart';
 
 void showRemoveDialog(BuildContext context, Device device, WidgetRef ref) {
   showDialog(
@@ -18,10 +17,12 @@ void showRemoveDialog(BuildContext context, Device device, WidgetRef ref) {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: () {
-            ref
+          onPressed: () async {
+            showProgressDialog(context: context, message: "Removing device");
+            await ref
                 .read(deviceStateProvider.notifier)
                 .deleteAllDevices(device, ref);
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
           child: const Text("Remove"),
