@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/collections/device_group_collection.dart';
+import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/core/model_classes/device_group.dart';
 import 'package:home_automation_app/main.dart';
@@ -27,7 +29,9 @@ class GroupSwitchTogle extends Notifier<bool> {
     state = value;
   }
 
-  void onGroupSwitchToggle(bool value, String groupName, String groupId) async {
+  Future<void> onGroupSwitchToggle(bool value, String groupName, String groupId,
+      BuildContext context) async {
+    log("Value of switch in group toggle method = $value");
     try {
       // Step 1: Get the Device Group
       DeviceGroup? group = await deviceGroupCollection.getDeviceGroupByName(
@@ -57,7 +61,12 @@ class GroupSwitchTogle extends Notifier<bool> {
                 globalUserId, device.deviceId, getHexa);
           }
         }
-        await deviceGroupCollection.updateGroupStatus(group.groupId, value);
+
+        await deviceGroupCollection.updateGroupStatus(
+          globalUserId,
+          group.groupId,
+          value,
+        );
         mapOfGroupSwitchStates[groupId] = value;
         state = value;
 

@@ -16,10 +16,11 @@ class ScanningTabController extends Notifier<DeviceGettingStates> {
     return DeviceGettingInitalState();
   }
 
-  void onClickAddDevices(WidgetRef ref) async {
+  Future<void> onClickAddDevices(WidgetRef ref) async {
     state = DeviceGettingLoadingState();
     try {
       var listOfDevices = await deviceCollection.getAllDevices(globalUserId);
+      log("Lenght of list in onClickAddDevices method ${listOfDevices.length}");
       state = DeviceGettingLoadedState(list: listOfDevices);
     } catch (e) {
       state = DeviceGettingErrorState(error: e.toString());

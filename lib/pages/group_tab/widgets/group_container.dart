@@ -49,6 +49,7 @@ class GroupContainer extends ConsumerWidget {
                     ),
                   ),
                   SwitchNuemorphic(
+                    groupStatus: deviceGroup.currentStatus,
                     isDarkMode: isDarkMode,
                     theme: theme,
                     groupName: deviceGroup.groupName,
@@ -62,8 +63,12 @@ class GroupContainer extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  deleteButton(isDarkMode, context),
-                  deviceButton(isDarkMode),
+                  GroupDeleteButton(
+                      isDarkMode: isDarkMode, groupId: deviceGroup.groupId),
+                  GroupDeviceButton(
+                      groupName: deviceGroup.groupName,
+                      isDarkMode: isDarkMode,
+                      groupId: deviceGroup.groupId),
                 ],
               ),
             ],
