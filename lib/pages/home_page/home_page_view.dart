@@ -5,11 +5,11 @@ import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider
 import 'package:home_automation_app/pages/control_tab/control_tab_view.dart';
 import 'package:home_automation_app/pages/group_tab/group_tab_view.dart';
 import 'package:home_automation_app/pages/setting_tab/setting_tab_view.dart';
-import 'package:home_automation_app/providers/add_device_type_provider.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
+  static const String pageName = '/home';
 
   final List<Widget> _pages = const [
     ControlTab(),
@@ -18,11 +18,11 @@ class HomeScreen extends ConsumerWidget {
   ];
 
   @override
-  Widget build(BuildContext context , WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(bottomBarStateProvider);
     return Scaffold(
-      body: _pages[state]  ,
-      bottomNavigationBar: getBottomNavigationBar(context , ref),
+      body: _pages[state],
+      bottomNavigationBar: getBottomNavigationBar(context, ref),
     );
   }
 }

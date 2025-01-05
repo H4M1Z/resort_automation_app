@@ -5,13 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/protocol/Firestore_mqtt_Bridge.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
 import 'package:home_automation_app/main.dart';
-import 'package:home_automation_app/pages/home_page/home_page_view.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
-  const SplashScreen({super.key});
-
+  const SplashScreen({super.key, required this.route});
+  final String route;
   @override
   SplashScreenState createState() => SplashScreenState();
 }
@@ -49,11 +48,9 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
 
   void moveToNextScreen() {
     Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(builder: (context) {
-          return const HomeScreen();
-        }), // Replace with your next screen
+        widget.route,
       );
     });
   }
