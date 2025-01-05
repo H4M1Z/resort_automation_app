@@ -24,15 +24,15 @@ String mapDeviceType(String deviceType) {
 String getCommand(String deviceType, String action) {
   switch (deviceType) {
     case "Fan":
-      return _fanCommands[action] ?? "Unknown";
+      return fanCommands[action] ?? "Unknown";
     case "Bulb":
-      return _bulbCommands[action] ?? "Unknown";
+      return bulbCommands[action] ?? "Unknown";
     default:
       return "Unsupported Device";
   }
 }
 
-const Map<String, String> _fanCommands = {
+const Map<String, String> fanCommands = {
   "On": "0x0101",
   "Off": "0x0100",
   "0": "0x0110",
@@ -42,7 +42,7 @@ const Map<String, String> _fanCommands = {
   "100": "0x0164",
 };
 
-const Map<String, String> _bulbCommands = {
+const Map<String, String> bulbCommands = {
   "On": "0x0201",
   "Off": "0x0200",
   "0": "0x0210",

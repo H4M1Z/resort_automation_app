@@ -35,12 +35,7 @@ class _DeviceSwitchState extends ConsumerState<DeviceSwitch> {
   @override
   Widget build(BuildContext context) {
     ref.watch(switchStateProvider);
-    // var state = ref.watch(deviceStateProvider);
-
-    // Get the current switch value for the device
-
-    // log("Value in Switch Widget = ${GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(widget.device.type, widget.device.status)}");
-    // log("Device Switch Widget = $isSwitchOn");
+    
 
     return Switch(
       value: ref

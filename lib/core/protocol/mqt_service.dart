@@ -30,14 +30,14 @@ class MqttService {
 
   factory MqttService() => _instance;
 
-  Future<void> initialize(String username, String password) async {
-    this.username = username;
-    this.password = password;
-    client.connectionMessage = MqttConnectMessage()
-        .withClientIdentifier(
-            'flutter_client_${DateTime.now().millisecondsSinceEpoch}')
-        .authenticateAs(username, password);
-  }
+  // Future<void> initialize(String username, String password) async {
+  //   this.username = username;
+  //   this.password = password;
+  //   client.connectionMessage = MqttConnectMessage()
+  //       .withClientIdentifier(
+  //           'flutter_client_${DateTime.now().millisecondsSinceEpoch}')
+  //       .authenticateAs(username, password);
+  // }
 
   Future<void> connect() async {
     if (isConnected) {

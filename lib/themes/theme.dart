@@ -56,7 +56,7 @@ final ThemeData lightTheme = ThemeData(
     ),
   ),
   iconTheme: const IconThemeData(
-    color: Colors.black87,
+    color: Colors.white,
   ),
 );
 
@@ -111,7 +111,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: const Color.fromARGB(255, 183, 207, 249),
       foregroundColor: Colors.white, // Button text color
     ),
   ),

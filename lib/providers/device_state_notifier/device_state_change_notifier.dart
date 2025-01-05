@@ -28,13 +28,6 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
     return DeviceDataInitialState();
   }
 
-  // void listenToDeviceChanges(String userId) {
-  //   deviceCollection.listenToDeviceChanges(userId).listen((deviceList) {
-  //     // Update the state with the new device list
-  //     state = DeviceDataLoadedState(list: deviceList);
-  //   });
-  // }
-
   // When the switch is toggeled
   void toggleSwitch(bool value, Device device, String userId,
       BuildContext context, WidgetRef ref) async {
@@ -128,6 +121,5 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
 
   Future<void> deleteAllDevices(Device device, WidgetRef ref) async {
     await FirebaseServices.deleteDevice(device.deviceName, device.deviceId);
-    await getAllDevices(ref);
   }
 }

@@ -6,7 +6,9 @@ import 'package:home_automation_app/core/dialogs/widgets/device_switch.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/pages/control_tab/widgets/attribute_value.dart';
 import 'package:home_automation_app/pages/control_tab/widgets/device_status.dart';
+import 'package:home_automation_app/pages/control_tab/widgets/item_icons.dart';
 import 'package:home_automation_app/pages/control_tab/widgets/slider_percentage_value.dart';
+import 'package:home_automation_app/pages/control_tab/widgets/title_and_icon.dart';
 import 'package:home_automation_app/utils/icons.dart';
 
 class DeviceItem extends ConsumerWidget {
@@ -59,15 +61,11 @@ class DeviceItem extends ConsumerWidget {
                           Column(
                             children: [
                               Expanded(
-                                flex: 30,
-                                child: Icon(
-                                  getDeviceIcon(device.type),
-                                  size: 40,
-                                  color: isDarkMode
-                                      ? const Color(0xFF4FC0E7)
-                                      : theme.primaryColor,
-                                ),
-                              ),
+                                  flex: 30,
+                                  child: ItemIcon(
+                                      device: device,
+                                      isDarkMode: isDarkMode,
+                                      theme: theme)),
                               const Spacer(
                                 flex: 70,
                               )
@@ -75,32 +73,10 @@ class DeviceItem extends ConsumerWidget {
                           ),
                           const SizedBox(width: 8),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  device.deviceName,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  device.type,
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: isDarkMode
-                                        ? Colors.grey[400]
-                                        : Colors.grey[800],
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
+                              child: DeviceItemTitleAndType(
+                                  device: device,
+                                  isDarkMode: isDarkMode,
+                                  theme: theme)),
                         ],
                       ),
                     ),
@@ -225,15 +201,10 @@ class DeviceItem extends ConsumerWidget {
             top: -10,
             right: 0,
             child: InkWell(
-              onTap: () {
-                showRemoveDialog(context, device, ref);
-              },
-              child: const Icon(
-                Icons.remove_circle,
-                size: 30,
-                color: Colors.red,
-              ),
-            ),
+                onTap: () {
+                  showRemoveDialog(context, device, ref);
+                },
+                child: const DeviceItemRemoveIcon()),
           ),
         ],
       ),
