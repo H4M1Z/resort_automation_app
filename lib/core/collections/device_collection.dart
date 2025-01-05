@@ -168,4 +168,23 @@ class DeviceCollection {
       return {};
     }
   }
+
+  Future<List<Device>> getDevicesByIds(
+      String userId, List<String> deviceIds) async {
+    List<Device> devices = [];
+    try {
+      QuerySnapshot querySnapshot = await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceCollection)
+          .where(FieldPath.documentId, whereIn: deviceIds)
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        devices.add(Device.fromJson(doc.data() as Map<String, dynamic>));
+      }
+    } catch (e) {
+      log("Error fetching devices by IDs: $e");
+    }
+    return devices;
+  }
 }

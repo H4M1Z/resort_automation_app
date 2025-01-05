@@ -72,6 +72,56 @@ class DeviceGroupCollection {
     }
   }
 
+  Future<bool> updateGroupStatus(String groupId, bool currentStatus) async {
+    try {
+      UserCollection.userCollection
+          .doc(groupId)
+          .update({"currentStatus": currentStatus});
+      return true;
+    } catch (e) {
+      log("Error updating group status: ${e.toString()}");
+      return false;
+    }
+  }
+
+  Future<bool> updateGroupIDs(String groupId, List<String> listOfIds) async {
+    try {
+      UserCollection.userCollection
+          .doc(groupId)
+          .update({"deviceIds": listOfIds});
+      return true;
+    } catch (e) {
+      log("Error updating group status: ${e.toString()}");
+      return false;
+    }
+  }
+
+  Future<dynamic> getDeviceGroupByName(String userId, String groupName) async {
+    try {
+      // Query Firestore to find a device group with the given name
+      QuerySnapshot querySnapshot = await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceGroupCollection)
+          .where("groupName", isEqualTo: groupName)
+          .limit(1) // Assuming group names are unique, limit to one result
+          .get();
+
+      // Check if any documents are returned
+      if (querySnapshot.docs.isNotEmpty) {
+        Map<String, dynamic> groupData =
+            querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+        return DeviceGroup.fromJson(groupData);
+      }
+
+      // If no group is found, return null
+      return null;
+    } catch (e) {
+      log("Error getting device group by name: $e");
+      return null;
+    }
+  }
+
   Future<List<DeviceGroup>> getAllDeviceGroups(String userId) async {
     List<DeviceGroup> groups = [];
     try {

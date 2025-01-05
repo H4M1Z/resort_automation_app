@@ -22,6 +22,7 @@ void showRemoveDialog(BuildContext context, Device device, WidgetRef ref) {
             await ref
                 .read(deviceStateProvider.notifier)
                 .deleteAllDevices(device, ref);
+            await ref.read(deviceStateProvider.notifier).getAllDevices(ref);
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           },

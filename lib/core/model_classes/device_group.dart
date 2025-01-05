@@ -2,10 +2,12 @@ class DeviceGroup {
   final String groupId;
   final String groupName;
   final List<String> deviceIds;
+  final bool currentStatus;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   DeviceGroup({
+    required this.currentStatus,
     required this.groupId,
     required this.groupName,
     required this.deviceIds,
@@ -15,6 +17,7 @@ class DeviceGroup {
 
   factory DeviceGroup.fromJson(Map<String, dynamic> json) {
     return DeviceGroup(
+      currentStatus: json['currentStatus'],
       groupId: json['groupId'],
       groupName: json['groupName'],
       deviceIds: List<String>.from(json['deviceIds']),
@@ -25,6 +28,7 @@ class DeviceGroup {
 
   Map<String, dynamic> toJson() {
     return {
+      'currentStatus': currentStatus,
       'groupId': groupId,
       'groupName': groupName,
       'deviceIds': deviceIds,
