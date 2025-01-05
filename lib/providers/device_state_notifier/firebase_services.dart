@@ -1,12 +1,10 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
 import 'package:home_automation_app/providers/device_state_change_provider.dart';
-import 'package:home_automation_app/utils/hexa_into_number.dart';
 
 class FirebaseServices {
   static DeviceCollection deviceCollection = DeviceCollection();
@@ -32,7 +30,7 @@ class FirebaseServices {
       },
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      deviceId: "0${listOfDevices.length + 1} ${deviceName}",
+      deviceId: "0${listOfDevices.length + 1} $deviceName",
     );
     await deviceCollection.addDevice(userId: "user1", device: device);
     await getAllDevices();

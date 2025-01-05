@@ -6,10 +6,10 @@ import 'package:home_automation_app/pages/control_tab/control_tab_view.dart';
 import 'package:home_automation_app/pages/group_tab/group_tab_view.dart';
 import 'package:home_automation_app/pages/setting_tab/setting_tab_view.dart';
 
-import 'package:provider/provider.dart';
-
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
+  static const String pageName = '/home';
 
   final List<Widget> _pages = const [
     ControlTab(),

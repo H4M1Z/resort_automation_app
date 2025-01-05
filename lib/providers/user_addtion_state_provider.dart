@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/user_collection.dart';
-import 'package:home_automation_app/core/model_classes/user.dart';
 import 'package:home_automation_app/core/enums.dart';
+import 'package:home_automation_app/core/model_classes/user_model.dart';
 import 'package:home_automation_app/utils/asset_images.dart';
 
 // Define the NotifierProvider
@@ -20,7 +20,7 @@ class UserAdditionNotifier extends Notifier<void> {
 
   // Method to add a user
   Future<void> addUser() async {
-    final user = User(
+    final user = UserModel(
       userName: "Umair",
       userId: "user1",
       email: "programmerUmair29@gmail.com",
