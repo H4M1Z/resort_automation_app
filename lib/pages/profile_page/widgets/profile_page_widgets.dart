@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:home_automation_app/core/commom/functions/common_functions.dart';
 import 'package:home_automation_app/core/commom/widgets/auth_text_fields.dart';
-import 'package:home_automation_app/core/commom/widgets/loading_widget.dart';
 import 'package:home_automation_app/pages/profile_page/controller/profile_page_controller.dart';
+import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
 import 'custom_clipper.dart';
 
@@ -22,17 +22,20 @@ class ProfileBackgroundDesign extends StatelessWidget {
   }
 }
 
-class ProfilePageBackButton extends StatelessWidget {
+class ProfilePageBackButton extends ConsumerWidget {
   const ProfilePageBackButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+            ref.read(settingTabControllerProvider.notifier).reinitializeState();
+          },
         ),
       ),
     );
@@ -93,15 +96,13 @@ class ProfilePicWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(profilePageController);
     return switch (state) {
-      ProfileLoadingState() => LoadingWidget(
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: 60,
-            child: Icon(
-              Icons.person,
-              color: Colors.grey.shade600,
-              size: MediaQuery.sizeOf(context).height * 0.15,
-            ),
+      ProfileLoadingState() => CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 60,
+          child: Icon(
+            Icons.person,
+            color: Colors.grey.shade600,
+            size: MediaQuery.sizeOf(context).height * 0.15,
           ),
         ),
       ProfileLoadedState() => CircleAvatar(

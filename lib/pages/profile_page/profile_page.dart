@@ -1,41 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/commom/widgets/loading_widget.dart';
-import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
+import 'package:home_automation_app/config/navigation/route_navigation.dart';
 import 'package:home_automation_app/pages/profile_page/controller/profile_page_controller.dart';
 import 'package:home_automation_app/pages/profile_page/widgets/profile_page_widgets.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
-
+  static const pageName = '/profile-page';
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profilePageArguments =
+        ModalRoute.of(context)!.settings.arguments as ProfilePageArguments;
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        ref.read(profilePageController.notifier).initializeValues(
+              name: profilePageArguments.name,
+              email: profilePageArguments.email,
+              image: profilePageArguments.image,
+              isEnabled: profilePageArguments.isEnabled,
+            );
+      },
+    );
+    return const Scaffold(
       body: Stack(
         children: [
           // Top Clipped Background
-          const ProfileBackgroundDesign(),
+          ProfileBackgroundDesign(),
           // Back Button
-          const ProfilePageBackButton(),
+
           // Profile Content
-          Consumer(
-            builder: (context, ref, child) {
-              final state = ref.watch(profilePageController);
-              final controller = ref.read(profilePageController.notifier);
-              switch (state) {
-                case ProfileLoadingState():
-                  return LoadingWidget(
-                    event: controller.fetchUserDetails,
-                    child: const ProfilePageForm(),
-                  );
-                case ProfileErrorState():
-                  context.showPopUpMsg(state.message);
-                  return const ProfilePageForm();
-                default:
-                  return const ProfilePageForm();
-              }
-            },
-          )
+          ProfilePageForm(),
+          ProfilePageBackButton(),
         ],
       ),
     );

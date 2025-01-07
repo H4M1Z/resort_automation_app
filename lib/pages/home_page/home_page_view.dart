@@ -4,7 +4,7 @@ import 'package:home_automation_app/core/bottom_navigation_bar/bottom_navigation
 import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
 import 'package:home_automation_app/pages/control_tab/control_tab_view.dart';
 import 'package:home_automation_app/pages/group_tab/group_tab_view.dart';
-import 'package:home_automation_app/pages/setting_tab/setting_tab_view.dart';
+import 'package:home_automation_app/pages/setting_tab/view/setting_tab_view.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

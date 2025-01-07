@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/config/navigation/route_navigation.dart';
 import 'package:home_automation_app/pages/login_page/view/login_page.dart';
 import 'package:home_automation_app/pages/profile_page/profile_page.dart';
 import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 import 'package:home_automation_app/themes/state_provider.dart';
-import 'package:home_automation_app/utils/asset_images.dart';
 
-class SettingsTab extends StatefulWidget {
+import 'widgets/setting_tab_widget.dart';
+
+class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});
 
   @override
   SettingsTabState createState() => SettingsTabState();
 }
 
-class SettingsTabState extends State<SettingsTab> {
+class SettingsTabState extends ConsumerState<SettingsTab> {
   final bool _isDarkTheme = false;
 
   // Function to launch a URL (for Help or Rate Us)
@@ -27,6 +30,13 @@ class SettingsTabState extends State<SettingsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsController = ref.read(settingTabControllerProvider.notifier);
+    final themeProvider = ref.read(themeStateProvider.notifier);
+    SchedulerBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        ref.read(settingTabControllerProvider.notifier).reinitializeState();
+      },
+    );
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: Padding(
@@ -35,18 +45,20 @@ class SettingsTabState extends State<SettingsTab> {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  ProfilePage.pageName,
+                  arguments: ProfilePageArguments(
+                      image: settingsController.image,
+                      name: settingsController.name,
+                      email: settingsController.email,
+                      isEnabled: settingsController.isEnabled),
                 );
               },
               child: const ListTile(
                 leading: Hero(
                   tag: 'profileImage',
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage(profileImage),
-                  ),
+                  child: ProfileWidget(),
                 ),
                 title: Text("Profile"),
                 subtitle: Text("Edit your profile settings"),
@@ -64,7 +76,7 @@ class SettingsTabState extends State<SettingsTab> {
                   value: isDarkTheme,
                   onChanged: (value) {
                     // Use ref to call the toggleTheme method
-                    ref.read(themeStateProvider.notifier).toggleTheme(value);
+                    themeProvider.toggleTheme(value);
                   },
                 );
               },
@@ -111,8 +123,6 @@ class SettingsTabState extends State<SettingsTab> {
             // Logout Option
             Consumer(
               builder: (context, ref, child) {
-                final settingsController =
-                    ref.read(settingTabControllerProvider.notifier);
                 return ListTile(
                   leading: const Icon(Icons.logout),
                   title: const Text("Logout"),

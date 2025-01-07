@@ -59,7 +59,11 @@ class UserProfileService {
           'userName': name,
         });
         if (password != null) {
-          FirebaseAuth.instance.currentUser!.updatePassword(password);
+          try {
+            FirebaseAuth.instance.currentUser!.updatePassword(password);
+          } catch (e) {
+            log('error updating passwrod');
+          }
         }
         return true;
       } catch (e) {

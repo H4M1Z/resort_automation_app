@@ -76,14 +76,22 @@ class LoginPageController extends Notifier<UserSigninStates>
         ));
 
         if (user != null) {
-          await _userManagementService.insertUserUid(user.uid);
-          await _userManagementService.insertIsUserSignedIn(true);
-          await _userManagementService.insertIsUserSignedInUsingProvider(false);
+          final isUserInserted =
+              await _userManagementService.insertUserUid(user.uid);
+          final isUserSignedIn =
+              await _userManagementService.insertIsUserSignedIn(true);
+          final providerInserted = await _userManagementService
+              .insertIsUserSignedInUsingProvider(false);
+          if (isUserInserted && isUserSignedIn && providerInserted) {
+            state = UserSigninLoadedState();
+          } else {
+            state = UserSigninErrorState(
+                errorMessage: 'Error in shared prefrences');
+          }
         } else {
+          state = UserSigninErrorState(errorMessage: 'User is null');
           log('user is null');
         }
-
-        state = UserSigninLoadedState();
       } on FirebaseAuthException catch (e) {
         state = UserSigninErrorState(
           errorMessage: handleAuthException(e.code),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/services/user_management_service.dart';
@@ -40,7 +42,6 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
   late final TextEditingController nameController;
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
-
   //..........FORM KEY
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -51,13 +52,15 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
 
   @override
   build() {
-    //.......INITIALIZE CONTROLLERS
+    log('profile controller built');
+
     nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
 
     ///....DISPOSE OFF THE CONTROLELRS
     ref.onDispose(() {
+      log('profile provider disposed');
       nameController.dispose();
       emailController.dispose();
       passwordController.dispose();
@@ -72,12 +75,9 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
 
   fetchUserDetails() async {
     state = ProfileLoadingState();
-    final signInDetails =
-        await _userManagementService.isUserSignedInUsingProvider();
     final user = await _userProfileService.getUser();
+
     if (user != null) {
-      isEnabled = !signInDetails;
-      _userImage = user.profilePic;
       state = ProfileLoadedState(
         name: user.userName,
         email: user.email,
@@ -140,7 +140,8 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
   _isUpdated() {
     return _name != nameController.text.trim() ||
         _email != emailController.text.trim() ||
-        passwordController.text.trim().isNotEmpty;
+        passwordController.text.trim().isNotEmpty ||
+        _userImage.isNotEmpty;
   }
 
   onEditImageClicked() async {
@@ -149,9 +150,26 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
     if (pickedImage != null) {
       _userImage = pickedImage.path;
       state = ProfilePicPickedState(image: _userImage);
-    } else {
-      state = ProfileErrorState(image: _userImage, message: 'Image Not picked');
     }
+  }
+
+  reinitializeState() {
+    state = ProfileLoadingState();
+    fetchUserDetails();
+  }
+
+  initializeValues(
+      {required String name,
+      required String email,
+      required String image,
+      required bool isEnabled}) {
+    _name = name;
+    _email = email;
+    _userImage = image;
+    this.isEnabled = !isEnabled;
+    state = ProfileLoadedState(name: name, email: email, image: image);
+    nameController.text = name;
+    emailController.text = email;
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/config/navigation/roue_navigation.dart';
+import 'package:home_automation_app/config/navigation/route_navigation.dart';
 import 'package:home_automation_app/config/service_locator.dart';
 import 'package:home_automation_app/core/services/user_management_service.dart';
 import 'package:home_automation_app/firebase_options.dart';
