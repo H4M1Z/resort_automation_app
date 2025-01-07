@@ -119,7 +119,11 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
     state = DeviceDataLoadedState(list: list);
   }
 
-  Future<void> deleteAllDevices(Device device, WidgetRef ref) async {
-    await FirebaseServices.deleteDevice(device.deviceName, device.deviceId);
+  Future<void> deleteAllDevices(Device device) async {
+    try {
+      await FirebaseServices.deleteDevice(device.deviceName, device.deviceId);
+    } catch (e) {
+      log("Error deleting device: ${e.toString()}");
+    }
   }
 }

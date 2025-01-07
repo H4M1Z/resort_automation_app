@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/collections/device_group_collection.dart';
 import 'package:home_automation_app/core/model_classes/device_group.dart';
 import 'package:home_automation_app/main.dart';
+import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
 
 final idsUploadStateProvider =
     NotifierProvider<IdsUploaderController, List<bool>>(
@@ -17,14 +20,14 @@ class IdsUploaderController extends Notifier<List<bool>> {
   List<String> listOfIds = [];
 
   @override
-  build() {
-    _initializeBooleanList();
+  List<bool> build() {
     return booleanList;
   }
 
-  Future<void> _initializeBooleanList() async {
+  Future<void> initializeBooleanList() async {
     var listOfDevices = await deviceCollection.getAllDevices(globalUserId);
     booleanList = List.filled(listOfDevices.length, false);
+    log("Bolean List ${booleanList.length}");
     state = booleanList;
   }
 
@@ -38,7 +41,7 @@ class IdsUploaderController extends Notifier<List<bool>> {
     state = List.from(booleanList); // Update state to reflect changes
   }
 
-  void onCreateGroupButtonClick() async {
+  Future<void> onCreateGroupButtonClick(WidgetRef ref) async {
     if (groupNameController.text.isEmpty) {
       // Optionally, show an error message if group name is empty
       return;

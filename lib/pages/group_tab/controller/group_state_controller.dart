@@ -39,6 +39,14 @@ class GroupStateController extends Notifier<DeviceGroupStates> {
       log("Error in getting device groups ${e.toString()}");
     }
   }
+
+  Future<void> deleteGroup(String groupId) async {
+    try {
+      await deviceGroupCollection.deleteDeviceGroup(globalUserId, groupId);
+    } catch (e) {
+      log("Error in deleting group ${e.toString()}");
+    }
+  }
 }
 
 abstract class DeviceGroupStates {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
-import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
+import 'package:home_automation_app/pages/group_devices_page/controllers/group_device_button_controller.dart';
 
-void showDeleteConfirmationDialog(
-    BuildContext context, WidgetRef ref, String groupId) {
+void showRemoveConfirmationDialog(
+    BuildContext context, WidgetRef ref, String groupId, int index) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -20,11 +20,14 @@ void showDeleteConfirmationDialog(
         ),
         ElevatedButton(
           onPressed: () async {
-            showProgressDialog(context: context, message: "Deleting group");
-            await ref.read(deviceGroupsProvider.notifier).deleteGroup(groupId);
+            showProgressDialog(
+                context: context, message: "Removing device from the group");
             await ref
-                .read(deviceGroupsProvider.notifier)
-                .getAllDeviceGroups(ref);
+                .read(groupDevicesPageStateProvider.notifier)
+                .removeDeviceIdFromGroup(groupId, index);
+            await ref
+                .read(groupDevicesPageStateProvider.notifier)
+                .onDevicesButtonClick(groupId);
             Navigator.pop(context);
             Navigator.pop(context); // Perform delete logic
           },

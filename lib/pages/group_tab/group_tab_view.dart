@@ -3,14 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:home_automation_app/pages/device_scaning_tab/device_selection_tab.dart';
 import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
+import 'package:home_automation_app/pages/group_tab/controller/ids_uploader_controller.dart';
+import 'package:home_automation_app/pages/group_tab/controller/scaning_tab_controller.dart';
 import 'package:home_automation_app/pages/group_tab/widgets/group_container.dart';
 
-class GroupTab extends ConsumerWidget {
+class GroupTab extends ConsumerStatefulWidget {
   const GroupTab({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var state = ref.read(deviceGroupsProvider);
+  ConsumerState<GroupTab> createState() => _GroupTabState();
+}
+
+class _GroupTabState extends ConsumerState<GroupTab> {
+  @override
+  void initState() {
+    super.initState();
+    intializeBoleanList();
+  }
+
+  void intializeBoleanList() async {
+    await ref.read(idsUploadStateProvider.notifier).initializeBooleanList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var state = ref.watch(deviceGroupsProvider);
 
     return Scaffold(
       body: Stack(
@@ -124,7 +141,10 @@ class GroupTab extends ConsumerWidget {
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
+                await ref
+                    .read(scannedDeviceProvider.notifier)
+                    .onClickAddDevices(ref);
                 // Navigate to device scanning tab
                 Navigator.push(
                   context,

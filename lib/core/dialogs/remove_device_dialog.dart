@@ -21,7 +21,7 @@ void showRemoveDialog(BuildContext context, Device device, WidgetRef ref) {
             showProgressDialog(context: context, message: "Removing device");
             await ref
                 .read(deviceStateProvider.notifier)
-                .deleteAllDevices(device, ref);
+                .deleteAllDevices(device);
             await ref.read(deviceStateProvider.notifier).getAllDevices(ref);
             Navigator.of(context).pop();
             Navigator.of(context).pop();

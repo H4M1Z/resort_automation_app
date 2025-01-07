@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:home_automation_app/pages/device_scaning_tab/widgets/group_name_dialog.dart';
+import 'package:home_automation_app/core/model_classes/device.dart'; // Assuming this contains the Device model
+import 'package:home_automation_app/pages/device_scaning_tab/widgets/dialog_group_name.dart';
 import 'package:home_automation_app/pages/group_tab/controller/ids_uploader_controller.dart';
 import 'package:home_automation_app/pages/group_tab/controller/scaning_tab_controller.dart';
-import 'package:home_automation_app/core/model_classes/device.dart'; // Assuming this contains the Device model
 
 class DeviceScanningTab extends ConsumerWidget {
   const DeviceScanningTab({super.key});
@@ -31,6 +33,7 @@ class DeviceScanningTab extends ConsumerWidget {
           ),
         );
       } else if (state is DeviceGettingLoadedState) {
+        log("Lenght of devices  selection tab ${state.list.length}");
         return state.list.isEmpty
             ? const Center(
                 child: Text("No device found"),
@@ -43,6 +46,7 @@ class DeviceScanningTab extends ConsumerWidget {
                       child: ListView.builder(
                         itemCount: state.list.length,
                         itemBuilder: (context, index) {
+                          log("Lenght of bolean array in device selection tab ${idsUploaderController.booleanList.length}");
                           final Device device = state.list[index];
                           return ListTile(
                             leading: Icon(

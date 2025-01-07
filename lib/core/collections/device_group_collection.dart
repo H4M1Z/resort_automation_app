@@ -72,9 +72,12 @@ class DeviceGroupCollection {
     }
   }
 
-  Future<bool> updateGroupStatus(String groupId, bool currentStatus) async {
+  Future<bool> updateGroupStatus(
+      String userId, String groupId, bool currentStatus) async {
     try {
       UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceGroupCollection)
           .doc(groupId)
           .update({"currentStatus": currentStatus});
       return true;
@@ -84,9 +87,12 @@ class DeviceGroupCollection {
     }
   }
 
-  Future<bool> updateGroupIDs(String groupId, List<String> listOfIds) async {
+  Future<bool> updateGroupIDs(
+      String userId, String groupId, List<String> listOfIds) async {
     try {
       UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceGroupCollection)
           .doc(groupId)
           .update({"deviceIds": listOfIds});
       return true;
@@ -122,6 +128,31 @@ class DeviceGroupCollection {
     }
   }
 
+  Future<DeviceGroup?> getDeviceGroupById(String userId, String groupId) async {
+    try {
+      // Query Firestore to find a device group with the given name
+      DocumentSnapshot documentSnapshot = await UserCollection.userCollection
+          .doc(userId)
+          .collection(deviceGroupCollection)
+          .doc(groupId)
+          .get();
+      // Assuming group names are unique, limit to one result
+
+      // Check if any documents are returned
+      if (documentSnapshot.exists) {
+        var groupData = documentSnapshot.data() as Map<String, dynamic>;
+
+        return DeviceGroup.fromJson(groupData);
+      }
+
+      // If no group is found, return null
+      return null;
+    } catch (e) {
+      log("Error getting device group by name: $e");
+      return null;
+    }
+  }
+
   Future<List<DeviceGroup>> getAllDeviceGroups(String userId) async {
     List<DeviceGroup> groups = [];
     try {
@@ -139,4 +170,53 @@ class DeviceGroupCollection {
       return [];
     }
   }
+
+
+  Future<bool> removeDeviceIdFromGroup({
+  required String userId,
+  required String groupId,
+  required int index,
+}) async {
+  try {
+    // Get the group document to fetch the current deviceIds
+    DocumentSnapshot groupSnapshot = await UserCollection.userCollection
+        .doc(userId)
+        .collection(deviceGroupCollection)
+        .doc(groupId)
+        .get();
+
+    // Check if the group document exists
+    if (!groupSnapshot.exists) {
+      log("Group not found");
+      return false;
+    }
+
+    // Extract the deviceIds list
+    Map<String, dynamic> groupData =
+        groupSnapshot.data() as Map<String, dynamic>;
+    List<dynamic> deviceIds = groupData['deviceIds'] ?? [];
+
+    // Check if the index is within the bounds of the list
+    if (index < 0 || index >= deviceIds.length) {
+      log("Invalid index");
+      return false;
+    }
+
+    // Remove the device ID at the specified index
+    deviceIds.removeAt(index);
+
+    // Update the Firestore document with the modified list
+    await UserCollection.userCollection
+        .doc(userId)
+        .collection(deviceGroupCollection)
+        .doc(groupId)
+        .update({'deviceIds': deviceIds});
+
+    return true;
+  } catch (e) {
+    log("Error in removing device ID from group: $e");
+    return false;
+  }
+}
+
 }
