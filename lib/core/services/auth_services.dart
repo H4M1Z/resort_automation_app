@@ -55,7 +55,10 @@ class AuthService {
       AppleIDAuthorizationScopes.email,
       AppleIDAuthorizationScopes.fullName,
     ]);
-
     log(credentials.toString());
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
   }
 }

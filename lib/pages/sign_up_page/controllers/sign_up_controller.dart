@@ -86,7 +86,7 @@ class SignupController extends Notifier<SignupStates> with AuthBehaviour {
           passwordController.text.trim(),
         );
 
-        //...........CRREATE USER WITH EMAIL AND PASSWORD
+        //...........CREATE USER WITH EMAIL AND PASSWORD
         final user = await _authService.createUserWithEmailAndPassword(
             SignUpModel(email: email, password: password));
 

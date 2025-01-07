@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/config/navigation/roue_navigation.dart';
 import 'package:home_automation_app/config/service_locator.dart';
+import 'package:home_automation_app/core/services/user_management_service.dart';
 import 'package:home_automation_app/firebase_options.dart';
 import 'package:home_automation_app/pages/login_page/view/login_page.dart';
+import 'package:home_automation_app/pages/splash_screen/splash_screen.dart';
 import 'package:home_automation_app/themes/state_provider.dart';
 import 'package:home_automation_app/themes/theme.dart';
 
@@ -16,14 +18,29 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  setupLocator();
+  //......SET UP THE LOCATOR TO ACCESS SERVICE ACCROSS THE APP
+  await setupLocator();
+
+  final isUserSignedIn =
+      await serviceLocator.get<UserManagementService>().isUserSignedIn();
+  Widget? widget;
+
+  if (isUserSignedIn) {
+    widget = const SplashScreen();
+  } else {
+    widget = const LoginScreen();
+  }
+
 // Function to run the app
-  runApp(const ProviderScope(child: IoTApp()));
+  runApp(ProviderScope(
+      child: IoTApp(
+    widget: widget,
+  )));
 }
 
 class IoTApp extends ConsumerWidget {
-  const IoTApp({super.key});
-
+  const IoTApp({super.key, required this.widget});
+  final Widget widget;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(themeStateProvider);
@@ -32,7 +49,7 @@ class IoTApp extends ConsumerWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: state,
-      home: const LoginScreen(),
+      home: widget,
     );
   }
 }

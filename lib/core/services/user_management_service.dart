@@ -31,10 +31,33 @@ class UserManagementService {
     return isSingned;
   }
 
-  Future<bool?> isUserSignedIn() async {
+  Future<bool> insertIsUserSignedInUsingProvider(
+      bool isSignedInUsingProvider) async {
+    SharedPreferences sharedPref = serviceLocator.get<SharedPreferences>();
+    return await sharedPref.setBool(
+        SharedPrefKeys.kisUserSignedInUsingProvider, isSignedInUsingProvider);
+  }
+
+  Future<bool> isUserSignedInUsingProvider() async {
+    SharedPreferences sharedPref = serviceLocator.get<SharedPreferences>();
+    bool? isSignedInUsingProvider =
+        sharedPref.getBool(SharedPrefKeys.kisUserSignedInUsingProvider);
+    if (isSignedInUsingProvider != null) {
+      return isSignedInUsingProvider;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> isUserSignedIn() async {
     SharedPreferences sharedPreferences =
         serviceLocator.get<SharedPreferences>();
-    bool? isSingned = sharedPreferences.getBool(SharedPrefKeys.kisUserSignedin);
-    return isSingned;
+    bool? isSignedIn =
+        sharedPreferences.getBool(SharedPrefKeys.kisUserSignedin);
+    if (isSignedIn != null) {
+      return isSignedIn;
+    } else {
+      return false;
+    }
   }
 }

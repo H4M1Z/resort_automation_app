@@ -78,6 +78,7 @@ class LoginPageController extends Notifier<UserSigninStates>
         if (user != null) {
           await _userManagementService.insertUserUid(user.uid);
           await _userManagementService.insertIsUserSignedIn(true);
+          await _userManagementService.insertIsUserSignedInUsingProvider(false);
         } else {
           log('user is null');
         }
@@ -116,7 +117,7 @@ class LoginPageController extends Notifier<UserSigninStates>
             userName: user.displayName!,
             email: user.email!,
             userId: user.uid,
-            profilePic: user.photoURL ?? '',
+            profilePic: '',
             createdAt: DateTime.now(),
             themePreferences: '${ThemePrefrences.light}',
             lastLogin: DateTime.now(),
@@ -125,6 +126,8 @@ class LoginPageController extends Notifier<UserSigninStates>
         //.....INSERT THAT THE USER IS SIGNED IN
         var isSignedIn =
             await _userManagementService.insertIsUserSignedIn(true);
+        //...........INSERT THAT USER IS SIGNED IN USING PROVIDER
+        await _userManagementService.insertIsUserSignedInUsingProvider(true);
         //....IF USER IS SIGNED IN SUCCESSFULLY SET LOADED STATE ELSE ERROR
         switch (isSignedIn) {
           case true:

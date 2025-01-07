@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:home_automation_app/core/services/user_management_service.dart';
 
 import '../model_classes/user_model.dart';
@@ -41,11 +42,11 @@ class UserProfileService {
     }
   }
 
-  updateUserDetails(
+  Future<bool> updateUserDetails(
       {required String name,
-      required String phoneNumber,
       required String email,
-      required String image}) async {
+      required String image,
+      String? password}) async {
     final userId = _userService.getUserUid();
     if (userId != null) {
       try {
@@ -54,14 +55,17 @@ class UserProfileService {
             .doc(userId)
             .update({
           'email': email,
-          'image': image,
-          'name': name,
-          'phoneNo': phoneNumber,
+          'profilePic': image,
+          'userName': name,
         });
+        if (password != null) {
+          FirebaseAuth.instance.currentUser!.updatePassword(password);
+        }
         return true;
       } catch (e) {
         return false;
       }
     }
+    return false;
   }
 }

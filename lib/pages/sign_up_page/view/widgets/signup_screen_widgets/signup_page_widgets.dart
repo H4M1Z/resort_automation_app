@@ -110,8 +110,6 @@ class ProfilePicWidget extends ConsumerWidget {
   }
 }
 
-//!PROFILE PAGE WALI CHEEZAIN REHTIN HAIN
-
 class ProfilePic extends ConsumerWidget {
   const ProfilePic({super.key});
   @override

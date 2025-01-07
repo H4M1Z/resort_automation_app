@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/pages/login_page/view/login_page.dart';
 import 'package:home_automation_app/pages/profile_page/profile_page.dart';
+import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 import 'package:home_automation_app/themes/state_provider.dart';
 import 'package:home_automation_app/utils/asset_images.dart';
 
@@ -12,7 +14,7 @@ class SettingsTab extends StatefulWidget {
 }
 
 class SettingsTabState extends State<SettingsTab> {
-  bool _isDarkTheme = false;
+  final bool _isDarkTheme = false;
 
   // Function to launch a URL (for Help or Rate Us)
   Future<void> _launchURL(String url) async {
@@ -107,13 +109,20 @@ class SettingsTabState extends State<SettingsTab> {
               },
             ),
             // Logout Option
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Logout"),
-              subtitle: const Text("Sign out of your account"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                // Perform logout operation
+            Consumer(
+              builder: (context, ref, child) {
+                final settingsController =
+                    ref.read(settingTabControllerProvider.notifier);
+                return ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text("Logout"),
+                  subtitle: const Text("Sign out of your account"),
+                  trailing: const Icon(Icons.arrow_forward),
+                  onTap: () {
+                    settingsController.onLogOutClicked();
+                    Navigator.popAndPushNamed(context, LoginScreen.pageName);
+                  },
+                );
               },
             ),
           ],
