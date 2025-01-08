@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
+import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
 import 'package:home_automation_app/core/services/user_profile_service.dart';
+import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 import 'package:image_picker/image_picker.dart';
 
 @immutable
@@ -71,7 +73,6 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
 
   //.........SERVICES
   final UserProfileService _userProfileService = UserProfileService();
-  final UserManagementService _userManagementService = UserManagementService();
 
   fetchUserDetails() async {
     state = ProfileLoadingState();
@@ -91,22 +92,33 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
     }
   }
 
-  updateUserDetails() async {
+  updateUserDetails(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       try {
         //....................IF THE FIELDS ARE CHANGED ONLY UPDATE IN THAT CASE OTHER WISE DONOT UPDATE
         if (_isUpdated()) {
+          bool shouldUpdateEmail = false;
           final (userName, userEmail, password) = (
             nameController.text.trim(),
             emailController.text.trim(),
             passwordController.text.trim()
           );
+
+          if (_email != emailController.text.trim()) {
+            shouldUpdateEmail = true;
+            log('email should be updated');
+            context.showPopUpMsg(
+                'Email reset sent to your mail! Check your inbox.',
+                seconds: 10);
+          }
+
           var detailsUpdated = false;
           if (password.isEmpty) {
             detailsUpdated = await _userProfileService.updateUserDetails(
               name: userName,
               email: userEmail,
               image: _userImage,
+              updateEmail: shouldUpdateEmail,
             );
           } else {
             detailsUpdated = await _userProfileService.updateUserDetails(
@@ -114,6 +126,7 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
               email: userEmail,
               image: _userImage,
               password: password,
+              updateEmail: shouldUpdateEmail,
             );
             passwordController.clear();
           }
@@ -121,6 +134,7 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
           if (detailsUpdated) {
             FocusManager.instance.primaryFocus?.unfocus();
             fetchUserDetails();
+            ref.read(settingTabControllerProvider.notifier).reinitializeState();
           } else {
             state = ProfileErrorState(
               image: _userImage,
@@ -128,6 +142,11 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
             );
           }
         }
+      } on FirebaseAuthException catch (e) {
+        state = ProfileErrorState(
+          image: _userImage,
+          message: e.message ?? 'Something went wrong',
+        );
       } catch (e) {
         state = ProfileErrorState(
           image: _userImage,
@@ -145,17 +164,13 @@ class ProfilePageController extends Notifier<ProfilePageStates> {
   }
 
   onEditImageClicked() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedImage = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
     if (pickedImage != null) {
       _userImage = pickedImage.path;
       state = ProfilePicPickedState(image: _userImage);
     }
-  }
-
-  reinitializeState() {
-    state = ProfileLoadingState();
-    fetchUserDetails();
   }
 
   initializeValues(

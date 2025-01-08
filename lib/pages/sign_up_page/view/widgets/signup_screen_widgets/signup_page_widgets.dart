@@ -182,6 +182,7 @@ class SignUpTextFields extends StatelessWidget {
             validator: emailValidation,
           ),
           PasswordTextField(
+            lalbel: 'Password',
             controller: controller.passwordController,
             validator: passwordValidation,
           ),

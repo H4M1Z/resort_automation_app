@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,6 +58,10 @@ class AuthService {
       AppleIDAuthorizationScopes.fullName,
     ]);
     log(credentials.toString());
+  }
+
+  changeUserPassword(String email) async {
+    await auth.sendPasswordResetEmail(email: email);
   }
 
   Future<void> signOut() async {

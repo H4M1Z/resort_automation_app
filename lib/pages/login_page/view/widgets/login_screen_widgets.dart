@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/commom/widgets/password_text_field.dart';
+import 'package:home_automation_app/pages/forgot_password_page/view/forgot_passwrod_page.dart';
 import 'package:home_automation_app/pages/login_page/controllers/login_page_controller.dart';
 import 'package:home_automation_app/pages/sign_up_page/view/signup_page.dart';
 
@@ -110,6 +111,7 @@ class LoginTextFields extends ConsumerWidget {
             validator: emailValidation,
           ),
           PasswordTextField(
+            lalbel: 'Password',
             controller: controller.passwordController,
             validator: passwordValidation,
           ),
@@ -137,9 +139,10 @@ class ForgetPasswordText extends StatelessWidget {
           style: TextStyle(
             color: Colors.grey.shade700,
             fontSize: height * 0.018,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        onTap: () => '',
+        onTap: () => Navigator.pushNamed(context, ForgotPasswordPage.pageName),
       ),
     );
   }

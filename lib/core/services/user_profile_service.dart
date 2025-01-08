@@ -46,23 +46,38 @@ class UserProfileService {
       {required String name,
       required String email,
       required String image,
+      required bool updateEmail,
       String? password}) async {
     final userId = _userService.getUserUid();
     if (userId != null) {
       try {
-        await FirebaseFirestore.instance
-            .collection(_userCollection)
-            .doc(userId)
-            .update({
-          'email': email,
-          'profilePic': image,
-          'userName': name,
-        });
-        if (password != null) {
-          try {
-            FirebaseAuth.instance.currentUser!.updatePassword(password);
-          } catch (e) {
-            log('error updating passwrod');
+        if (updateEmail) {
+          log('email update func called');
+          await FirebaseAuth.instance.currentUser!
+              .verifyBeforeUpdateEmail(email);
+          await FirebaseFirestore.instance
+              .collection(_userCollection)
+              .doc(userId)
+              .update({
+            'email': email,
+            'profilePic': image,
+            'userName': name,
+          });
+        } else {
+          await FirebaseFirestore.instance
+              .collection(_userCollection)
+              .doc(userId)
+              .update({
+            'profilePic': image,
+            'userName': name,
+          });
+          if (password != null) {
+            try {
+              FirebaseAuth.instance.currentUser!.updatePassword(password);
+            } catch (e) {
+              log('error updating passwrod');
+              return false;
+            }
           }
         }
         return true;

@@ -8,6 +8,7 @@ import 'package:home_automation_app/pages/profile_page/profile_page.dart';
 import 'package:home_automation_app/pages/setting_tab/view/setting_tab_view.dart';
 import 'package:home_automation_app/pages/sign_up_page/view/signup_page.dart';
 
+import '../../pages/forgot_password_page/view/forgot_passwrod_page.dart';
 import '../../pages/splash_screen/splash_screen.dart';
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -41,6 +42,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       ),
     SettingsTab.pageName => MaterialPageRoute(
         builder: (context) => const SettingsTab(),
+      ),
+    ForgotPasswordPage.pageName => MaterialPageRoute(
+        builder: (context) => const ForgotPasswordPage(),
       ),
     _ => MaterialPageRoute(
         builder: (context) => const SignUpScreen(),

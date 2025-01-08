@@ -71,8 +71,8 @@ class LoginPageController extends Notifier<UserSigninStates>
         //.....SIGN IN THE USER WITH THE EMAIL AND PASSWORD
         final user = await _authService.userSigin(
             signInModel: SignInModel(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
+          email: emailController.text.trimLeft(),
+          password: passwordController.text.trimLeft(),
         ));
 
         if (user != null) {

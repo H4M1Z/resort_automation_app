@@ -71,7 +71,7 @@ class ProfilePageForm extends ConsumerWidget {
 
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: controller.updateUserDetails,
+            onPressed: () => controller.updateUserDetails(context),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
               shape: RoundedRectangleBorder(
