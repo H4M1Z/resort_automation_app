@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/protocol/Firestore_mqtt_Bridge.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
 import 'package:home_automation_app/main.dart';
+import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
 import 'package:home_automation_app/pages/home_page/home_page_view.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
 import 'package:lottie/lottie.dart';
@@ -26,7 +27,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     super.initState();
     startListeningToFirestore(
-        context, "user1", _mqttService); // Listen to Firestore changes
+        context, globalUserId, _mqttService); // Listen to Firestore changes
     // Connect to MQTT and subscribe to topics
     _mqttService.connect().then((_) {
       // Subscribe to user-specific topics using wildcards
@@ -46,7 +47,8 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   void getAllDevices() async {
-    await ref.read(deviceStateProvider.notifier).getAllDevices(ref);
+    await ref.read(deviceStateProvider.notifier).getAllDevices();
+    await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
     moveToNextScreen();
   }
 

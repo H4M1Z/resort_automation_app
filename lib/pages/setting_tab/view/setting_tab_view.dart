@@ -10,6 +10,7 @@ import 'package:home_automation_app/themes/state_provider.dart';
 import 'widgets/setting_tab_widget.dart';
 
 class SettingsTab extends ConsumerStatefulWidget {
+  static const pageName = '/settings';
   const SettingsTab({super.key});
 
   @override

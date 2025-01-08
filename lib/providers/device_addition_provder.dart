@@ -54,7 +54,7 @@ class DeviceAdditionNotifier extends Notifier<String> {
     );
 
     await deviceCollection.addDevice(userId: globalUserId, device: device);
-    await ref.read(deviceStateProvider.notifier).getAllDevices(ref);
+    await ref.read(deviceStateProvider.notifier).getAllDevices();
     Navigator.of(context).pop();
     // Notify UI components to update, if needed
     state = "Change";

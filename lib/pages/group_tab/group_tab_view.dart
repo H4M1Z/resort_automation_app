@@ -37,15 +37,8 @@ class _GroupTabState extends ConsumerState<GroupTab> {
             padding: const EdgeInsets.only(
                 top: 120.0), // Leaves space for the top bar
             child: Builder(builder: (context) {
-              if (state is DeviceGroupInitalState) {
-                return const Center(
-                  child: SpinKitCircle(
-                    color:
-                        Colors.blue, // Replace with your theme's primary color
-                    size: 50.0,
-                  ),
-                );
-              } else if (state is DeviceGroupLoadingState) {
+              if (state is DeviceGroupInitalState ||
+                  state is DeviceGroupLoadingState) {
                 return const Center(
                   child: SpinKitCircle(
                     color:
@@ -74,12 +67,19 @@ class _GroupTabState extends ConsumerState<GroupTab> {
                           },
                         ),
                       );
-              } else {
-                final error = (state as DeviceGroupErrorState).error;
+              } else if (state is DeviceGroupErrorState) {
+                final error = state.error;
                 return Center(
                   child: Text(
                     error,
                     style: const TextStyle(color: Colors.red, fontSize: 16),
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: Text(
+                    "Something went wrong",
+                    style: TextStyle(color: Colors.red, fontSize: 16),
                   ),
                 );
               }

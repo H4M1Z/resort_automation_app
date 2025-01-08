@@ -97,7 +97,7 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
     }
   }
 
-  Future<void> getAllDevices(WidgetRef ref) async {
+  Future<void> getAllDevices() async {
     await Future.delayed(const Duration(seconds: 2));
     state = DeviceDataLoadingState();
     var list = await FirebaseServices.getAllDevices();

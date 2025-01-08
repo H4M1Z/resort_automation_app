@@ -6,6 +6,7 @@ import 'package:home_automation_app/providers/device_local_state/new_deviceType_
 import 'package:home_automation_app/utils/icons.dart';
 
 class AddDevicesTab extends ConsumerWidget {
+  static const pageName = '/add-devices';
   const AddDevicesTab({super.key});
 
   @override

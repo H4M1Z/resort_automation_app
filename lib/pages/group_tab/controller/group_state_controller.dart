@@ -3,12 +3,9 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/collections/device_group_collection.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/core/model_classes/device_group.dart';
 import 'package:home_automation_app/main.dart';
 import 'package:home_automation_app/pages/group_tab/controller/group_switch_togle.dart';
-import 'package:home_automation_app/providers/device_state_change_provider.dart';
-import 'package:home_automation_app/utils/hexa_into_number.dart';
 
 final deviceGroupsProvider =
     NotifierProvider<GroupStateController, DeviceGroupStates>(
@@ -22,7 +19,8 @@ class GroupStateController extends Notifier<DeviceGroupStates> {
     return DeviceGroupInitalState();
   }
 
-  Future<void> getAllDeviceGroups(WidgetRef ref) async {
+  Future<void> getAllDeviceGroups() async {
+    log("device groups called");
     state = DeviceGroupLoadingState();
     try {
       var list = await deviceGroupCollection.getAllDeviceGroups(globalUserId);
@@ -33,7 +31,9 @@ class GroupStateController extends Notifier<DeviceGroupStates> {
               .mapOfGroupSwitchStates[group.groupId] = group.currentStatus;
         }
       }
+
       state = DeviceGroupLoadedState(list: list);
+      log("Group loaded state ");
     } catch (e) {
       state = DeviceGroupErrorState(error: e.toString());
       log("Error in getting device groups ${e.toString()}");

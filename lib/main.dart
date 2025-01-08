@@ -20,12 +20,12 @@ void main() async {
   );
   //......SET UP THE LOCATOR TO ACCESS SERVICE ACCROSS THE APP
   await setupLocator();
-
   final isUserSignedIn =
       await serviceLocator.get<UserManagementService>().isUserSignedIn();
   Widget? widget;
 
   if (isUserSignedIn) {
+    globalUserId = serviceLocator.get<UserManagementService>().getUserUid()!;
     widget = const SplashScreen();
   } else {
     widget = const LoginScreen();

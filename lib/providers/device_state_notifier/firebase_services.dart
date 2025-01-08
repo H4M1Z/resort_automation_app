@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
+import 'package:home_automation_app/main.dart';
 import 'package:home_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
 import 'package:home_automation_app/providers/device_state_change_provider.dart';
 
@@ -19,7 +20,7 @@ class FirebaseServices {
             ?.text ??
         '';
     log('Device Added: $deviceType | Name: $deviceName | Attribute: $attribute');
-    var listOfDevices = await deviceCollection.getAllDevices("user1");
+    var listOfDevices = await deviceCollection.getAllDevices(globalUserId);
     Device device = Device(
       type: deviceType,
       group: "Null",
@@ -32,7 +33,7 @@ class FirebaseServices {
       updatedAt: DateTime.now(),
       deviceId: "0${listOfDevices.length + 1} $deviceName",
     );
-    await deviceCollection.addDevice(userId: "user1", device: device);
+    await deviceCollection.addDevice(userId: globalUserId, device: device);
     await getAllDevices();
   }
 
@@ -40,7 +41,8 @@ class FirebaseServices {
     log("In get all Devices method");
     // Set loading state before fetching data
     try {
-      List<Device> devicesList = await deviceCollection.getAllDevices("user1");
+      List<Device> devicesList =
+          await deviceCollection.getAllDevices(globalUserId);
       return devicesList;
     } catch (e) {
       log("Error getting all devices: $e");
@@ -57,7 +59,7 @@ class FirebaseServices {
   // For deleting the device from firebase
   static Future<void> deleteDevice(String deviceName, String deviceId) async {
     log('Device Deleted: $deviceName | ID: $deviceId');
-    await deviceCollection.deleteDevice("user1", deviceId, deviceName);
+    await deviceCollection.deleteDevice(globalUserId, deviceId, deviceName);
   }
 
   static Future<void> updateDeviceStatusOnToggleSwtich(

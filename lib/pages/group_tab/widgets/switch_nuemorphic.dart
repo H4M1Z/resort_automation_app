@@ -45,7 +45,7 @@ class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
         showProgressDialog(context: context, message: "Updating group status");
         await groupSwitchProvider.onGroupSwitchToggle(
             value, widget.groupName, widget.groupId, context);
-        await ref.read(deviceStateProvider.notifier).getAllDevices(ref);
+        await ref.read(deviceStateProvider.notifier).getAllDevices();
         Navigator.pop(context);
       },
       activeColor: widget.isDarkMode

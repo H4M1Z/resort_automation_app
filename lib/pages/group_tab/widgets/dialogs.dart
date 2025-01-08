@@ -22,9 +22,7 @@ void showDeleteConfirmationDialog(
           onPressed: () async {
             showProgressDialog(context: context, message: "Deleting group");
             await ref.read(deviceGroupsProvider.notifier).deleteGroup(groupId);
-            await ref
-                .read(deviceGroupsProvider.notifier)
-                .getAllDeviceGroups(ref);
+            await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
             Navigator.pop(context);
             Navigator.pop(context); // Perform delete logic
           },

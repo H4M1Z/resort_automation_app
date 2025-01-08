@@ -32,9 +32,7 @@ void addGroupNameDialog(BuildContext context, WidgetRef ref) {
             await ref
                 .read(idsUploadStateProvider.notifier)
                 .onCreateGroupButtonClick(ref);
-            await ref
-                .read(deviceGroupsProvider.notifier)
-                .getAllDeviceGroups(ref);
+            await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
 
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Group created successfully")));
