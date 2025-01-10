@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/config/navigation/route_navigation.dart';
-import 'package:home_automation_app/pages/login_page/view/login_page.dart';
+import 'package:home_automation_app/core/dialogs/logout_dialog.dart';
 import 'package:home_automation_app/pages/profile_page/profile_page.dart';
 import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 import 'package:home_automation_app/themes/state_provider.dart';
@@ -130,8 +130,7 @@ class SettingsTabState extends ConsumerState<SettingsTab> {
                   subtitle: const Text("Sign out of your account"),
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
-                    settingsController.onLogOutClicked();
-                    Navigator.popAndPushNamed(context, LoginScreen.pageName);
+                    showLogoutConfirmationDialog(context, ref);
                   },
                 );
               },

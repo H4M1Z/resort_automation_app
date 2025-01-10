@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_automation_app/core/commom/mixins/auth_behaviour.dart';
 import 'package:home_automation_app/core/enums.dart';
 import 'package:home_automation_app/core/model_classes/sign_up_model.dart';
@@ -78,6 +79,7 @@ class SignupController extends Notifier<SignupStates> with AuthBehaviour {
 
   onSignUpClicked() async {
     if (formKey.currentState!.validate()) {
+      Fluttertoast.showToast(msg: 'Check your email for verification...');
       state = SignupLoadingState();
       try {
         final (userName, email, password) = (

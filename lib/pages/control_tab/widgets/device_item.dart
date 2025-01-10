@@ -9,7 +9,6 @@ import 'package:home_automation_app/pages/control_tab/widgets/device_status.dart
 import 'package:home_automation_app/pages/control_tab/widgets/item_icons.dart';
 import 'package:home_automation_app/pages/control_tab/widgets/slider_percentage_value.dart';
 import 'package:home_automation_app/pages/control_tab/widgets/title_and_icon.dart';
-import 'package:home_automation_app/utils/icons.dart';
 
 class DeviceItem extends ConsumerWidget {
   final Device device;
@@ -100,30 +99,33 @@ class DeviceItem extends ConsumerWidget {
                   ],
                 ),
               ),
-
-              Expanded(
-                flex: 25,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 75,
-                      child: DeviceSlider(
-                        device: device,
-                        isDarkMode: isDarkMode,
-                        theme: theme,
+              device.type == "Fan"
+                  ? Expanded(
+                      flex: 25,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 75,
+                            child: DeviceSlider(
+                              device: device,
+                              isDarkMode: isDarkMode,
+                              theme: theme,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 15,
+                            child: SliderPercentageValue(
+                                device: device,
+                                theme: theme,
+                                isDarkMode: isDarkMode),
+                          ),
+                          const Spacer(
+                            flex: 10,
+                          )
+                        ],
                       ),
-                    ),
-                    Expanded(
-                      flex: 15,
-                      child: SliderPercentageValue(
-                          device: device, theme: theme, isDarkMode: isDarkMode),
-                    ),
-                    const Spacer(
-                      flex: 10,
                     )
-                  ],
-                ),
-              ),
+                  : const SizedBox(),
               const Spacer(
                 flex: 5,
               ),

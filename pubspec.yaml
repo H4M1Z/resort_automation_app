@@ -53,6 +53,7 @@ dependencies:
   get_it: ^8.0.3
   image_picker: ^1.1.2
   flutter_spinkit: ^5.2.1
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+    - assets/certificates/
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

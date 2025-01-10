@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
 
 final newDevicetypeAdditionProvider =
     NotifierProvider<NewDevicetypeAdditionNotifier, List<Map<String, dynamic>>>(
@@ -14,6 +13,10 @@ class NewDevicetypeAdditionNotifier
   final List<Map<String, dynamic>> devices = [];
   @override
   List<Map<String, dynamic>> build() {
+    ref.onDispose(() {
+      controllers.forEach((_, controller) => controller.dispose());
+    });
+
     addDeviceType("Fan", "Speed");
     addDeviceType("Bulb", "Brightness");
     return devices;
@@ -55,11 +58,15 @@ class NewDevicetypeAdditionNotifier
   }
 
   // Optionally, you can add a method to clear all devices and controllers
-  void clearDevices() {
-    devices.clear();
-    controllers.forEach((_, controller) => controller.dispose());
-    controllers.clear();
+  // void clearDevices() {
+  //   devices.clear();
+  //   controllers.forEach((_, controller) => controller.dispose());
+  //   controllers.clear();
 
-    state = [];
+  //   state = [];
+  // }
+
+  void clearAllControllers() {
+    controllers.forEach((_, controller) => controller.clear());
   }
 }

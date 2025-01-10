@@ -17,4 +17,8 @@ class BottomStateNotifier extends Notifier<int> {
   void changeIndex(int index) {
     state = index;
   }
+
+  void restoreState() {
+    state = 0;
+  }
 }

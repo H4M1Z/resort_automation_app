@@ -71,7 +71,7 @@ class _ControlTabState extends ConsumerState<ControlTab> {
                         itemCount: state.list.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 1.7, crossAxisCount: 1),
+                                childAspectRatio: 2, crossAxisCount: 1),
                         itemBuilder: (context, index) {
                           var currentDevice = state.list[index];
                           return Padding(

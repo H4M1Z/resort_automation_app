@@ -33,10 +33,12 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       // Subscribe to user-specific topics using wildcards
       final userId =
           globalUserId; // Replace with dynamic user ID for multi-user apps
-      final topic =
-          'user/$userId/device/+/status'; // Wildcard for all user devices
+      final topic = 'user/$userId/device/+/status';
+      const topic2 = "user123/+/init";
+      // Wildcard for all user devices
       // await Future.delayed(const Duration(seconds: 3));
       _mqttService.subscribeToTopic(topic);
+      _mqttService.subscribeToTopic(topic2);
     });
   }
 
