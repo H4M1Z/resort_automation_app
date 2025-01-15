@@ -21,6 +21,11 @@ class IdsUploaderController extends Notifier<List<bool>> {
 
   @override
   List<bool> build() {
+    ref.onDispose(
+      () {
+        groupNameController.dispose();
+      },
+    );
     return booleanList;
   }
 
@@ -66,5 +71,9 @@ class IdsUploaderController extends Notifier<List<bool>> {
     listOfIds.clear();
     booleanList = List.filled(booleanList.length, false);
     state = booleanList;
+  }
+
+  void clearGroupController() {
+    groupNameController.clear();
   }
 }

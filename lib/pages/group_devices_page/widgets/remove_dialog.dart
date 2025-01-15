@@ -32,7 +32,7 @@ void showRemoveConfirmationDialog(
             Navigator.pop(context); // Perform delete logic
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).primaryColor,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),

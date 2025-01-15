@@ -18,7 +18,7 @@ class ProfileBackgroundDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(MediaQuery.of(context).size.width, 300),
-      painter: CustomClipperWidget(),
+      painter: CustomClipperWidget(context: context),
     );
   }
 }
@@ -74,6 +74,7 @@ class ProfilePageForm extends ConsumerWidget {
           ElevatedButton(
             onPressed: () => controller.updateUserDetails(context),
             style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -102,7 +103,7 @@ class ProfilePicWidget extends ConsumerWidget {
           radius: 60,
           child: Icon(
             Icons.person,
-            color: Colors.grey.shade600,
+            color: Colors.white,
             size: MediaQuery.sizeOf(context).height * 0.15,
           ),
         ),
@@ -254,6 +255,8 @@ class StyledTextField extends StatelessWidget {
   final bool enabled;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: GestureDetector(

@@ -137,7 +137,7 @@ class ForgetPasswordText extends StatelessWidget {
         child: Text(
           'Forgot password?',
           style: TextStyle(
-            color: Colors.grey.shade700,
+            color: const Color.fromARGB(255, 217, 209, 209),
             fontSize: height * 0.018,
             fontWeight: FontWeight.bold,
           ),
@@ -160,14 +160,15 @@ class SignupText extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(
-              text: "Don't have an account?",
-              style: TextStyle(color: Colors.grey.shade600),
+            const TextSpan(
+              text: "Don't have an account? ",
+              style: TextStyle(color: Color.fromARGB(255, 217, 209, 209)),
             ),
             TextSpan(
               text: 'SignUp.',
-              style: TextStyle(
-                color: Colors.grey.shade800,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 232, 222, 133),
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
               recognizer: TapGestureRecognizer()
@@ -190,31 +191,31 @@ class DividerWithText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: height * 0.025),
-      child: Row(
+      child: const Row(
         children: [
-          const Spacer(),
+          Spacer(),
           Expanded(
             flex: 2,
             child: Divider(
-              color: Colors.grey.shade600,
+              color: Color.fromARGB(255, 223, 216, 216),
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
               'or',
               style: TextStyle(
-                color: Colors.white70,
+                color: Color.fromARGB(179, 225, 219, 219),
               ),
             ),
           ),
           Expanded(
             flex: 2,
             child: Divider(
-              color: Colors.grey.shade600,
+              color: Color.fromARGB(255, 223, 216, 216),
             ),
           ),
-          const Spacer(),
+          Spacer(),
         ],
       ),
     );

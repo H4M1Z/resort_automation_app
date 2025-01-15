@@ -13,7 +13,7 @@ class MqttService {
 
   final MqttServerClient client;
   bool isConnected = false;
-  final Duration _reconnectDelay = const Duration(seconds: 3);
+  final Duration _reconnectDelay = const Duration(seconds: 1);
 
   String? username;
   String? password;

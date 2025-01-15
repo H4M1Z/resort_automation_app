@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 
 final ThemeData lightTheme = ThemeData(
+  cardColor: const Color.fromARGB(255, 230, 225, 225),
   brightness: Brightness.light,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.blue,
+    seedColor: const Color.fromRGBO(53, 97, 105, 1),
     brightness: Brightness.light,
   ),
   scaffoldBackgroundColor: Colors.white,
@@ -51,7 +52,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: const Color.fromRGBO(53, 97, 105, 1),
       foregroundColor: Colors.white, // Button text color
     ),
   ),
@@ -64,10 +65,11 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.blue,
+    seedColor: const Color.fromARGB(255, 213, 216, 219),
     brightness: Brightness.dark,
   ),
-  scaffoldBackgroundColor: Colors.black,
+  scaffoldBackgroundColor: const Color.fromARGB(255, 36, 34, 34),
+  cardColor: const Color(0xFF1A1C35),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.black,
     foregroundColor: Colors.white, // For icons and text in the AppBar
@@ -111,11 +113,11 @@ final ThemeData darkTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: const Color.fromARGB(255, 183, 207, 249),
+      backgroundColor: const Color(0xFF1A1C35),
       foregroundColor: Colors.white, // Button text color
     ),
   ),
   iconTheme: const IconThemeData(
-    color: Colors.white70,
+    color: Colors.white,
   ),
 );

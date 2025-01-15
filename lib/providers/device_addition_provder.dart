@@ -54,6 +54,7 @@ class DeviceAdditionNotifier extends Notifier<String> {
         log('Failed to send User ID during device addition. MQTT is not connected.');
       }
       var list = await deviceCollection.getAllDevices(globalUserId);
+      int getDeviceId = int.parse(list[list.length - 1].deviceId[1]);
       final device = Device(
         type: deviceType,
         group: deviceGroup,
@@ -65,7 +66,7 @@ class DeviceAdditionNotifier extends Notifier<String> {
         },
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        deviceId: "0${(list.length + 1).toString()} $deviceName",
+        deviceId: "0${getDeviceId + 1} $deviceName",
       );
 
       await deviceCollection.addDevice(userId: globalUserId, device: device);

@@ -66,7 +66,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
         child: SizedBox(
           height: 250,

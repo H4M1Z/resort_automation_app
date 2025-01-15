@@ -20,33 +20,36 @@ class ProfileWidget extends ConsumerWidget {
           child: LoadingWidget(
             event: controller.fetchUserDetails,
             child: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
               radius: 30,
-              child: Icon(
+              child: const Icon(
                 Icons.person,
-                color: Colors.grey.shade600,
+                color: Colors.white,
               ),
             ),
           ),
         ),
       SettingsTabLoadedState() => CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           radius: 30,
           backgroundImage: switch (state.image.isEmpty) {
             true => null,
             _ => FileImage(File(state.image)),
           },
           child: switch (state.image.isEmpty) {
-            true => Icon(
+            true => const Icon(
                 Icons.person,
-                color: Colors.grey.shade600,
+                color: Colors.white,
               ),
             _ => null,
           },
         ),
       _ => CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           radius: 30,
-          child: Icon(
+          child: const Icon(
             Icons.person,
-            color: Colors.grey.shade600,
+            color: Colors.white,
           ),
         ),
     };

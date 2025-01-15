@@ -35,8 +35,6 @@ class _ControlTabState extends ConsumerState<ControlTab> {
               delegate: CustomSliverDelegate(
                 expandedHeight: 150,
                 onAddDevice: () {
-                  MqttService mqttService = MqttService();
-
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const AddDevicesTab()));
                 },

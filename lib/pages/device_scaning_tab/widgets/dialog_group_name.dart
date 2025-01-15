@@ -6,6 +6,7 @@ import 'package:home_automation_app/pages/group_tab/controller/ids_uploader_cont
 
 void addGroupNameDialog(BuildContext context, WidgetRef ref) {
   showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (context) => AlertDialog(
       title: const Text("Enter Group Name"),
@@ -22,6 +23,7 @@ void addGroupNameDialog(BuildContext context, WidgetRef ref) {
       actions: [
         TextButton(
           onPressed: () {
+            ref.read(idsUploadStateProvider.notifier).clearGroupController();
             Navigator.pop(context);
           },
           child: const Text("Cancel"),
@@ -36,6 +38,7 @@ void addGroupNameDialog(BuildContext context, WidgetRef ref) {
 
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Group created successfully")));
+            ref.read(idsUploadStateProvider.notifier).clearGroupController();
             Navigator.pop(context);
             Navigator.pop(context);
           },

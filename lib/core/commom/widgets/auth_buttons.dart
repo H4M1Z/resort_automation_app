@@ -22,7 +22,8 @@ class SignInProviderButtons extends StatelessWidget {
             height: constraints.maxHeight * 0.6,
             decoration: BoxDecoration(
               color: Colors.transparent,
-              border: Border.all(color: Colors.grey.shade700),
+              border:
+                  Border.all(color: const Color.fromARGB(255, 223, 216, 216)),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(
@@ -73,7 +74,7 @@ class LoginSignupButton extends StatelessWidget {
           width: width * 0.7,
           height: height * 0.06,
           decoration: BoxDecoration(
-            color: Colors.red,
+            color: const Color.fromRGBO(56, 121, 132, 1),
             borderRadius: BorderRadius.circular(5),
           ),
           child: Center(
