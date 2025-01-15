@@ -1,4 +1,5 @@
 import 'package:home_automation_app/config/service_locator.dart';
+import 'package:home_automation_app/core/enums.dart';
 import 'package:home_automation_app/utils/strings/shared_pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,5 +60,90 @@ class UserManagementService {
     } else {
       return false;
     }
+  }
+
+  bool isUserNameInPrefs() {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    String? isUserName = sharedPreferences.getString(SharedPrefKeys.kUserName);
+    if (isUserName != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isUserProfileUrlInPrefs() {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    String? isUserProfilePicUrl =
+        sharedPreferences.getString(SharedPrefKeys.kUserPicUrl);
+    if (isUserProfilePicUrl != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> setUserProfilePic(String profilePicUrl) async {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    await sharedPreferences.setString(
+        SharedPrefKeys.kUserPicUrl, profilePicUrl);
+  }
+
+  Future<void> setUserName(String userName) async {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    await sharedPreferences.setString(SharedPrefKeys.kUserName, userName);
+  }
+
+  String getUserName() {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    String? userName = sharedPreferences.getString(SharedPrefKeys.kUserName);
+    if (userName != null) {
+      return userName;
+    } else {
+      return '';
+    }
+  }
+
+  String getUserPicUrl() {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    String? userPicUrl =
+        sharedPreferences.getString(SharedPrefKeys.kUserPicUrl);
+    if (userPicUrl != null) {
+      return userPicUrl;
+    } else {
+      return '';
+    }
+  }
+
+  void setTheme(bool isDarkTheme) {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    sharedPreferences.setBool(SharedPrefKeys.kThemePrefrences, isDarkTheme);
+  }
+
+  bool isThemeAddedInPrefs() {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    bool? isThemeAdded =
+        sharedPreferences.getBool(SharedPrefKeys.kThemePrefrences);
+    if (isThemeAdded != null) {
+      return isThemeAdded;
+    } else {
+      return false;
+    }
+  }
+
+  bool getCurrentTheme() {
+    SharedPreferences sharedPreferences =
+        serviceLocator.get<SharedPreferences>();
+    bool isThemeAdded =
+        sharedPreferences.getBool(SharedPrefKeys.kThemePrefrences) ?? false;
+    return isThemeAdded;
   }
 }

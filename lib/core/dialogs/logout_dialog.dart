@@ -41,6 +41,9 @@ void showLogoutConfirmationDialog(BuildContext context, WidgetRef ref) {
               await sharedPref
                   .remove(SharedPrefKeys.kisUserSignedInUsingProvider);
               await sharedPref.remove(SharedPrefKeys.kUserUID);
+              await sharedPref.remove(SharedPrefKeys.kUserName);
+              await sharedPref.remove(SharedPrefKeys.kUserPicUrl);
+              await sharedPref.remove(SharedPrefKeys.kThemePrefrences);
               ref.read(bottomBarStateProvider.notifier).restoreState();
               // Perform logout action
               ref.read(settingTabControllerProvider.notifier).onLogOutClicked();

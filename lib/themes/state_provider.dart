@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/config/service_locator.dart';
+import 'package:home_automation_app/core/services/user_management_service.dart';
 
 // Define the NotifierProvider for managing theme state
 final themeStateProvider =
@@ -13,7 +15,12 @@ class ThemeStateNotifier extends Notifier<ThemeMode> {
   @override
   ThemeMode build() {
     // Default theme mode is light
-    return ThemeMode.light;
+    return intiallizeTheme();
+  }
+
+  ThemeMode intiallizeTheme() {
+    bool isDark = serviceLocator.get<UserManagementService>().getCurrentTheme();
+    return isDark ? ThemeMode.dark : ThemeMode.light;
   }
 
   // Getter to check if the theme is dark

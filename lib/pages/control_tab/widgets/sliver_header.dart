@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:home_automation_app/config/service_locator.dart';
+import 'package:home_automation_app/core/services/user_management_service.dart';
 
 class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -13,7 +15,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final isCollapsed = shrinkOffset > (expandedHeight - kToolbarHeight);
-
+    final prefs = serviceLocator.get<UserManagementService>();
     return Container(
       color: Theme.of(context).colorScheme.primary,
       child: Stack(
@@ -31,8 +33,10 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "Hello Umair",
+                    overflow: TextOverflow.ellipsis,
+                    "Hello ${prefs.getUserName()}",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontSize: 21,
                           color: Colors.white,
                         ),
                   ),
@@ -40,6 +44,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                   Text(
                     "Welcome back to home",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 15,
                           color: Colors.white70,
                         ),
                   ),

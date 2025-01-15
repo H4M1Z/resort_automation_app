@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_automation_app/core/commom/functions/write_asset_to_file.dart';
 import 'package:home_automation_app/main.dart';
@@ -61,6 +62,14 @@ class MqttService {
       return;
     }
 
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.values) {
+      Fluttertoast.showToast(
+          msg: 'No internet connection. MQTT will connect when online.');
+      monitorInternetConnectionAndReconnect(); // Wait for internet
+      return;
+    }
+
     try {
       log('Attempting to connect to MQTT broker...');
       final connectionFuture = client.connect();
@@ -110,8 +119,26 @@ class MqttService {
     } else {
       Fluttertoast.showToast(
           msg: 'MQTT disconnected unexpectedly. Reconnecting...');
-      _scheduleReconnect();
     }
+
+    // Wait for reconnection only when the internet is restored
+    monitorInternetConnectionAndReconnect();
+  }
+
+  void monitorInternetConnectionAndReconnect() {
+    Connectivity().onConnectivityChanged.listen((result) {
+      if (result != ConnectivityResult.none && !isConnected) {
+        log('Internet connection restored. Attempting to reconnect...');
+        Fluttertoast.showToast(
+          msg: 'Internet restored. Reconnecting to MQTT...',
+        );
+        connect(); // Attempt reconnection
+      } else if (result == ConnectivityResult.values) {
+        Fluttertoast.showToast(
+          msg: 'No internet connection.',
+        );
+      }
+    });
   }
 
   void subscribeToTopic(String topic) {
@@ -139,7 +166,7 @@ class MqttService {
         final message = MqttPublishPayload.bytesToStringAsString(
             recMessage.payload.message);
         log('Received message on topic $receivedTopic: $message');
-        Fluttertoast.showToast(msg: 'Device Update: $message');
+        // Fluttertoast.showToast(msg: 'Device Update: $message');
       } catch (e) {
         log('Error processing received message: $e');
       }

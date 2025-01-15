@@ -60,6 +60,7 @@ class SettingTabController extends Notifier<SettingsTabStates> {
     final user = await _userProfileService.getUser();
     isEnabled = await _userManagementService.isUserSignedInUsingProvider();
     if (user != null) {
+      log("User Image Url ${user.profilePic}");
       name = user.userName;
       email = user.email;
       image = user.profilePic;

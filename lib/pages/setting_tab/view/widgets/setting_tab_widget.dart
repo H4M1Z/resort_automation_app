@@ -6,7 +6,8 @@ import 'package:home_automation_app/core/commom/widgets/loading_widget.dart';
 import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
 class ProfileWidget extends ConsumerWidget {
-  const ProfileWidget({super.key});
+  final String profileImageUrl;
+  const ProfileWidget({super.key, required this.profileImageUrl});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -13,6 +13,7 @@ import 'package:home_automation_app/core/enums.dart';
 import 'package:home_automation_app/core/services/user_management_service.dart';
 import 'package:home_automation_app/core/services/user_profile_service.dart';
 import 'package:home_automation_app/main.dart';
+import 'package:home_automation_app/providers/user_addtion_state_provider.dart';
 
 import '../../../core/model_classes/sign_in_model.dart';
 import '../../../core/model_classes/user_model.dart';
@@ -87,7 +88,7 @@ class LoginPageController extends Notifier<UserSigninStates>
               .insertIsUserSignedInUsingProvider(false);
           if (isUserInserted && isUserSignedIn && providerInserted) {
             globalUserId = user.uid;
-
+            ref.read(userStateProvider.notifier).setUserData();
             state = UserSigninLoadedState();
           } else {
             state = UserSigninErrorState(
@@ -144,6 +145,7 @@ class LoginPageController extends Notifier<UserSigninStates>
         //....IF USER IS SIGNED IN SUCCESSFULLY SET LOADED STATE ELSE ERROR
         switch (isSignedIn) {
           case true:
+            ref.read(userStateProvider.notifier).setUserData();
             globalUserId = user.uid;
             state = UserSigninLoadedState();
             break;

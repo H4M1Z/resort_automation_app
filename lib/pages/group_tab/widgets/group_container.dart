@@ -80,11 +80,14 @@ class GroupContainer extends ConsumerWidget {
                       const SizedBox(width: 10), // Space between icon and text
                       // Group Name
                       Text(
+                        overflow: TextOverflow.ellipsis,
                         deviceGroup.groupName,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode
+                              ? Colors.white
+                              : Theme.of(context).primaryColor,
                         ),
                       ),
                     ],

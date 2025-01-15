@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
+import 'package:home_automation_app/core/protocol/mqt_service.dart';
 import 'package:home_automation_app/pages/group_tab/controller/group_switch_togle.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
 
@@ -38,22 +39,31 @@ class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
 
   @override
   Widget build(BuildContext context) {
+    MqttService mqttService = MqttService();
     var groupSwitchCurretState = ref.watch(groupSwitchTogleProvider);
     final groupSwitchProvider = ref.read(groupSwitchTogleProvider.notifier);
     return Switch(
       value:
           groupSwitchProvider.mapOfGroupSwitchStates[widget.groupId] ?? false,
       onChanged: (value) async {
-        ////////
-        final hasInternet =
-            await ConnectivityHelper.hasInternetConnection(context);
-        if (!hasInternet) return;
-        ////////
-        showProgressDialog(context: context, message: "Updating group status");
-        await groupSwitchProvider.onGroupSwitchToggle(
-            value, widget.groupName, widget.groupId, context);
-        await ref.read(deviceStateProvider.notifier).getAllDevices();
-        Navigator.pop(context);
+        if (mqttService.isConnected) {
+          ////////
+          final hasInternet =
+              await ConnectivityHelper.hasInternetConnection(context);
+          if (!hasInternet) return;
+          ////////
+          showProgressDialog(
+              context: context, message: "Updating group status");
+          await groupSwitchProvider.onGroupSwitchToggle(
+              value, widget.groupName, widget.groupId, context);
+          await ref.read(deviceStateProvider.notifier).getAllDevices();
+          Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("MQTT is not connected. Cannot send the command."),
+            duration: Duration(seconds: 1),
+          ));
+        }
       },
       activeColor: widget.isDarkMode
           ? const Color(0xFF4FC0E7)

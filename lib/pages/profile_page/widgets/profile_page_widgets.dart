@@ -270,6 +270,7 @@ class StyledTextField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
+          style: TextStyle(color: isDark ? Colors.black : Colors.black),
           obscureText: isPassword,
           enabled: enabled,
           controller: controller,

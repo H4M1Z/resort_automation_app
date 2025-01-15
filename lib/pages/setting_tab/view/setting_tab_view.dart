@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/config/navigation/route_navigation.dart';
+import 'package:home_automation_app/config/service_locator.dart';
 import 'package:home_automation_app/core/dialogs/logout_dialog.dart';
+import 'package:home_automation_app/core/services/user_management_service.dart';
 import 'package:home_automation_app/pages/profile_page/profile_page.dart';
 import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 import 'package:home_automation_app/themes/state_provider.dart';
+import 'package:home_automation_app/utils/asset_images.dart';
 
 import 'widgets/setting_tab_widget.dart';
 
@@ -18,8 +23,6 @@ class SettingsTab extends ConsumerStatefulWidget {
 }
 
 class SettingsTabState extends ConsumerState<SettingsTab> {
-  final bool _isDarkTheme = false;
-
   // Function to launch a URL (for Help or Rate Us)
   Future<void> _launchURL(String url) async {
     // if (await canLaunch(url)) {
@@ -31,124 +34,170 @@ class SettingsTabState extends ConsumerState<SettingsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    String userProfilePic = "";
+    var sl = serviceLocator.get<UserManagementService>();
+    if (sl.isUserProfileUrlInPrefs()) {
+      userProfilePic = sl.getUserPicUrl();
+    }
+    log("User image Url in Prefs: $userProfilePic");
+
+    final size = MediaQuery.sizeOf(context); // Responsive screen size
+    final height = size.height;
+    final width = size.width;
+
     final settingsController = ref.read(settingTabControllerProvider.notifier);
     final themeProvider = ref.read(themeStateProvider.notifier);
+
     SchedulerBinding.instance.addPostFrameCallback(
       (timeStamp) {
         ref.read(settingTabControllerProvider.notifier).reinitializeState();
       },
     );
+
     return Scaffold(
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.05, // Dynamic horizontal padding
+              vertical: height * 0.02, // Dynamic vertical padding
+            ),
             child: Column(
               children: [
-                const SizedBox(height: 140), // Add space for the top container
+                SizedBox(height: height * 0.15), // Top space is dynamic
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
                       context,
                       ProfilePage.pageName,
                       arguments: ProfilePageArguments(
-                          image: settingsController.image,
-                          name: settingsController.name,
-                          email: settingsController.email,
-                          isEnabled: settingsController.isEnabled),
+                        image: settingsController.image,
+                        name: settingsController.name,
+                        email: settingsController.email,
+                        isEnabled: settingsController.isEnabled,
+                      ),
                     );
                   },
                   child: const ListTile(
                     leading: Hero(
                       tag: 'profileImage',
-                      child: ProfileWidget(),
+                      child: ProfileWidget(
+                        profileImageUrl: profileImage,
+                      ),
                     ),
                     title: Text("Profile"),
                     subtitle: Text("Edit your profile settings"),
                     trailing: Icon(Icons.arrow_forward),
                   ),
                 ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    // Watch the current theme mode from the provider
-                    final isDarkTheme =
-                        ref.watch(themeStateProvider) == ThemeMode.dark;
-
-                    return SwitchListTile(
-                      title: const Text("Dark Mode"),
-                      value: isDarkTheme,
-                      onChanged: (value) {
-                        // Use ref to call the toggleTheme method
-                        themeProvider.toggleTheme(value);
-                      },
-                    );
-                  },
-                ),
-                // App Version
-                ListTile(
-                  leading:
-                      Icon(Icons.info, color: Theme.of(context).primaryColor),
-                  title: const Text("About App"),
-                  subtitle: const Text("View app version and details"),
-                  trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {
-                    // Show App Info Dialog
-                    showAboutDialog(
-                      context: context,
-                      applicationName: "Home Automation App",
-                      applicationVersion: "1.0.0",
-                      applicationIcon: const Icon(Icons.home),
-                      children: [
-                        const Text("This app helps manage your IoT devices."),
-                      ],
-                    );
-                  },
-                ),
-                // Help List Tile
+                // Custom Dark Mode Tile with Icon
                 ListTile(
                   leading: Icon(
-                    Icons.help,
-                    color: Theme.of(context).primaryColor,
+                    isDark ? Icons.dark_mode : Icons.light_mode,
+                    color:
+                        isDark ? Colors.amber : Theme.of(context).primaryColor,
+                    size: 28, // Adjust the size of the icon
                   ),
-                  title: const Text("Help"),
-                  trailing: const Icon(Icons.arrow_forward),
+                  title: const Text(
+                    "Dark Mode",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  subtitle: Text(
+                    isDark ? "Switch to Light Mode" : "Switch to Dark Mode",
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                  ),
+                  trailing: Switch(
+                    value: isDark,
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    inactiveThumbColor: Colors.grey.shade300,
+                    inactiveTrackColor: Colors.grey.shade400,
+                    onChanged: (value) {
+                      sl.setTheme(value);
+                      themeProvider.toggleTheme(value);
+                    },
+                  ),
                   onTap: () {
-                    _launchURL(
-                        'https://yourapphelpurl.com'); // Replace with your actual help URL
+                    // Trigger the theme change when the user taps the tile
+                    // sl.setTheme(isDark);
+                    // themeProvider.toggleTheme(!isDark);
                   },
                 ),
-                // Rate Us List Tile
-                ListTile(
-                  leading:
-                      Icon(Icons.star, color: Theme.of(context).primaryColor),
-                  title: const Text("Rate Us"),
-                  trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {
-                    _launchURL(
-                        'https://play.google.com/store/apps/details?id=com.yourapp'); // Replace with your app's URL
-                  },
-                ),
-                // Logout Option
-                Consumer(
-                  builder: (context, ref, child) {
-                    return ListTile(
-                      leading: Icon(Icons.logout,
-                          color: Theme.of(context).primaryColor),
-                      title: const Text("Logout"),
-                      subtitle: const Text("Sign out of your account"),
-                      trailing: const Icon(Icons.arrow_forward),
-                      onTap: () {
-                        showLogoutConfirmationDialog(context, ref);
-                      },
-                    );
-                  },
+                Expanded(
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.info,
+                            color: isDark
+                                ? Colors.white
+                                : Theme.of(context).primaryColor),
+                        title: const Text("About App"),
+                        subtitle: const Text("View app version and details"),
+                        trailing: const Icon(Icons.arrow_forward),
+                        onTap: () {
+                          showAboutDialog(
+                            context: context,
+                            applicationName: "Home Automation App",
+                            applicationVersion: "1.0.0",
+                            applicationIcon: const Icon(Icons.home),
+                            children: [
+                              const Text(
+                                  "This app helps manage your IoT devices."),
+                            ],
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.help,
+                          color: isDark
+                              ? Colors.white
+                              : Theme.of(context).primaryColor,
+                        ),
+                        title: const Text("Help"),
+                        trailing: const Icon(Icons.arrow_forward),
+                        onTap: () {
+                          _launchURL('https://yourapphelpurl.com');
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.star,
+                            color: isDark
+                                ? Colors.white
+                                : Theme.of(context).primaryColor),
+                        title: const Text("Rate Us"),
+                        trailing: const Icon(Icons.arrow_forward),
+                        onTap: () {
+                          _launchURL(
+                              'https://play.google.com/store/apps/details?id=com.yourapp');
+                        },
+                      ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          return ListTile(
+                            leading: Icon(Icons.logout,
+                                color: isDark
+                                    ? Colors.white
+                                    : Theme.of(context).primaryColor),
+                            title: const Text("Logout"),
+                            subtitle: const Text("Sign out of your account"),
+                            trailing: const Icon(Icons.arrow_forward),
+                            onTap: () {
+                              showLogoutConfirmationDialog(context, ref);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
           Container(
-            height: size.height * 0.15,
+            height: height * 0.15, // Dynamic header height
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               borderRadius: const BorderRadius.only(
@@ -163,11 +212,11 @@ class SettingsTabState extends ConsumerState<SettingsTab> {
                 ),
               ],
             ),
-            child: const SafeArea(
+            child: SafeArea(
               child: Center(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Row(
+                  padding: EdgeInsets.only(left: width * 0.04),
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(

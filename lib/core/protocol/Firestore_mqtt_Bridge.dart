@@ -64,6 +64,7 @@ Future<void> startListeningToFirestore(
 }
 
 void publishDeviceUpdate(
+  String deviceName,
   String userId,
   String deviceId,
   String status,
@@ -73,6 +74,8 @@ void publishDeviceUpdate(
 ) {
   final topic = 'user/$userId/device/$deviceId/status';
   final message = {
+    'deviceId': deviceId,
+    'deviceName': deviceName,
     'status': status,
     'type': deviceType,
     'attribute': attributeValue ?? '',

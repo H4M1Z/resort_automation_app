@@ -46,8 +46,14 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
 
     var command = getCommand(device.type, value ? "On" : "Off");
 
-    publishDeviceUpdate(userId, device.deviceId, command, device.type,
-        device.attributes[device.attributes.keys.first], mqttService);
+    publishDeviceUpdate(
+        device.deviceName,
+        userId,
+        device.deviceId,
+        command,
+        device.type,
+        device.attributes[device.attributes.keys.first],
+        mqttService);
 
     await FirebaseServices.updateDeviceStatusOnToggleSwtich(
         userId, device, command);
@@ -80,8 +86,14 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
 
       var command = getCommand(device.type, value.toInt().toString());
       //Publishing device update
-      publishDeviceUpdate(userId, device.deviceId, command, device.type,
-          device.attributes[device.attributes.keys.first], mqttService);
+      publishDeviceUpdate(
+          device.deviceName,
+          userId,
+          device.deviceId,
+          command,
+          device.type,
+          device.attributes[device.attributes.keys.first],
+          mqttService);
 
       var attributeType = getDeviceAttributeAccordingToDeviceType(device.type);
       await FirebaseServices.updateDeviceStatusOnChangingSlider(

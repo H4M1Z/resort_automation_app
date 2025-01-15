@@ -7,6 +7,7 @@ import 'package:home_automation_app/core/services/user_management_service.dart';
 import 'package:home_automation_app/firebase_options.dart';
 import 'package:home_automation_app/pages/login_page/view/login_page.dart';
 import 'package:home_automation_app/pages/splash_screen/splash_screen.dart';
+import 'package:home_automation_app/providers/user_addtion_state_provider.dart';
 import 'package:home_automation_app/themes/state_provider.dart';
 import 'package:home_automation_app/themes/theme.dart';
 
@@ -20,12 +21,12 @@ void main() async {
   );
   //......SET UP THE LOCATOR TO ACCESS SERVICE ACCROSS THE APP
   await setupLocator();
-  final isUserSignedIn =
-      await serviceLocator.get<UserManagementService>().isUserSignedIn();
+  var sl = serviceLocator.get<UserManagementService>();
+  final isUserSignedIn = await sl.isUserSignedIn();
   Widget? widget;
 
   if (isUserSignedIn) {
-    globalUserId = serviceLocator.get<UserManagementService>().getUserUid()!;
+    globalUserId = sl.getUserUid()!;
     widget = const SplashScreen();
   } else {
     widget = const LoginScreen();
@@ -44,6 +45,17 @@ class IoTApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(themeStateProvider);
+    var sl = serviceLocator.get<UserManagementService>();
+
+    // For adding user meta data in prefs
+    if (!sl.isUserNameInPrefs()) {
+      ref.read(userStateProvider.notifier).setUserData();
+    }
+    // For adding theme
+    if (!sl.isThemeAddedInPrefs()) {
+      sl.setTheme(false);
+    }
+
     return MaterialApp(
       onGenerateRoute: onGenerateRoute,
       theme: lightTheme,
