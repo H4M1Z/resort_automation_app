@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:home_automation_app/core/commom/functions/common_functions.dart';
 import 'package:home_automation_app/core/commom/widgets/auth_text_fields.dart';
+import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
 import 'package:home_automation_app/pages/profile_page/controller/profile_page_controller.dart';
 import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
@@ -244,13 +245,13 @@ class StyledTextField extends StatelessWidget {
     this.onSuffixIconTap,
     this.suffixIcon,
     required this.controller,
-    this.enabled,
+    this.enabled = true,
   });
   final ValidationFunction? validator;
   final VoidCallback? onSuffixIconTap;
   final IconData? suffixIcon;
   final TextEditingController controller;
-  final bool? enabled;
+  final bool enabled;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -269,6 +270,12 @@ class StyledTextField extends StatelessWidget {
           obscureText: isPassword,
           enabled: enabled,
           controller: controller,
+          onTap: () {
+            if (!enabled) {
+              context.showPopUpMsg(
+                  'Login through email and password to modify this field!');
+            }
+          },
           validator: validator,
           decoration: InputDecoration(
             suffixIcon: IconButton(
