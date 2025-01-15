@@ -9,9 +9,9 @@ class BackgroundContainerDesign extends StatelessWidget {
     return Center(
       child: Container(
         width: width,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade900,
-          borderRadius: const BorderRadius.only(
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(53, 97, 105, 1),
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(
               220,
             ),

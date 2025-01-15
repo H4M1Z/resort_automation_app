@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/collections/user_collection.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
@@ -44,19 +43,19 @@ Future<void> startListeningToFirestore(
                 break;
             }
 
-            if (mqttService.isConnected) {
-              publishDeviceUpdate(
-                userId,
-                deviceId,
-                status,
-                deviceType,
-                attributeValue,
-                mqttService,
-              );
-            } else {
-              Fluttertoast.showToast(
-                  msg: 'MQTT not connected. Skipping update for $deviceId.');
-            }
+            // if (mqttService.isConnected) {
+            //   publishDeviceUpdate(
+            //     userId,
+            //     deviceId,
+            //     status,
+            //     deviceType,
+            //     attributeValue,
+            //     mqttService,
+            //   );
+            // } else {
+            //   Fluttertoast.showToast(
+            //       msg: 'MQTT not connected. Skipping update for $deviceId.');
+            // }
           }
         }
       }

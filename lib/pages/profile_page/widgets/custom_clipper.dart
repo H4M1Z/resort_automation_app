@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomClipperWidget extends CustomPainter {
+  final BuildContext context;
+  CustomClipperWidget({required this.context});
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.blueAccent
+      ..color = Theme.of(context).colorScheme.primary
       ..style = PaintingStyle.fill;
 
     Path path = Path()

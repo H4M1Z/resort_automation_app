@@ -79,7 +79,7 @@ class ProfilePicWidget extends ConsumerWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: Colors.grey.shade600,
+            color: const Color.fromARGB(255, 217, 209, 209),
           ),
         ),
         child: Stack(
@@ -97,7 +97,7 @@ class ProfilePicWidget extends ConsumerWidget {
               child: GestureDetector(
                 onTap: controller.onPickImageClicked,
                 child: Icon(
-                  color: Colors.grey,
+                  color: const Color.fromARGB(255, 217, 209, 209),
                   Icons.add_a_photo_outlined,
                   size: height * 0.03,
                 ),
@@ -125,7 +125,7 @@ class ProfilePic extends ConsumerWidget {
         ImagePickedState() => null,
         _ => Icon(
             Icons.person,
-            color: Colors.grey.shade600,
+            color: const Color.fromARGB(255, 217, 209, 209),
             size: MediaQuery.sizeOf(context).height * 0.15,
           ),
       },
@@ -204,14 +204,15 @@ class LoginText extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(
+            const TextSpan(
               text: "Already have an account? ",
-              style: TextStyle(color: Colors.grey.shade600),
+              style: TextStyle(color: Color.fromARGB(255, 217, 209, 209)),
             ),
             TextSpan(
               text: 'Login.',
-              style: TextStyle(
-                color: Colors.grey.shade800,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Color.fromARGB(255, 233, 222, 124),
                 fontWeight: FontWeight.bold,
               ),
               recognizer: TapGestureRecognizer()

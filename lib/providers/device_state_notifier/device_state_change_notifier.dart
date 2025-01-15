@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/collections/device_collection.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
+import 'package:home_automation_app/core/protocol/Firestore_mqtt_Bridge.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
 import 'package:home_automation_app/pages/control_tab/controllers/slide_value_controller.dart';
 import 'package:home_automation_app/pages/control_tab/controllers/switch_state_controller.dart';
@@ -38,21 +39,24 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
       log('MQTT is not connected. Cannot send the command.');
       return;
     }
-    showProgressDialog(
-        context: context,
-        message: "Turning ${device.deviceName} ${value ? "On" : "Off"}");
+
+    // showProgressDialog(
+    //     context: context,
+    //     message: "Turning ${device.deviceName} ${value ? "On" : "Off"}");
 
     var command = getCommand(device.type, value ? "On" : "Off");
+
+    publishDeviceUpdate(userId, device.deviceId, command, device.type,
+        device.attributes[device.attributes.keys.first], mqttService);
+
     await FirebaseServices.updateDeviceStatusOnToggleSwtich(
         userId, device, command);
 
     // Fetch updated devices list and update state
     List<Device> list = await deviceCollection.getAllDevices(userId);
     state = DeviceDataLoadedState(list: list);
-    await ref
-        .read(switchStateProvider.notifier)
-        .updateSwitchState(value, device);
-    Navigator.of(context).pop();
+
+    // Navigator.of(context).pop();
   }
 
   void updateSliderValue(
@@ -75,6 +79,10 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
               "Updating ${GerenrateNumberFromHexa.getDeviceAttributeAccordingToDeviceType(device.type)}");
 
       var command = getCommand(device.type, value.toInt().toString());
+      //Publishing device update
+      publishDeviceUpdate(userId, device.deviceId, command, device.type,
+          device.attributes[device.attributes.keys.first], mqttService);
+
       var attributeType = getDeviceAttributeAccordingToDeviceType(device.type);
       await FirebaseServices.updateDeviceStatusOnChangingSlider(
           userId, device, command, attributeType);
@@ -82,9 +90,6 @@ class DeviceStateChangeNotifier extends Notifier<DeviceDataStates> {
       // Fetch updated devices list and update state
       List<Device> list = await deviceCollection.getAllDevices(userId);
       state = DeviceDataLoadedState(list: list);
-      await ref
-          .read(sliderValueProvider.notifier)
-          .updateSliderValue(value, device);
 
       Navigator.of(context).pop();
     } else {

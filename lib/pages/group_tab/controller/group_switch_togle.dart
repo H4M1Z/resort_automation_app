@@ -67,6 +67,7 @@ class GroupSwitchTogle extends Notifier<bool> {
           group.groupId,
           value,
         );
+
         mapOfGroupSwitchStates[groupId] = value;
         state = value;
 

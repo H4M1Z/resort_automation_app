@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/pages/group_devices_page/controllers/group_device_button_controller.dart';
 import 'package:home_automation_app/pages/group_devices_page/view/group_addtion.dart';
@@ -19,6 +20,9 @@ class GroupDeviceButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
       onPressed: () async {
+        final hasInternet =
+            await ConnectivityHelper.hasInternetConnection(context);
+        if (!hasInternet) return;
         showProgressDialog(
             context: context, message: "Getting devices for group $groupName");
         await ref
@@ -32,9 +36,7 @@ class GroupDeviceButton extends ConsumerWidget {
         ));
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: isDarkMode
-            ? const Color.fromARGB(255, 0, 0, 0)
-            : const Color(0xFFEFEFEF),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 4,
         shadowColor: isDarkMode
             ? Colors.black.withOpacity(0.3)
@@ -48,12 +50,12 @@ class GroupDeviceButton extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.device_hub,
-              color: isDarkMode ? Colors.white : Colors.black),
+              color: isDarkMode ? Colors.white : Colors.white),
           const SizedBox(width: 8),
           Text(
             "Devices",
             style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : Colors.white,
             ),
           ),
         ],
@@ -70,36 +72,40 @@ class GroupDeleteButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      onPressed: () {
-        // Perform action
-        showDeleteConfirmationDialog(context, ref, groupId);
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isDarkMode
-            ? const Color.fromARGB(255, 0, 0, 0)
-            : const Color(0xFFEFEFEF),
-        elevation: 4,
-        shadowColor: isDarkMode
-            ? Colors.black.withOpacity(0.3)
-            : Colors.grey.withOpacity(0.3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.delete, color: isDarkMode ? Colors.white : Colors.black),
-          const SizedBox(width: 8),
-          Text(
-            "Delete Group",
-            style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
-            ),
+    return SizedBox(
+      width: 120,
+      child: ElevatedButton(
+        onPressed: () async {
+          final hasInternet =
+              await ConnectivityHelper.hasInternetConnection(context);
+          if (!hasInternet) return;
+          // Perform action
+          showDeleteConfirmationDialog(context, ref, groupId);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 4,
+          shadowColor: isDarkMode
+              ? Colors.black.withOpacity(0.3)
+              : Colors.grey.withOpacity(0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-        ],
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.delete, color: isDarkMode ? Colors.white : Colors.white),
+            const SizedBox(width: 8),
+            Text(
+              "Delete",
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

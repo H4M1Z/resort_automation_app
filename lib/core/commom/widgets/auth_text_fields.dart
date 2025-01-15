@@ -24,8 +24,8 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: Colors.grey.shade700,
+        borderSide: const BorderSide(
+          color: Color(0xFFCCCCCC),
         ));
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -52,19 +52,19 @@ class CustomTextField extends StatelessWidget {
                       color: Colors.grey.shade600,
                     ),
                   ),
-                  fillColor: Colors.grey.shade900,
+                  fillColor: Color(0xFFF2F2F2),
                   filled: true,
                   labelText: labelText,
                   labelStyle: TextStyle(
                     fontSize: MediaQuery.sizeOf(context).height * 0.02,
-                    color: Colors.grey.shade600,
+                    color: const Color.fromARGB(255, 188, 179, 179),
                     fontWeight: FontWeight.bold,
                   ),
                   border: border,
                   enabledBorder: border,
                   focusedBorder: border,
                   focusedErrorBorder: border,
-                  suffixIconColor: Colors.grey.shade600),
+                  suffixIconColor: const Color.fromARGB(255, 188, 179, 179)),
             ),
           ),
         );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
 import 'package:home_automation_app/core/dialogs/remove_device_dialog.dart';
 import 'package:home_automation_app/core/dialogs/widgets/device_slider.dart';
 import 'package:home_automation_app/core/dialogs/widgets/device_switch.dart';
@@ -26,17 +27,23 @@ class DeviceItem extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDarkMode
-            ? const Color(0xFF1A1C35)
-            : const Color.fromARGB(255, 239, 232, 232),
+        gradient: LinearGradient(
+          colors: isDarkMode
+              ? [Colors.grey[900]!, Colors.grey[800]!]
+              : [
+                  const Color.fromARGB(255, 249, 247, 247),
+                  const Color.fromARGB(255, 234, 228, 228),
+                  const Color.fromARGB(255, 249, 247, 247)
+                ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: isDarkMode
-                ? Colors.black.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: isDarkMode ? Colors.black : Colors.grey,
+            blurRadius: 10,
+            offset: const Offset(2, 4),
           ),
         ],
       ),
@@ -203,7 +210,10 @@ class DeviceItem extends ConsumerWidget {
             top: -10,
             right: 0,
             child: InkWell(
-                onTap: () {
+                onTap: () async {
+                  final hasInternet =
+                      await ConnectivityHelper.hasInternetConnection(context);
+                  if (!hasInternet) return;
                   showRemoveDialog(context, device, ref);
                 },
                 child: const DeviceItemRemoveIcon()),
