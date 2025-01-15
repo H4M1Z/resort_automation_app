@@ -42,100 +42,102 @@ class SettingsTabState extends ConsumerState<SettingsTab> {
       appBar: AppBar(title: const Text("Settings")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  ProfilePage.pageName,
-                  arguments: ProfilePageArguments(
-                      image: settingsController.image,
-                      name: settingsController.name,
-                      email: settingsController.email,
-                      isEnabled: settingsController.isEnabled),
-                );
-              },
-              child: const ListTile(
-                leading: Hero(
-                  tag: 'profileImage',
-                  child: ProfileWidget(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    ProfilePage.pageName,
+                    arguments: ProfilePageArguments(
+                        image: settingsController.image,
+                        name: settingsController.name,
+                        email: settingsController.email,
+                        isEnabled: settingsController.isEnabled),
+                  );
+                },
+                child: const ListTile(
+                  leading: Hero(
+                    tag: 'profileImage',
+                    child: ProfileWidget(),
+                  ),
+                  title: Text("Profile"),
+                  subtitle: Text("Edit your profile settings"),
+                  trailing: Icon(Icons.arrow_forward),
                 ),
-                title: Text("Profile"),
-                subtitle: Text("Edit your profile settings"),
-                trailing: Icon(Icons.arrow_forward),
               ),
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                // Watch the current theme mode from the provider
-                final isDarkTheme =
-                    ref.watch(themeStateProvider) == ThemeMode.dark;
+              Consumer(
+                builder: (context, ref, child) {
+                  // Watch the current theme mode from the provider
+                  final isDarkTheme =
+                      ref.watch(themeStateProvider) == ThemeMode.dark;
 
-                return SwitchListTile(
-                  title: const Text("Dark Mode"),
-                  value: isDarkTheme,
-                  onChanged: (value) {
-                    // Use ref to call the toggleTheme method
-                    themeProvider.toggleTheme(value);
-                  },
-                );
-              },
-            ),
-            // App Version
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text("About App"),
-              subtitle: const Text("View app version and details"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                // Show App Info Dialog
-                showAboutDialog(
-                  context: context,
-                  applicationName: "Home Automation App",
-                  applicationVersion: "1.0.0",
-                  applicationIcon: const Icon(Icons.home),
-                  children: [
-                    const Text("This app helps manage your IoT devices."),
-                  ],
-                );
-              },
-            ),
-            // Help List Tile
-            ListTile(
-              leading: const Icon(Icons.help),
-              title: const Text("Help"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                _launchURL(
-                    'https://yourapphelpurl.com'); // Replace with your actual help URL
-              },
-            ),
-            // Rate Us List Tile
-            ListTile(
-              leading: const Icon(Icons.star),
-              title: const Text("Rate Us"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                _launchURL(
-                    'https://play.google.com/store/apps/details?id=com.yourapp'); // Replace with your app's URL
-              },
-            ),
-            // Logout Option
-            Consumer(
-              builder: (context, ref, child) {
-                return ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: const Text("Logout"),
-                  subtitle: const Text("Sign out of your account"),
-                  trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {
-                    showLogoutConfirmationDialog(context, ref);
-                  },
-                );
-              },
-            ),
-          ],
+                  return SwitchListTile(
+                    title: const Text("Dark Mode"),
+                    value: isDarkTheme,
+                    onChanged: (value) {
+                      // Use ref to call the toggleTheme method
+                      themeProvider.toggleTheme(value);
+                    },
+                  );
+                },
+              ),
+              // App Version
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text("About App"),
+                subtitle: const Text("View app version and details"),
+                trailing: const Icon(Icons.arrow_forward),
+                onTap: () {
+                  // Show App Info Dialog
+                  showAboutDialog(
+                    context: context,
+                    applicationName: "Home Automation App",
+                    applicationVersion: "1.0.0",
+                    applicationIcon: const Icon(Icons.home),
+                    children: [
+                      const Text("This app helps manage your IoT devices."),
+                    ],
+                  );
+                },
+              ),
+              // Help List Tile
+              ListTile(
+                leading: const Icon(Icons.help),
+                title: const Text("Help"),
+                trailing: const Icon(Icons.arrow_forward),
+                onTap: () {
+                  _launchURL(
+                      'https://yourapphelpurl.com'); // Replace with your actual help URL
+                },
+              ),
+              // Rate Us List Tile
+              ListTile(
+                leading: const Icon(Icons.star),
+                title: const Text("Rate Us"),
+                trailing: const Icon(Icons.arrow_forward),
+                onTap: () {
+                  _launchURL(
+                      'https://play.google.com/store/apps/details?id=com.yourapp'); // Replace with your app's URL
+                },
+              ),
+              // Logout Option
+              Consumer(
+                builder: (context, ref, child) {
+                  return ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text("Logout"),
+                    subtitle: const Text("Sign out of your account"),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onTap: () {
+                      showLogoutConfirmationDialog(context, ref);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
