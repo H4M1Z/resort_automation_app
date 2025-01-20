@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:home_automation_app/core/commom/functions/common_functions.dart';
 import 'package:home_automation_app/core/commom/widgets/auth_text_fields.dart';
-import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
 import 'package:home_automation_app/pages/profile_page/controller/profile_page_controller.dart';
 import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
@@ -259,6 +259,7 @@ class StyledTextField extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+<<<<<<< HEAD
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -287,22 +288,61 @@ class StyledTextField extends StatelessWidget {
               icon: Icon(
                 suffixIcon,
                 color: Colors.grey.shade600,
+=======
+      child: GestureDetector(
+        onTap: () {
+          log('tapped');
+          log('enabled ===> $enabled');
+          if (!enabled) {
+            log('message');
+            // context.showPopUpMsg(
+            //     'Login through email and password to modify this field!');
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  'Login through email and password to modify this field!'),
+              duration: Duration(seconds: 3),
+            ));
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+>>>>>>> 979fdcd2d39befc747300b1dd2f9c61fdcf9bcde
               ),
-            ),
-            filled: true,
-            fillColor: Colors.white,
-            prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
-            labelText: label,
-            labelStyle: const TextStyle(color: Colors.black),
-            hintText: hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(
-                color: Theme.of(context).primaryColor,
+            ],
+          ),
+          child: TextFormField(
+            obscureText: isPassword,
+            enabled: enabled,
+            controller: controller,
+            validator: validator,
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: onSuffixIconTap,
+                icon: Icon(
+                  suffixIcon,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              filled: true,
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
+              prefixIcon: Icon(icon, color: Colors.blueAccent),
+              labelText: label,
+              labelStyle: const TextStyle(color: Colors.grey),
+              hintText: hint,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(
+                  color: Colors.blueAccent.withOpacity(0.6),
+                ),
               ),
             ),
           ),
