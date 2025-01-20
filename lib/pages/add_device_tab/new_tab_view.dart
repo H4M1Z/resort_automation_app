@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
+import 'package:home_automation_app/core/messenger/scafold_messenger.dart';
 import 'package:home_automation_app/providers/device_addition_provder.dart';
 import 'package:home_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
 import 'package:home_automation_app/utils/icons.dart';
@@ -71,8 +72,10 @@ class AddDevicesTab extends ConsumerWidget {
                               controller: device['controller'],
                               decoration: InputDecoration(
                                 labelText: "${device['deviceType']} Name",
-                                labelStyle:
-                                    TextStyle(color: theme.primaryColor),
+                                labelStyle: TextStyle(
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : theme.primaryColor),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -81,12 +84,8 @@ class AddDevicesTab extends ConsumerWidget {
                             trailing: ElevatedButton(
                               onPressed: () async {
                                 if (device['controller'].text.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Please enter device name"),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                                  showScafoldMessenger(
+                                      context, "Please enter device name");
                                 } else {
                                   final hasInternet = await ConnectivityHelper
                                       .hasInternetConnection(context);

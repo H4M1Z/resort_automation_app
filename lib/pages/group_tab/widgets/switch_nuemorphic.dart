@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
+import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
 import 'package:home_automation_app/pages/group_tab/controller/group_switch_togle.dart';
 import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
 
@@ -26,10 +29,12 @@ class SwitchNuemorphic extends ConsumerStatefulWidget {
 }
 
 class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
-  bool groupStatus = false;
+  bool currentGroupStatus = false;
   @override
   void initState() {
     super.initState();
+    log("In it state of group switch ${widget.groupStatus}");
+    currentGroupStatus = widget.groupStatus;
     SchedulerBinding.instance.addPostFrameCallback((_) {
       ref
           .read(groupSwitchTogleProvider.notifier)
@@ -39,25 +44,29 @@ class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
 
   @override
   Widget build(BuildContext context) {
+    log("rebuild Group Switch $currentGroupStatus");
     MqttService mqttService = MqttService();
-    var groupSwitchCurretState = ref.watch(groupSwitchTogleProvider);
+    // var groupSwitchCurretState = ref.watch(groupSwitchTogleProvider);
     final groupSwitchProvider = ref.read(groupSwitchTogleProvider.notifier);
     return Switch(
-      value:
-          groupSwitchProvider.mapOfGroupSwitchStates[widget.groupId] ?? false,
+      value: currentGroupStatus,
       onChanged: (value) async {
+        final hasInternet =
+            await ConnectivityHelper.hasInternetConnection(context);
+        if (!hasInternet) return;
         if (mqttService.isConnected) {
           ////////
-          final hasInternet =
-              await ConnectivityHelper.hasInternetConnection(context);
-          if (!hasInternet) return;
+          setState(() {
+            currentGroupStatus = value;
+          });
           ////////
           showProgressDialog(
-              context: context, message: "Updating group status");
+              context: context, message: "Updating All devices in group");
           await groupSwitchProvider.onGroupSwitchToggle(
               value, widget.groupName, widget.groupId, context);
           await ref.read(deviceStateProvider.notifier).getAllDevices();
-          Navigator.pop(context);
+          await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
+          // Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("MQTT is not connected. Cannot send the command."),

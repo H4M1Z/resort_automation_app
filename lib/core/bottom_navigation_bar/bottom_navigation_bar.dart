@@ -2,25 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/bottom_navigation_bar/items.dart';
 import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
-import 'package:provider/provider.dart';
 
 BottomNavigationBar getBottomNavigationBar(
     BuildContext context, WidgetRef ref) {
+  final theme = Theme.of(context);
+  final isDark = theme.brightness == Brightness.dark;
   return BottomNavigationBar(
     currentIndex: ref.watch(bottomBarStateProvider),
     onTap: (value) {
       ref.read(bottomBarStateProvider.notifier).changeIndex(value);
     },
-    items: const [
-      BottomNavigationBarItems.item1,
-      BottomNavigationBarItems.item2,
-      BottomNavigationBarItems.item3,
+    items: [
+      BottomNavigationBarItems.getitem1(isDark),
+      BottomNavigationBarItems.getitem2(isDark),
+      BottomNavigationBarItems.getitem3(isDark),
     ],
     backgroundColor: Theme.of(context).colorScheme.primary,
     elevation: 10,
     type: BottomNavigationBarType.fixed,
     selectedItemColor: Colors.white, // Highlight selected items
-    unselectedItemColor: Colors.grey.shade400,
+    unselectedItemColor: isDark
+        ? const Color.fromARGB(255, 236, 231, 231)
+        : Colors.grey.shade400,
     selectedFontSize: 14,
     unselectedFontSize: 12,
     showUnselectedLabels: true, // Ensure labels are always shown

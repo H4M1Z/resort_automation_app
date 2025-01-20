@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
 import 'package:home_automation_app/core/commom/functions/write_asset_to_file.dart';
+import 'package:home_automation_app/core/services/navigation_service.dart';
 import 'package:home_automation_app/main.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
@@ -62,14 +64,9 @@ class MqttService {
       return;
     }
 
-    final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.values) {
-      Fluttertoast.showToast(
-          msg: 'No internet connection. MQTT will connect when online.');
-      monitorInternetConnectionAndReconnect(); // Wait for internet
-      return;
-    }
-
+    bool isConnectedToInternet = await ConnectivityHelper.hasInternetConnection(
+        NavigationService.navigatorKey.currentState!.context);
+    if (!isConnectedToInternet) return;
     try {
       log('Attempting to connect to MQTT broker...');
       final connectionFuture = client.connect();
@@ -109,7 +106,7 @@ class MqttService {
     subscribeToTopic(topic2);
   }
 
-  void _onDisconnected() {
+  void _onDisconnected() async {
     log('Disconnected from the MQTT broker.');
     isConnected = false;
 
@@ -122,17 +119,23 @@ class MqttService {
     }
 
     // Wait for reconnection only when the internet is restored
-    monitorInternetConnectionAndReconnect();
+    bool isConnectedToInternet = await ConnectivityHelper.hasInternetConnection(
+        NavigationService.navigatorKey.currentState!.context);
+    if (isConnectedToInternet) {
+      monitorInternetConnectionAndReconnect();
+    }
   }
 
   void monitorInternetConnectionAndReconnect() {
+    log("Monitor Internet Connection and Reconnect Function triggered");
     Connectivity().onConnectivityChanged.listen((result) {
       if (result != ConnectivityResult.none && !isConnected) {
         log('Internet connection restored. Attempting to reconnect...');
         Fluttertoast.showToast(
           msg: 'Internet restored. Reconnecting to MQTT...',
         );
-        connect(); // Attempt reconnection
+        connect();
+        // // Attempt reconnection
       } else if (result == ConnectivityResult.values) {
         Fluttertoast.showToast(
           msg: 'No internet connection.',

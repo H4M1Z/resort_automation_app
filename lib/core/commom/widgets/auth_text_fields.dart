@@ -41,7 +41,7 @@ class CustomTextField extends StatelessWidget {
               cursorColor: Colors.grey.shade700,
               controller: controller,
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: MediaQuery.sizeOf(context).height * 0.02,
               ),
               decoration: InputDecoration(

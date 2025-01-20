@@ -54,12 +54,13 @@ class IdsUploaderController extends Notifier<List<bool>> {
 
     var listOfGroups =
         await deviceGroupCollection.getAllDeviceGroups(globalUserId);
-
+    var groupId =
+        "${listOfGroups[listOfGroups.length - 1].groupId} ${groupNameController.text}";
     DeviceGroup group = DeviceGroup(
       createdAt: DateTime.now(),
       currentStatus: false,
       deviceIds: listOfIds,
-      groupId: "0${listOfGroups.length + 1} ${groupNameController.text}",
+      groupId: groupId,
       groupName: groupNameController.text,
       updatedAt: DateTime.now(),
     );

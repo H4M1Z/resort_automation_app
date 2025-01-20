@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
+import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/pages/device_scaning_tab/device_selection_tab.dart';
 import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
 import 'package:home_automation_app/pages/group_tab/controller/ids_uploader_controller.dart';
@@ -29,7 +30,9 @@ class _GroupTabState extends ConsumerState<GroupTab> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+
     var state = ref.watch(deviceGroupsProvider);
+    // ref.watch(groupSwitchTogleProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -138,10 +141,14 @@ class _GroupTabState extends ConsumerState<GroupTab> {
                   final hasInternet =
                       await ConnectivityHelper.hasInternetConnection(context);
                   if (!hasInternet) return;
+                  showProgressDialog(
+                      context: context,
+                      message: "Getting devices for grouping");
                   await ref
                       .read(scannedDeviceProvider.notifier)
                       .onClickAddDevices(ref);
                   // Navigate to device scanning tab
+                  Navigator.of(context).pop();
                   Navigator.push(
                     context,
                     MaterialPageRoute(

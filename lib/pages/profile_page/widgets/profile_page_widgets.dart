@@ -248,55 +248,23 @@ class StyledTextField extends StatelessWidget {
     required this.controller,
     this.enabled = true,
   });
+
   final ValidationFunction? validator;
   final VoidCallback? onSuffixIconTap;
   final IconData? suffixIcon;
   final TextEditingController controller;
   final bool enabled;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-<<<<<<< HEAD
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: TextFormField(
-          style: TextStyle(color: isDark ? Colors.black : Colors.black),
-          obscureText: isPassword,
-          enabled: enabled,
-          controller: controller,
-          onTap: () {
-            if (!enabled) {
-              context.showPopUpMsg(
-                  'Login through email and password to modify this field!');
-            }
-          },
-          validator: validator,
-          decoration: InputDecoration(
-            suffixIcon: IconButton(
-              onPressed: onSuffixIconTap,
-              icon: Icon(
-                suffixIcon,
-                color: Colors.grey.shade600,
-=======
       child: GestureDetector(
         onTap: () {
-          log('tapped');
-          log('enabled ===> $enabled');
           if (!enabled) {
-            log('message');
-            // context.showPopUpMsg(
-            //     'Login through email and password to modify this field!');
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text(
                   'Login through email and password to modify this field!'),
@@ -311,11 +279,11 @@ class StyledTextField extends StatelessWidget {
                 color: Colors.black.withOpacity(0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
->>>>>>> 979fdcd2d39befc747300b1dd2f9c61fdcf9bcde
               ),
             ],
           ),
           child: TextFormField(
+            style: TextStyle(color: isDark ? Colors.white : Colors.black),
             obscureText: isPassword,
             enabled: enabled,
             controller: controller,

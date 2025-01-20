@@ -15,43 +15,46 @@ class SignUpScreen extends StatelessWidget {
   static const pageName = '/sign-up-screen';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const LottieRobot(),
-            Consumer(
-              builder: (context, ref, child) {
-                final state = ref.watch(signupControllerProvider);
-                final controller = ref.read(signupControllerProvider.notifier);
-                switch (state) {
-                  case SignupInitialState():
-                    return const SignUpForm();
-                  case SignupLoadingState():
-                    return const LoadingWidget(
-                      child: SignUpForm(),
-                    );
-                  case SignupSuccessState():
-                    _navigate(
-                      () {
-                        Navigator.popAndPushNamed(
-                            context, LoginScreen.pageName);
-                        controller.reinitializeStateAndClearControllers();
-                      },
-                    );
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const LottieRobot(),
+              Consumer(
+                builder: (context, ref, child) {
+                  final state = ref.watch(signupControllerProvider);
+                  final controller =
+                      ref.read(signupControllerProvider.notifier);
+                  switch (state) {
+                    case SignupInitialState():
+                      return const SignUpForm();
+                    case SignupLoadingState():
+                      return const LoadingWidget(
+                        child: SignUpForm(),
+                      );
+                    case SignupSuccessState():
+                      _navigate(
+                        () {
+                          Navigator.popAndPushNamed(
+                              context, LoginScreen.pageName);
+                          controller.reinitializeStateAndClearControllers();
+                        },
+                      );
 
-                    return const SignUpForm();
-                  case SignupErrorState():
-                    context.showPopUpMsg(
-                      state.errorMessage,
-                      seconds: 2,
-                    );
-                    return const SignUpForm();
-                }
-              },
-            )
-          ],
+                      return const SignUpForm();
+                    case SignupErrorState():
+                      context.showPopUpMsg(
+                        state.errorMessage,
+                        seconds: 2,
+                      );
+                      return const SignUpForm();
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

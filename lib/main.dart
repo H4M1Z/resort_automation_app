@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/config/navigation/route_navigation.dart';
 import 'package:home_automation_app/config/service_locator.dart';
+import 'package:home_automation_app/core/services/navigation_service.dart';
 import 'package:home_automation_app/core/services/user_management_service.dart';
 import 'package:home_automation_app/firebase_options.dart';
 import 'package:home_automation_app/pages/login_page/view/login_page.dart';
@@ -57,6 +58,7 @@ class IoTApp extends ConsumerWidget {
     }
 
     return MaterialApp(
+      navigatorKey: NavigationService.navigatorKey,
       onGenerateRoute: onGenerateRoute,
       theme: lightTheme,
       darkTheme: darkTheme,

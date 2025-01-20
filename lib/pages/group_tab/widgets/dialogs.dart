@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
 import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
 import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
 
@@ -20,6 +21,9 @@ void showDeleteConfirmationDialog(
         ),
         ElevatedButton(
           onPressed: () async {
+            final hasInternet =
+                await ConnectivityHelper.hasInternetConnection(context);
+            if (!hasInternet) return;
             showProgressDialog(context: context, message: "Deleting group");
             await ref.read(deviceGroupsProvider.notifier).deleteGroup(groupId);
             await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();

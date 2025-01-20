@@ -76,9 +76,6 @@ class GroupDeleteButton extends ConsumerWidget {
       width: 120,
       child: ElevatedButton(
         onPressed: () async {
-          final hasInternet =
-              await ConnectivityHelper.hasInternetConnection(context);
-          if (!hasInternet) return;
           // Perform action
           showDeleteConfirmationDialog(context, ref, groupId);
         },

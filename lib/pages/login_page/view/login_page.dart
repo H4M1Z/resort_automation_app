@@ -16,43 +16,46 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const LottieRobot(),
-              Consumer(
-                builder: (context, ref, child) {
-                  final state = ref.watch(loginControllerProvider);
-                  final controller = ref.read(loginControllerProvider.notifier);
-                  switch (state) {
-                    case UserSigninInitialState():
-                      return const LoginForm();
-                    case UserSigninLoadingState():
-                      return const LoadingWidget(
-                        child: LoginForm(),
-                      );
-                    case UserSigninLoadedState():
-                      _navigate(
-                        () {
-                          Navigator.popAndPushNamed(
-                              context, SplashScreen.pageName);
-                          controller.reinitialzeStateAndClearControllers();
-                        },
-                      );
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const LottieRobot(),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final state = ref.watch(loginControllerProvider);
+                    final controller =
+                        ref.read(loginControllerProvider.notifier);
+                    switch (state) {
+                      case UserSigninInitialState():
+                        return const LoginForm();
+                      case UserSigninLoadingState():
+                        return const LoadingWidget(
+                          child: LoginForm(),
+                        );
+                      case UserSigninLoadedState():
+                        _navigate(
+                          () {
+                            Navigator.popAndPushNamed(
+                                context, SplashScreen.pageName);
+                            controller.reinitialzeStateAndClearControllers();
+                          },
+                        );
 
-                      return const LoginForm();
-                    case UserSigninErrorState():
-                      context.showPopUpMsg(state.errorMessage);
-                      return const LoginForm();
-                  }
-                },
-              ),
-            ],
+                        return const LoginForm();
+                      case UserSigninErrorState():
+                        context.showPopUpMsg(state.errorMessage);
+                        return const LoginForm();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

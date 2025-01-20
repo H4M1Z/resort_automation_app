@@ -163,6 +163,17 @@ class SettingsTabState extends ConsumerState<SettingsTab> {
                         },
                       ),
                       ListTile(
+                        leading: Icon(
+                          Icons.qr_code,
+                          color: isDark
+                              ? Colors.white
+                              : Theme.of(context).primaryColor,
+                        ),
+                        title: const Text("Qr Code"),
+                        trailing: const Icon(Icons.arrow_forward),
+                        onTap: () {},
+                      ),
+                      ListTile(
                         leading: Icon(Icons.star,
                             color: isDark
                                 ? Colors.white

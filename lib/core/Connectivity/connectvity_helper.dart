@@ -31,6 +31,7 @@ class ConnectivityHelper {
 
   /// Displays a no internet connection message.
   static void _showNoInternetMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(

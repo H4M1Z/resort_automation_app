@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
+import 'package:home_automation_app/core/messenger/scafold_messenger.dart';
 import 'package:home_automation_app/core/model_classes/device.dart';
 import 'package:home_automation_app/core/protocol/mqt_service.dart';
 import 'package:home_automation_app/main.dart';
@@ -55,11 +56,12 @@ class _DeviceSliderState extends ConsumerState<DeviceSlider> {
       label: value.round().toString(),
       onChanged: (newValue) async {
         MqttService mqttService = MqttService();
+        final hasInternet =
+            await ConnectivityHelper.hasInternetConnection(context);
+        if (!hasInternet) return;
         if (mqttService.isConnected) {
           //Checking for internet
-          final hasInternet =
-              await ConnectivityHelper.hasInternetConnection(context);
-          if (!hasInternet) return;
+
           //Checking if the switch is on
           bool isSwitchOn = ref
                   .read(switchStateProvider.notifier)
@@ -83,13 +85,8 @@ class _DeviceSliderState extends ConsumerState<DeviceSlider> {
             );
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("MQTT is not connected. Cannot send the command."),
-              duration: Duration(seconds: 1),
-            ),
-          );
-          log('MQTT is not connected. Cannot send the command.');
+          showScafoldMessenger(
+              context, "MQTT is not connected. Cannot send the command.");
         }
       },
       activeColor: widget.isDarkMode
