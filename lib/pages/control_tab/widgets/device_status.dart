@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/pages/control_tab/controllers/switch_state_controller.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/pages/control_tab/controllers/switch_state_controller.dart';
 
 class DeviceStatus extends ConsumerWidget {
   final Device device;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/commom/widgets/loading_widget.dart';
-import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
-import 'package:home_automation_app/pages/login_page/controllers/login_page_controller.dart';
-import 'package:home_automation_app/pages/login_page/view/widgets/login_screen_widgets.dart';
-import 'package:home_automation_app/pages/splash_screen/splash_screen.dart';
+import 'package:resort_automation_app/core/commom/widgets/loading_widget.dart';
+import 'package:resort_automation_app/core/extensions/pop_up_messages.dart';
+import 'package:resort_automation_app/pages/login_page/controllers/login_page_controller.dart';
+import 'package:resort_automation_app/pages/login_page/view/widgets/login_screen_widgets.dart';
+import 'package:resort_automation_app/pages/splash_screen/splash_screen.dart';
 
 import '../../../core/commom/widgets/lottie_robot_widget.dart';
 

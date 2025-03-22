@@ -1,0 +1,1 @@
+C:\Dart\Flutter Projects\resort_automation_app\build\app\intermediates\cxx\RelWithDebInfo\2qnh3r2l\obj\armeabi-v7a

@@ -26,7 +26,21 @@ class BottomNavigationBarItems {
         ),
         label: 'Group',
       );
+
   static BottomNavigationBarItem getitem3(bool isDark) =>
+      const BottomNavigationBarItem(
+        icon: Icon(
+          Icons.qr_code_scanner_outlined,
+          color: Colors.blueGrey,
+        ),
+        activeIcon: Icon(
+          Icons.qr_code_scanner_sharp,
+          color: Color.fromARGB(255, 7, 149, 173),
+        ),
+        label: 'QR Code',
+      );
+
+  static BottomNavigationBarItem getitem4(bool isDark) =>
       const BottomNavigationBarItem(
         icon: Icon(
           Icons.settings_outlined,
@@ -36,6 +50,6 @@ class BottomNavigationBarItems {
           Icons.settings,
           color: Color.fromARGB(255, 7, 149, 173),
         ),
-        label: 'Setting',
+        label: 'Settings',
       );
 }

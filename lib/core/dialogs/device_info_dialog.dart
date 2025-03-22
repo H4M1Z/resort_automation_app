@@ -1,10 +1,10 @@
 // import 'dart:developer';
 
 // import 'package:flutter/material.dart';
-// import 'package:home_automation_app/core/dialogs/widgets/device_slider.dart';
-// import 'package:home_automation_app/core/dialogs/widgets/device_switch.dart';
-// import 'package:home_automation_app/providers/add_device_type_provider.dart';
-// import 'package:home_automation_app/providers/device_state_change_provider.dart';
+// import 'package:resort_automation_app/core/dialogs/widgets/device_slider.dart';
+// import 'package:resort_automation_app/core/dialogs/widgets/device_switch.dart';
+// import 'package:resort_automation_app/providers/add_device_type_provider.dart';
+// import 'package:resort_automation_app/providers/device_state_change_provider.dart';
 // import 'package:provider/provider.dart';
 
 // void showDeviceInfoDialog(BuildContext context, int index, String userId) {

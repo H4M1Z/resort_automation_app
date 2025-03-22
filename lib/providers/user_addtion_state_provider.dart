@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/config/service_locator.dart';
-import 'package:home_automation_app/core/collections/user_collection.dart';
-import 'package:home_automation_app/core/enums.dart';
-import 'package:home_automation_app/core/model_classes/user_model.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
-import 'package:home_automation_app/utils/asset_images.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/collections/user_collection.dart';
+import 'package:resort_automation_app/core/enums.dart';
+import 'package:resort_automation_app/core/model_classes/user_model.dart';
+import 'package:resort_automation_app/core/services/user_management_service.dart';
+import 'package:resort_automation_app/utils/asset_images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Define the NotifierProvider

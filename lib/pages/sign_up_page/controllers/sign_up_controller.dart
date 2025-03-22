@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:home_automation_app/core/commom/mixins/auth_behaviour.dart';
-import 'package:home_automation_app/core/enums.dart';
-import 'package:home_automation_app/core/model_classes/sign_up_model.dart';
-import 'package:home_automation_app/core/model_classes/user_model.dart';
-import 'package:home_automation_app/pages/sign_up_page/controllers/profile_pic_controller.dart';
+import 'package:resort_automation_app/core/commom/mixins/auth_behaviour.dart';
+import 'package:resort_automation_app/core/enums.dart';
+import 'package:resort_automation_app/core/model_classes/sign_up_model.dart';
+import 'package:resort_automation_app/core/model_classes/user_model.dart';
+import 'package:resort_automation_app/pages/sign_up_page/controllers/profile_pic_controller.dart';
 
 import '../../../core/services/auth_services.dart';
 import '../../../core/services/user_management_service.dart';

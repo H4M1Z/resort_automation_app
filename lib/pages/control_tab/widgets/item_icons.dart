@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/utils/icons.dart';
-import 'package:home_automation_app/utils/screen_meta_data.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/utils/screen_meta_data.dart';
 
 class ItemIcon extends StatelessWidget {
   final Device device;
@@ -16,7 +15,7 @@ class ItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Icon(
-      getDeviceIcon(device.type),
+      Icons.lightbulb,
       size: 40,
       color: isDarkMode ? const Color(0xFF4FC0E7) : theme.primaryColor,
     );

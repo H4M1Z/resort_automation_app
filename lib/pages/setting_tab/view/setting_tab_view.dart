@@ -3,14 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/config/navigation/route_navigation.dart';
-import 'package:home_automation_app/config/service_locator.dart';
-import 'package:home_automation_app/core/dialogs/logout_dialog.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
-import 'package:home_automation_app/pages/profile_page/profile_page.dart';
-import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
-import 'package:home_automation_app/themes/state_provider.dart';
-import 'package:home_automation_app/utils/asset_images.dart';
+import 'package:resort_automation_app/config/navigation/route_navigation.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/dialogs/logout_dialog.dart';
+import 'package:resort_automation_app/core/services/user_management_service.dart';
+import 'package:resort_automation_app/pages/profile_page/profile_page.dart';
+import 'package:resort_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
+import 'package:resort_automation_app/themes/state_provider.dart';
+import 'package:resort_automation_app/utils/asset_images.dart';
 
 import 'widgets/setting_tab_widget.dart';
 

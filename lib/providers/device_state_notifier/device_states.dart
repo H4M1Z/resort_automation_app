@@ -1,5 +1,5 @@
 // Through RriverPod
-import 'package:home_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
 
 abstract class DeviceDataStates {}
 
@@ -16,3 +16,5 @@ class DeviceDataErrorState extends DeviceDataStates {
   final String error;
   DeviceDataErrorState({required this.error});
 }
+
+class DevicesDataCodeScannedState extends DeviceDataStates {}

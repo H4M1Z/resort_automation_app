@@ -1,50 +1,54 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/collections/device_collection.dart';
-import 'package:home_automation_app/core/collections/device_group_collection.dart';
-import 'package:home_automation_app/core/model_classes/device_group.dart';
-import 'package:home_automation_app/main.dart';
-import 'package:home_automation_app/pages/group_tab/controller/group_switch_togle.dart';
+import 'package:resort_automation_app/core/model_classes/device_group.dart';
+import 'package:resort_automation_app/providers/device_state_notifier/firebase_services.dart';
+import 'package:resort_automation_app/utils/strings/shared_pref_keys.dart';
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferences;
+
+import '../../../config/service_locator.dart';
 
 final deviceGroupsProvider =
     NotifierProvider<GroupStateController, DeviceGroupStates>(
         GroupStateController.new);
 
 class GroupStateController extends Notifier<DeviceGroupStates> {
-  DeviceCollection deviceCollection = DeviceCollection();
-  DeviceGroupCollection deviceGroupCollection = DeviceGroupCollection();
+  final _firebaseServices = FirebaseServices();
+
   @override
   DeviceGroupStates build() {
     return DeviceGroupInitalState();
   }
 
-  Future<void> getAllDeviceGroups() async {
-    log("device groups called");
-    state = DeviceGroupLoadingState();
-    try {
-      var list = await deviceGroupCollection.getAllDeviceGroups(globalUserId);
-      if (list.isNotEmpty) {
-        for (var group in list) {
-          ref
-              .read(groupSwitchTogleProvider.notifier)
-              .mapOfGroupSwitchStates[group.groupId] = group.currentStatus;
-        }
-      }
-
-      state = DeviceGroupLoadedState(list: list);
-      log("Group loaded state ");
-    } catch (e) {
-      state = DeviceGroupErrorState(error: e.toString());
-      log("Error in getting device groups ${e.toString()}");
-    }
+  showGroup() {
+    state = DeviceGroupRoomIdScennedState();
   }
 
-  Future<void> deleteGroup(String groupId) async {
+  listenToRoom() {
+    final sharedPref = serviceLocator.get<SharedPreferences>();
+    final roomNumber = sharedPref.getString(SharedPrefKeys.kUserRoomNo);
+    return _firebaseServices.listenToRoom(roomNumber!);
+  }
+
+  getGroup() async {
     try {
-      await deviceGroupCollection.deleteDeviceGroup(globalUserId, groupId);
+      state = DeviceGroupLoadingState();
+      final sharedPref = serviceLocator.get<SharedPreferences>();
+      final roomNumber = sharedPref.getString(SharedPrefKeys.kUserRoomNo);
+      if (roomNumber != null) {
+        final room = await _firebaseServices.getRoom(roomNumber);
+        log('room fetched from firebase');
+        state = DeviceGroupLoadedState(
+          group: room,
+        );
+      } else {
+        state = DeviceGroupInitalState();
+      }
     } catch (e) {
-      log("Error in deleting group ${e.toString()}");
+      //..........................RUN AND CKECK
+      log('error fetching room : ${e.toString()}');
+      state = DeviceGroupErrorState(error: e.toString());
     }
   }
 }
@@ -58,11 +62,13 @@ class DeviceGroupInitalState extends DeviceGroupStates {}
 class DeviceGroupLoadingState extends DeviceGroupStates {}
 
 class DeviceGroupLoadedState extends DeviceGroupStates {
-  final List<DeviceGroup> list;
-  const DeviceGroupLoadedState({required this.list});
+  final DeviceGroup group;
+  const DeviceGroupLoadedState({required this.group});
 }
 
 class DeviceGroupErrorState extends DeviceGroupStates {
   final String error;
   const DeviceGroupErrorState({required this.error});
 }
+
+class DeviceGroupRoomIdScennedState extends DeviceGroupStates {}

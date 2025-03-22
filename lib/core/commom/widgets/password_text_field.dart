@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/core/commom/widgets/auth_text_fields.dart';
+import 'package:resort_automation_app/core/commom/widgets/auth_text_fields.dart';
 
 class PasswordTextField extends StatefulWidget {
   const PasswordTextField({

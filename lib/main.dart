@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/config/navigation/route_navigation.dart';
-import 'package:home_automation_app/config/service_locator.dart';
-import 'package:home_automation_app/core/services/navigation_service.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
-import 'package:home_automation_app/firebase_options.dart';
-import 'package:home_automation_app/pages/login_page/view/login_page.dart';
-import 'package:home_automation_app/pages/splash_screen/splash_screen.dart';
-import 'package:home_automation_app/providers/user_addtion_state_provider.dart';
-import 'package:home_automation_app/themes/state_provider.dart';
-import 'package:home_automation_app/themes/theme.dart';
+import 'package:resort_automation_app/config/navigation/route_navigation.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/services/navigation_service.dart';
+import 'package:resort_automation_app/core/services/user_management_service.dart';
+import 'package:resort_automation_app/firebase_options.dart';
+import 'package:resort_automation_app/pages/login_page/view/login_page.dart';
+import 'package:resort_automation_app/pages/splash_screen/splash_screen.dart';
+import 'package:resort_automation_app/providers/user_addtion_state_provider.dart';
+import 'package:resort_automation_app/themes/state_provider.dart';
+import 'package:resort_automation_app/themes/theme.dart';
 
 String globalUserId = "user1";
 
@@ -27,7 +27,6 @@ void main() async {
   Widget? widget;
 
   if (isUserSignedIn) {
-    globalUserId = sl.getUserUid()!;
     widget = const SplashScreen();
   } else {
     widget = const LoginScreen();

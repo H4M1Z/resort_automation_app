@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/core/protocol/mqt_service.dart';
+import 'package:resort_automation_app/core/protocol/mqt_service.dart';
 
 Future<bool?> showReconnectionDialog(BuildContext context) async {
   MqttService mqttService = MqttService();

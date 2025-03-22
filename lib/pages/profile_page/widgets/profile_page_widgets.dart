@@ -1,13 +1,12 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validation/form_validation.dart';
-import 'package:home_automation_app/core/commom/functions/common_functions.dart';
-import 'package:home_automation_app/core/commom/widgets/auth_text_fields.dart';
-import 'package:home_automation_app/pages/profile_page/controller/profile_page_controller.dart';
-import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
+import 'package:resort_automation_app/core/commom/functions/common_functions.dart';
+import 'package:resort_automation_app/core/commom/widgets/auth_text_fields.dart';
+import 'package:resort_automation_app/pages/profile_page/controller/profile_page_controller.dart';
+import 'package:resort_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
 import 'custom_clipper.dart';
 

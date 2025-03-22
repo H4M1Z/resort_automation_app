@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/commom/widgets/loading_widget.dart';
-import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
+import 'package:resort_automation_app/core/commom/widgets/loading_widget.dart';
+import 'package:resort_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
 class ProfileWidget extends ConsumerWidget {
   final String profileImageUrl;

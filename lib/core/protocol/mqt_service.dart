@@ -4,12 +4,16 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
-import 'package:home_automation_app/core/commom/functions/write_asset_to_file.dart';
-import 'package:home_automation_app/core/services/navigation_service.dart';
-import 'package:home_automation_app/main.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/Connectivity/connectvity_helper.dart';
+import 'package:resort_automation_app/core/commom/functions/write_asset_to_file.dart'
+    show writeAssetToFile;
+import 'package:resort_automation_app/core/services/navigation_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../utils/strings/shared_pref_keys.dart';
 
 class MqttService {
   static final MqttService _instance = MqttService._internal();
@@ -29,7 +33,7 @@ class MqttService {
     client.port = 8883; // Use the secure port
     client.keepAlivePeriod = 30;
     client.secure = true; // Enable secure connection
-
+    // client.onBadCertificate = (dynamic a) => true;
     // Load the certificates
     Future.wait([
       writeAssetToFile('assets/certificates/mosquitto.org.crt', 'ca.crt'),
@@ -98,12 +102,21 @@ class MqttService {
     isConnected = true;
     retryCount = 0;
 
-    // Re-subscribe to topics after successful reconnection
-    final userId = globalUserId; // Replace with dynamic user ID
-    final topic = 'user/$userId/device/+/status'; // Example topic
-    const topic2 = "user123/+/init";
-    subscribeToTopic(topic);
-    subscribeToTopic(topic2);
+    final sharedPref = serviceLocator.get<SharedPreferences>();
+    final roomId = sharedPref.getString(SharedPrefKeys.kUserRoomNo);
+
+    if (roomId != null) {
+      // Re-subscribe to topics after successful reconnection
+
+      final topic = 'roomNo/$roomId/device/+/status'; // Example topic
+
+      const topic2 = "roomNo/+/init";
+
+      subscribeToTopic(topic);
+      subscribeToTopic(topic2);
+    } else {
+      log('cannot subscribe to topic qr code not scanned');
+    }
   }
 
   void _onDisconnected() async {
@@ -183,6 +196,7 @@ class MqttService {
     }
 
     final builder = MqttClientPayloadBuilder();
+    // final jsonMessage = jsonEncode(message);
     builder.addString(message);
     client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
     log('Message published to $topic: $message');

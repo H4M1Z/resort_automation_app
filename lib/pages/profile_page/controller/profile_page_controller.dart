@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
-import 'package:home_automation_app/core/services/user_profile_service.dart';
-import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:resort_automation_app/core/extensions/pop_up_messages.dart';
+import 'package:resort_automation_app/core/services/user_profile_service.dart';
+import 'package:resort_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
 
 @immutable
 sealed class ProfilePageStates {

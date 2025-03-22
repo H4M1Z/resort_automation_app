@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/commom/widgets/password_text_field.dart';
-import 'package:home_automation_app/pages/forgot_password_page/view/forgot_passwrod_page.dart';
-import 'package:home_automation_app/pages/login_page/controllers/login_page_controller.dart';
-import 'package:home_automation_app/pages/sign_up_page/view/signup_page.dart';
+import 'package:resort_automation_app/core/commom/widgets/password_text_field.dart';
+import 'package:resort_automation_app/pages/forgot_password_page/view/forgot_passwrod_page.dart';
+import 'package:resort_automation_app/pages/login_page/controllers/login_page_controller.dart';
+import 'package:resort_automation_app/pages/sign_up_page/view/signup_page.dart';
 
 import '../../../../core/commom/functions/common_functions.dart';
 import '../../../../core/commom/widgets/auth_buttons.dart';

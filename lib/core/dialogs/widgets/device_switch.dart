@@ -1,16 +1,15 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
-import 'package:home_automation_app/core/messenger/scafold_messenger.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/core/protocol/mqt_service.dart';
-import 'package:home_automation_app/main.dart';
-import 'package:home_automation_app/pages/control_tab/controllers/switch_state_controller.dart';
-import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
-import 'package:home_automation_app/utils/hexa_into_number.dart';
+import 'package:resort_automation_app/core/Connectivity/connectvity_helper.dart';
+import 'package:resort_automation_app/core/messenger/scafold_messenger.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/core/protocol/mqt_service.dart';
+import 'package:resort_automation_app/pages/control_tab/controllers/switch_state_controller.dart';
+import 'package:resort_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
+import 'package:resort_automation_app/utils/hexa_into_number.dart';
 
 class DeviceSwitch extends ConsumerStatefulWidget {
   final Device device;
@@ -29,9 +28,9 @@ class _DeviceSwitchState extends ConsumerState<DeviceSwitch> {
   @override
   void initState() {
     super.initState();
-    isSwitchOn = GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
-            widget.device.type, widget.device.status) ==
-        "On";
+    isSwitchOn =
+        GerenrateNumberFromHexa.hexaIntoStringForBulb(widget.device.status) ==
+            "On";
     SchedulerBinding.instance.addPostFrameCallback((_) {
       ref.read(switchStateProvider.notifier).intialSwitchState(isSwitchOn);
     });
@@ -57,7 +56,7 @@ class _DeviceSwitchState extends ConsumerState<DeviceSwitch> {
             });
             ref
                 .read(deviceStateProvider.notifier)
-                .toggleSwitch(value, widget.device, globalUserId, context, ref);
+                .toggleSwitch(value, widget.device, context);
           } else {
             showScafoldMessenger(
                 context, "MQTT is not connected. Cannot send the command.");

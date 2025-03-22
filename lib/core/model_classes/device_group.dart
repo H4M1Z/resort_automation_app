@@ -1,39 +1,36 @@
-class DeviceGroup {
-  final String groupId;
-  final String groupName;
-  final List<String> deviceIds;
-  final bool currentStatus;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+import 'package:resort_automation_app/core/model_classes/device.dart'
+    show Device;
 
-  DeviceGroup({
-    required this.currentStatus,
-    required this.groupId,
-    required this.groupName,
-    required this.deviceIds,
-    required this.createdAt,
-    required this.updatedAt,
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+class DeviceGroup {
+  final String roomNumber;
+  final List<Device>? devices;
+  final bool groupStatus;
+  const DeviceGroup({
+    required this.roomNumber,
+    this.devices,
+    required this.groupStatus,
   });
 
-  factory DeviceGroup.fromJson(Map<String, dynamic> json) {
-    return DeviceGroup(
-      currentStatus: json['currentStatus'],
-      groupId: json['groupId'],
-      groupName: json['groupName'],
-      deviceIds: List<String>.from(json['deviceIds']),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-    );
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'roomNumber': roomNumber,
+      'devices': devices!.map((x) => x.toJson()).toList(),
+      'groupStatus': groupStatus,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'currentStatus': currentStatus,
-      'groupId': groupId,
-      'groupName': groupName,
-      'deviceIds': deviceIds,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-    };
+  factory DeviceGroup.fromMap(Map<String, dynamic> map) {
+    return DeviceGroup(
+      roomNumber: map['roomNumber'] ?? '',
+      devices: map['devices'] != null
+          ? List<Device>.from(
+              (map['devices'] as List<Map<String, dynamic>>).map<Device?>(
+                (x) => Device.fromJson(x),
+              ),
+            )
+          : null,
+      groupStatus: map['groupValue'] ?? false,
+    );
   }
 }

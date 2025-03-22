@@ -3,25 +3,19 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
-import 'package:home_automation_app/core/dialogs/progress_dialog.dart';
-import 'package:home_automation_app/core/protocol/mqt_service.dart';
-import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
-import 'package:home_automation_app/pages/group_tab/controller/group_switch_togle.dart';
-import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
+import 'package:resort_automation_app/core/Connectivity/connectvity_helper.dart';
+import 'package:resort_automation_app/core/dialogs/progress_dialog.dart';
+import 'package:resort_automation_app/core/protocol/mqt_service.dart';
+import 'package:resort_automation_app/pages/group_tab/controller/group_switch_togle.dart';
 
 class SwitchNuemorphic extends ConsumerStatefulWidget {
   final bool isDarkMode;
   final ThemeData theme;
-  final String groupName;
-  final String groupId;
   final bool groupStatus;
   const SwitchNuemorphic(
       {super.key,
       required this.isDarkMode,
       required this.theme,
-      required this.groupName,
-      required this.groupId,
       required this.groupStatus});
 
   @override
@@ -30,6 +24,7 @@ class SwitchNuemorphic extends ConsumerStatefulWidget {
 
 class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
   bool currentGroupStatus = false;
+  final MqttService mqttService = MqttService();
   @override
   void initState() {
     super.initState();
@@ -45,7 +40,6 @@ class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
   @override
   Widget build(BuildContext context) {
     log("rebuild Group Switch $currentGroupStatus");
-    MqttService mqttService = MqttService();
     // var groupSwitchCurretState = ref.watch(groupSwitchTogleProvider);
     final groupSwitchProvider = ref.read(groupSwitchTogleProvider.notifier);
     return Switch(
@@ -62,11 +56,10 @@ class _SwitchNuemorphicState extends ConsumerState<SwitchNuemorphic> {
           ////////
           showProgressDialog(
               context: context, message: "Updating All devices in group");
-          await groupSwitchProvider.onGroupSwitchToggle(
-              value, widget.groupName, widget.groupId, context);
-          await ref.read(deviceStateProvider.notifier).getAllDevices();
-          await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
-          // Navigator.pop(context);
+          await groupSwitchProvider.onGroupSwitchToggle(value, context);
+          // await ref.read(deviceStateProvider.notifier).getAllDevices();
+          // await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
+          Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("MQTT is not connected. Cannot send the command."),

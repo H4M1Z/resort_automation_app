@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/bottom_navigation_bar/items.dart';
-import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
+import 'package:resort_automation_app/core/bottom_navigation_bar/items.dart';
+import 'package:resort_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
 
 BottomNavigationBar getBottomNavigationBar(
     BuildContext context, WidgetRef ref) {
@@ -16,6 +16,7 @@ BottomNavigationBar getBottomNavigationBar(
       BottomNavigationBarItems.getitem1(isDark),
       BottomNavigationBarItems.getitem2(isDark),
       BottomNavigationBarItems.getitem3(isDark),
+      BottomNavigationBarItems.getitem4(isDark),
     ],
     backgroundColor: Theme.of(context).colorScheme.primary,
     elevation: 10,

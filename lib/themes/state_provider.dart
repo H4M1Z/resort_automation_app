@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/config/service_locator.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/services/user_management_service.dart';
 
 // Define the NotifierProvider for managing theme state
 final themeStateProvider =

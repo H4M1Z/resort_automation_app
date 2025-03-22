@@ -1,6 +1,6 @@
-import 'package:home_automation_app/config/service_locator.dart';
-import 'package:home_automation_app/core/enums.dart';
-import 'package:home_automation_app/utils/strings/shared_pref_keys.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/enums.dart';
+import 'package:resort_automation_app/utils/strings/shared_pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserManagementService {

@@ -1,0 +1,2 @@
+C:/Dart/Flutter Projects/resort_automation_app/android/app/.cxx/RelWithDebInfo/2qnh3r2l/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Dart/Flutter Projects/resort_automation_app/android/app/.cxx/RelWithDebInfo/2qnh3r2l/arm64-v8a/CMakeFiles/rebuild_cache.dir

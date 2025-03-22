@@ -4,11 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validation/form_validation.dart';
-import 'package:home_automation_app/core/commom/functions/common_functions.dart';
-import 'package:home_automation_app/core/commom/widgets/auth_buttons.dart';
-import 'package:home_automation_app/pages/login_page/view/login_page.dart';
-import 'package:home_automation_app/pages/sign_up_page/controllers/profile_pic_controller.dart';
-import 'package:home_automation_app/pages/sign_up_page/controllers/sign_up_controller.dart';
+import 'package:resort_automation_app/core/commom/functions/common_functions.dart';
+import 'package:resort_automation_app/core/commom/widgets/auth_buttons.dart';
+import 'package:resort_automation_app/pages/login_page/view/login_page.dart';
+import 'package:resort_automation_app/pages/sign_up_page/controllers/profile_pic_controller.dart';
+import 'package:resort_automation_app/pages/sign_up_page/controllers/sign_up_controller.dart';
 
 import '../../../../../core/commom/widgets/auth_pages_container_design.dart';
 import '../../../../../core/commom/widgets/auth_text_fields.dart';

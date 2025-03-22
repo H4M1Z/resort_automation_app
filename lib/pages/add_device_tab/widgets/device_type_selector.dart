@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
+import 'package:resort_automation_app/providers/device_local_state/new_deviceType_addition_notifier.dart';
 
 void showDeviceTypeSelector(BuildContext context, WidgetRef ref) {
   showModalBottomSheet(

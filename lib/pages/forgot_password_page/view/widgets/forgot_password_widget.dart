@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/commom/functions/common_functions.dart';
-import 'package:home_automation_app/core/commom/widgets/auth_buttons.dart';
-import 'package:home_automation_app/core/commom/widgets/auth_pages_container_design.dart';
-import 'package:home_automation_app/core/commom/widgets/auth_text_fields.dart';
-import 'package:home_automation_app/core/commom/widgets/password_text_field.dart';
-import 'package:home_automation_app/pages/forgot_password_page/controller/forgot_pass_controller.dart';
+import 'package:resort_automation_app/core/commom/functions/common_functions.dart';
+import 'package:resort_automation_app/core/commom/widgets/auth_buttons.dart';
+import 'package:resort_automation_app/core/commom/widgets/auth_pages_container_design.dart';
+import 'package:resort_automation_app/core/commom/widgets/auth_text_fields.dart';
+import 'package:resort_automation_app/core/commom/widgets/password_text_field.dart';
+import 'package:resort_automation_app/pages/forgot_password_page/controller/forgot_pass_controller.dart';
 
 class ForgotPasswordForm extends ConsumerWidget {
   const ForgotPasswordForm({super.key});

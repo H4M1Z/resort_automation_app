@@ -2,26 +2,27 @@ import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/collections/device_collection.dart';
-import 'package:home_automation_app/core/collections/device_group_collection.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/core/model_classes/device_group.dart';
-import 'package:home_automation_app/core/protocol/Firestore_mqtt_Bridge.dart';
-import 'package:home_automation_app/core/protocol/mqt_service.dart';
-import 'package:home_automation_app/main.dart';
-import 'package:home_automation_app/providers/device_state_change_provider.dart';
-import 'package:home_automation_app/utils/hexa_into_number.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/core/protocol/Firestore_mqtt_Bridge.dart';
+import 'package:resort_automation_app/core/protocol/mqt_service.dart';
+import 'package:resort_automation_app/providers/device_state_change_provider.dart';
+import 'package:resort_automation_app/providers/device_state_notifier/firebase_services.dart';
+import 'package:resort_automation_app/utils/hexa_into_number.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../utils/strings/shared_pref_keys.dart';
 
 final groupSwitchTogleProvider =
     NotifierProvider<GroupSwitchTogle, bool>(GroupSwitchTogle.new);
 
 class GroupSwitchTogle extends Notifier<bool> {
   MqttService mqttService = MqttService();
-  DeviceCollection deviceCollection = DeviceCollection();
-  DeviceGroupCollection deviceGroupCollection = DeviceGroupCollection();
+  final FirebaseServices _firebaseServices = FirebaseServices();
+
   bool isGroupSwitchOn = false;
   Map<String, bool> mapOfGroupSwitchStates = {};
-
+  List<Device> devices = [];
   @override
   bool build() {
     return isGroupSwitchOn;
@@ -31,62 +32,41 @@ class GroupSwitchTogle extends Notifier<bool> {
     state = value;
   }
 
-  Future<void> onGroupSwitchToggle(bool value, String groupName, String groupId,
-      BuildContext context) async {
+  Future<void> onGroupSwitchToggle(bool value, BuildContext context) async {
     log("Value of switch in group toggle method = $value");
     try {
-      // Step 1: Get the Device Group
-      DeviceGroup? group = await deviceGroupCollection.getDeviceGroupByName(
-          globalUserId, groupName);
+      final sharedPref = serviceLocator.get<SharedPreferences>();
+      final roomNumber = sharedPref.getString(SharedPrefKeys.kUserRoomNo);
 
-      if (group != null) {
-        var listOfDeviceIds = group.deviceIds;
+      final devices = await _firebaseServices.getAllDevices(roomNumber!);
 
-        // Step 2: Fetch Devices by IDs
-        List<Device> devices = await deviceCollection.getDevicesByIds(
-            globalUserId, listOfDeviceIds);
+      for (var device in devices) {
+        final command = getCommand(value ? "On" : "Off");
 
-        // Step 3: Update Devices
-        for (var device in devices) {
-          // Example: Toggle the status or make any other updates
-          var command = getCommand(device.type, value ? "On" : "Off");
+        publishDeviceUpdate(roomNumber, device.deviceId, command,
+            device.attributes[device.attributes.keys.first], mqttService);
 
-          publishDeviceUpdate(
-              device.deviceName,
-              globalUserId,
-              device.deviceId,
-              command,
-              device.type,
-              device.attributes[device.attributes.keys.first],
-              mqttService);
-          bool currentDevicestatus =
-              GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
-                          device.type, device.status) ==
-                      "On"
-                  ? true
-                  : false;
-          //Update only if the status is different
-          if (currentDevicestatus != value) {
-            String action = value ? "On" : "Off";
-            String getHexa = getCommand(device.type, action);
-            await deviceCollection.updateDeviceStatus(
-                globalUserId, device.deviceId, getHexa);
-          }
+        bool currentDevicestatus =
+            GerenrateNumberFromHexa.hexaIntoStringForBulb(device.status) == "On"
+                ? true
+                : false;
+        //Update only if the status is different
+        if (currentDevicestatus != value) {
+          String action = value ? "On" : "Off";
+          String getHexa = getCommand(action);
+          //............ROOM NUMBER
+          await _firebaseServices.updateDeviceStatus(
+              roomNumber, device.deviceId, getHexa);
         }
-
-        await deviceGroupCollection.updateGroupStatus(
-          globalUserId,
-          group.groupId,
-          value,
-        );
-
-        mapOfGroupSwitchStates[groupId] = value;
-        state = value;
-
-        log("All devices in group '$groupName' updated successfully.");
-      } else {
-        log("Device group '$groupName' not found.");
       }
+
+      //......................ROOM NUMBER
+      await _firebaseServices.updateGroupStatus(
+        roomNumber,
+        value,
+      );
+
+      state = value;
     } catch (e) {
       log("Error toggling group devices: $e");
     }

@@ -8,12 +8,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_validation/form_validation.dart';
-import 'package:home_automation_app/core/commom/mixins/auth_behaviour.dart';
-import 'package:home_automation_app/core/enums.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
-import 'package:home_automation_app/core/services/user_profile_service.dart';
-import 'package:home_automation_app/main.dart';
-import 'package:home_automation_app/providers/user_addtion_state_provider.dart';
+import 'package:resort_automation_app/core/commom/mixins/auth_behaviour.dart';
+import 'package:resort_automation_app/core/enums.dart';
+import 'package:resort_automation_app/core/services/user_management_service.dart';
+import 'package:resort_automation_app/core/services/user_profile_service.dart';
+import 'package:resort_automation_app/main.dart';
+import 'package:resort_automation_app/providers/user_addtion_state_provider.dart';
 
 import '../../../core/model_classes/sign_in_model.dart';
 import '../../../core/model_classes/user_model.dart';

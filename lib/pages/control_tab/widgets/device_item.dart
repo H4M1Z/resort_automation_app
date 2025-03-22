@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/Connectivity/connectvity_helper.dart';
-import 'package:home_automation_app/core/dialogs/remove_device_dialog.dart';
-import 'package:home_automation_app/core/dialogs/widgets/device_slider.dart';
-import 'package:home_automation_app/core/dialogs/widgets/device_switch.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/pages/control_tab/widgets/attribute_value.dart';
-import 'package:home_automation_app/pages/control_tab/widgets/device_status.dart';
-import 'package:home_automation_app/pages/control_tab/widgets/item_icons.dart';
-import 'package:home_automation_app/pages/control_tab/widgets/slider_percentage_value.dart';
-import 'package:home_automation_app/pages/control_tab/widgets/title_and_icon.dart';
+import 'package:resort_automation_app/core/dialogs/widgets/device_switch.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/pages/control_tab/widgets/device_status.dart';
+import 'package:resort_automation_app/pages/control_tab/widgets/item_icons.dart';
+import 'package:resort_automation_app/pages/control_tab/widgets/title_and_icon.dart';
 
 class DeviceItem extends ConsumerWidget {
   final Device device;
@@ -110,33 +105,33 @@ class DeviceItem extends ConsumerWidget {
                     ],
                   ),
                 ),
-                device.type == "Fan"
-                    ? Expanded(
-                        flex: 25,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 75,
-                              child: DeviceSlider(
-                                device: device,
-                                isDarkMode: isDarkMode,
-                                theme: theme,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 15,
-                              child: SliderPercentageValue(
-                                  device: device,
-                                  theme: theme,
-                                  isDarkMode: isDarkMode),
-                            ),
-                            const Spacer(
-                              flex: 10,
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
+                // device.type == "Fan"
+                //     ? Expanded(
+                //         flex: 25,
+                //         child: Row(
+                //           children: [
+                //             Expanded(
+                //               flex: 75,
+                //               child: DeviceSlider(
+                //                 device: device,
+                //                 isDarkMode: isDarkMode,
+                //                 theme: theme,
+                //               ),
+                //             ),
+                //             Expanded(
+                //               flex: 15,
+                //               child: SliderPercentageValue(
+                //                   device: device,
+                //                   theme: theme,
+                //                   isDarkMode: isDarkMode),
+                //             ),
+                //             const Spacer(
+                //               flex: 10,
+                //             )
+                //           ],
+                //         ),
+                //       )
+                //     : const SizedBox(),
                 const Spacer(
                   flex: 5,
                 ),
@@ -175,55 +170,58 @@ class DeviceItem extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      device.type == "Fan"
-                          ? Expanded(
-                              flex: 50,
-                              child: Row(
-                                children: [
-                                  const Spacer(
-                                    flex: 25,
-                                  ),
-                                  Expanded(
-                                    flex: 50,
-                                    child: Text(
-                                      " ${device.attributes.keys.first}:",
-                                      style:
-                                          theme.textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: isDarkMode
-                                            ? Colors.grey[400]
-                                            : Colors.grey[800],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                      flex: 20,
-                                      child: AttributeValue(
-                                          device: device,
-                                          theme: theme,
-                                          isDarkMode: isDarkMode)),
-                                  const Spacer(
-                                    flex: 5,
-                                  )
-                                ],
-                              ))
-                          : const Spacer(
-                              flex: 50,
-                            )
+                      // device.type == "Fan"
+                      //     ? Expanded(
+                      //         flex: 50,
+                      //         child: Row(
+                      //           children: [
+                      //             const Spacer(
+                      //               flex: 25,
+                      //             ),
+                      //             Expanded(
+                      //               flex: 50,
+                      //               child: Text(
+                      //                 " ${device.attributes.keys.first}:",
+                      //                 style:
+                      //                     theme.textTheme.bodyMedium?.copyWith(
+                      //                   fontWeight: FontWeight.bold,
+                      //                   color: isDarkMode
+                      //                       ? Colors.grey[400]
+                      //                       : Colors.grey[800],
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //             Expanded(
+                      //                 flex: 20,
+                      //                 child: AttributeValue(
+                      //                     device: device,
+                      //                     theme: theme,
+                      //                     isDarkMode: isDarkMode)),
+                      //             const Spacer(
+                      //               flex: 5,
+                      //             )
+                      //           ],
+                      //         ))
+                      //     : const Spacer(
+                      //         flex: 50,
+                      //       )
+                      const Spacer(
+                        flex: 50,
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * -0.04,
-              right: MediaQuery.of(context).size.width * -0.05,
-              child: InkWell(
-                  onTap: () async {
-                    showRemoveDialog(context, device, ref);
-                  },
-                  child: const DeviceItemRemoveIcon()),
-            ),
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height * -0.04,
+            //   right: MediaQuery.of(context).size.width * -0.05,
+            //   child: InkWell(
+            //       onTap: () async {
+            //         showRemoveDialog(context, device, ref);
+            //       },
+            //       child: const DeviceItemRemoveIcon()),
+            // ),
           ],
         ),
       ),

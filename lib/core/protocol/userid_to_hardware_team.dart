@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:home_automation_app/core/protocol/mqt_service.dart';
+import 'package:resort_automation_app/core/protocol/mqt_service.dart';
 
 // void sendUserIdToHardware(String userId, MqttService mqttService) {
 //   final topic = 'user/$userId/init';

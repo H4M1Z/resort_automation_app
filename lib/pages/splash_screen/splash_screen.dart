@@ -3,13 +3,14 @@ import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:home_automation_app/core/protocol/mqt_service.dart';
-import 'package:home_automation_app/pages/group_tab/controller/group_state_controller.dart';
-import 'package:home_automation_app/pages/home_page/home_page_view.dart';
-import 'package:home_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
 import 'package:lottie/lottie.dart';
+import 'package:resort_automation_app/core/protocol/mqt_service.dart';
+import 'package:resort_automation_app/pages/group_tab/controller/group_state_controller.dart';
+import 'package:resort_automation_app/pages/home_page/home_page_view.dart';
+import 'package:resort_automation_app/providers/device_state_notifier/device_state_change_notifier.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({
@@ -58,15 +59,17 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getAllDevices();
+    SchedulerBinding.instance
+        .addPostFrameCallback((_) => getAllDevicesAndGroups());
   }
 
-  void getAllDevices() async {
+  void getAllDevicesAndGroups() async {
     await ref.read(deviceStateProvider.notifier).getAllDevices();
 
     /// Retrieves all device data from Firestore and updates the local state.
     /// After retrieving all data, it navigates to the next screen (HomeScreen).
-    await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
+    // await ref.read(deviceGroupsProvider.notifier).getAllDeviceGroups();
+    await ref.read(deviceGroupsProvider.notifier).getGroup();
     moveToNextScreen();
   }
 

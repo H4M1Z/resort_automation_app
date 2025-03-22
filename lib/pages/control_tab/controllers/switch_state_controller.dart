@@ -1,17 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/collections/device_collection.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
-import 'package:home_automation_app/main.dart';
-import 'package:home_automation_app/utils/hexa_into_number.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/providers/device_state_notifier/firebase_services.dart';
+import 'package:resort_automation_app/utils/hexa_into_number.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../utils/strings/shared_pref_keys.dart';
 
 final switchStateProvider =
     NotifierProvider<SwitchStateController, bool>(SwitchStateController.new);
 
 class SwitchStateController extends Notifier<bool> {
   Map<String, bool> mapOfSwitchStates = {};
-  DeviceCollection deviceCollection = DeviceCollection();
+  // DeviceCollection deviceCollection = DeviceCollection();
+  final firebaseService = FirebaseServices();
   bool isSwitchOn = false;
   @override
   bool build() {
@@ -23,13 +27,17 @@ class SwitchStateController extends Notifier<bool> {
   }
 
   Future<void> updateSwitchState(bool value, Device device) async {
-    var status = await deviceCollection.getDeviceStatus(
-        globalUserId, device.deviceId, device.deviceName);
-    var genNo = GerenrateNumberFromHexa.hexaIntoStringAccordingToDeviceType(
-        device.type, status);
+    final sharedPref = serviceLocator.get<SharedPreferences>();
+    final roomId = sharedPref.getString(SharedPrefKeys.kUserRoomNo);
+
+    var status = await firebaseService.getDeviceStatus(
+      roomId!,
+      device.deviceId,
+    );
+    var genNo = GerenrateNumberFromHexa.hexaIntoStringForBulb(status);
 
     mapOfSwitchStates[device.deviceId] = genNo == "On";
-    log("Lenght of map in updateSwitchState method = ${mapOfSwitchStates.length}");
+    log("Length of map in updateSwitchState method = ${mapOfSwitchStates.length}");
 
     log("genNo in Update swtich State method = $genNo");
     log("value = ${genNo == "On"}");

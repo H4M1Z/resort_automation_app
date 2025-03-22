@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/commom/widgets/loading_widget.dart';
-import 'package:home_automation_app/core/commom/widgets/lottie_robot_widget.dart';
-import 'package:home_automation_app/core/extensions/pop_up_messages.dart';
-import 'package:home_automation_app/pages/forgot_password_page/controller/forgot_pass_controller.dart';
-import 'package:home_automation_app/pages/forgot_password_page/view/widgets/forgot_password_widget.dart';
+import 'package:resort_automation_app/core/commom/widgets/loading_widget.dart';
+import 'package:resort_automation_app/core/commom/widgets/lottie_robot_widget.dart';
+import 'package:resort_automation_app/core/extensions/pop_up_messages.dart';
+import 'package:resort_automation_app/pages/forgot_password_page/controller/forgot_pass_controller.dart';
+import 'package:resort_automation_app/pages/forgot_password_page/view/widgets/forgot_password_widget.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});

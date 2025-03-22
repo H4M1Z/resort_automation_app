@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:home_automation_app/core/model_classes/user_model.dart';
+import 'package:resort_automation_app/core/model_classes/user_model.dart';
 
 class UserCollection {
   static final UserCollection instance = UserCollection._internal();

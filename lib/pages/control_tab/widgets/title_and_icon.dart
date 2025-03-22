@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/core/model_classes/device.dart';
+import 'package:resort_automation_app/core/model_classes/device.dart';
 
 class DeviceItemTitleAndType extends StatelessWidget {
   final Device device;
@@ -17,7 +17,7 @@ class DeviceItemTitleAndType extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          device.deviceName,
+          device.deviceId,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: isDarkMode ? Colors.white : Colors.black,
@@ -26,7 +26,7 @@ class DeviceItemTitleAndType extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          device.type,
+          'Bulb',
           style: theme.textTheme.bodySmall?.copyWith(
             color: isDarkMode ? Colors.grey[400] : Colors.grey[800],
           ),

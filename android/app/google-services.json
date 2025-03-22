@@ -1,45 +1,45 @@
 {
   "project_info": {
-    "project_number": "959949539242",
-    "project_id": "iot-app-ffa8e",
-    "storage_bucket": "iot-app-ffa8e.firebasestorage.app"
+    "project_number": "456492763184",
+    "project_id": "resort-automation-app-backend",
+    "storage_bucket": "resort-automation-app-backend.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:959949539242:android:65daf268ff416dd06a8dd3",
+        "mobilesdk_app_id": "1:456492763184:android:c7336bcd45cca6d2e1c5f5",
         "android_client_info": {
-          "package_name": "com.example.home_automation_app"
+          "package_name": "com.example.resort_automation_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "959949539242-s9ka39glesqqttavt2h4q8pt25r8fbgs.apps.googleusercontent.com",
+          "client_id": "456492763184-k6a8t1mb3kdktg5q3pks23l6vi6kbdi0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.home_automation_app",
-            "certificate_hash": "36b2217b0b79da2ef600589d8f6572901c784891"
+            "package_name": "com.example.resort_automation_app",
+            "certificate_hash": "85267d52d1b1d668e1c91d06b41bf502ded0905d"
           }
         },
         {
-          "client_id": "959949539242-rs5ic0eoelgabm43uub2o673hkts96qp.apps.googleusercontent.com",
+          "client_id": "456492763184-grlghqkoi7c0hi0pcan9va7i8ehjm96u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCV8aLATWWICERCvwSPY3xfGXtC2jEMo5Y"
+          "current_key": "AIzaSyB6B_POtupmd5uMIuSjfiTDCwPYQfsvRLs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "959949539242-rs5ic0eoelgabm43uub2o673hkts96qp.apps.googleusercontent.com",
+              "client_id": "456492763184-grlghqkoi7c0hi0pcan9va7i8ehjm96u.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "959949539242-4kq1rt3pd4u2foteo2u5qi5lkogshtcd.apps.googleusercontent.com",
+              "client_id": "456492763184-pqit5384mg8a8abm99mirsn8l45el50m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.homeAutomationApp"

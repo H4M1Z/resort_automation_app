@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,9 +28,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,49 +49,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBlc8Gs6FduNnbyijzOPTXenRACaz_07JU',
-    appId: '1:959949539242:web:d980b0bde43b051e6a8dd3',
-    messagingSenderId: '959949539242',
-    projectId: 'iot-app-ffa8e',
-    authDomain: 'iot-app-ffa8e.firebaseapp.com',
-    storageBucket: 'iot-app-ffa8e.firebasestorage.app',
-    measurementId: 'G-2C2T0YJW5H',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCV8aLATWWICERCvwSPY3xfGXtC2jEMo5Y',
-    appId: '1:959949539242:android:65daf268ff416dd06a8dd3',
-    messagingSenderId: '959949539242',
-    projectId: 'iot-app-ffa8e',
-    storageBucket: 'iot-app-ffa8e.firebasestorage.app',
+    apiKey: 'AIzaSyB6B_POtupmd5uMIuSjfiTDCwPYQfsvRLs',
+    appId: '1:456492763184:android:c7336bcd45cca6d2e1c5f5',
+    messagingSenderId: '456492763184',
+    projectId: 'resort-automation-app-backend',
+    storageBucket: 'resort-automation-app-backend.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCq6ok_r3OZmjJr1vDcUA9YuL1SaBB4P6c',
-    appId: '1:959949539242:ios:286442c623b1af6b6a8dd3',
-    messagingSenderId: '959949539242',
-    projectId: 'iot-app-ffa8e',
-    storageBucket: 'iot-app-ffa8e.firebasestorage.app',
+    apiKey: 'AIzaSyBsNMCPeBJjHsRn-TlKGiXOu-AeG2B29eI',
+    appId: '1:456492763184:ios:aa3b2da6d3b22d96e1c5f5',
+    messagingSenderId: '456492763184',
+    projectId: 'resort-automation-app-backend',
+    storageBucket: 'resort-automation-app-backend.firebasestorage.app',
     iosBundleId: 'com.example.homeAutomationApp',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCq6ok_r3OZmjJr1vDcUA9YuL1SaBB4P6c',
-    appId: '1:959949539242:ios:286442c623b1af6b6a8dd3',
-    messagingSenderId: '959949539242',
-    projectId: 'iot-app-ffa8e',
-    storageBucket: 'iot-app-ffa8e.firebasestorage.app',
-    iosBundleId: 'com.example.homeAutomationApp',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBlc8Gs6FduNnbyijzOPTXenRACaz_07JU',
-    appId: '1:959949539242:web:0508646fd0bbe5926a8dd3',
-    messagingSenderId: '959949539242',
-    projectId: 'iot-app-ffa8e',
-    authDomain: 'iot-app-ffa8e.firebaseapp.com',
-    storageBucket: 'iot-app-ffa8e.firebasestorage.app',
-    measurementId: 'G-HZ2R1K7JPL',
   );
 }

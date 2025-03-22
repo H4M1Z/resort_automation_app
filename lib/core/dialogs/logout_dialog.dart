@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/config/service_locator.dart';
-import 'package:home_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
-import 'package:home_automation_app/pages/login_page/view/login_page.dart';
-import 'package:home_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
-import 'package:home_automation_app/utils/strings/shared_pref_keys.dart';
+import 'package:resort_automation_app/config/service_locator.dart';
+import 'package:resort_automation_app/core/bottom_navigation_bar/notifier_provider.dart';
+import 'package:resort_automation_app/pages/login_page/view/login_page.dart';
+import 'package:resort_automation_app/pages/setting_tab/controller/setting_tab_controller.dart';
+import 'package:resort_automation_app/utils/strings/shared_pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void showLogoutConfirmationDialog(BuildContext context, WidgetRef ref) {

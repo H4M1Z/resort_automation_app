@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:home_automation_app/core/services/user_management_service.dart';
+import 'package:resort_automation_app/core/services/user_management_service.dart';
 
 import '../model_classes/user_model.dart';
 

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:home_automation_app/core/model_classes/device_group.dart';
-import 'package:home_automation_app/pages/group_tab/widgets/buttons.dart';
-import 'package:home_automation_app/pages/group_tab/widgets/switch_nuemorphic.dart';
+import 'package:resort_automation_app/core/model_classes/device_group.dart';
+import 'package:resort_automation_app/pages/group_tab/widgets/switch_nuemorphic.dart';
 
 class GroupContainer extends ConsumerWidget {
   final DeviceGroup deviceGroup;
@@ -43,6 +42,7 @@ class GroupContainer extends ConsumerWidget {
               const EdgeInsets.only(top: 16.0, left: 16, right: 16, bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Group Name and Master Toggle
               Row(
@@ -81,7 +81,7 @@ class GroupContainer extends ConsumerWidget {
                       // Group Name
                       Text(
                         overflow: TextOverflow.ellipsis,
-                        deviceGroup.groupName,
+                        'Lights Group',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -95,28 +95,24 @@ class GroupContainer extends ConsumerWidget {
 
                   // SwitchNuemorphic
                   SwitchNuemorphic(
-                    groupStatus: deviceGroup.currentStatus,
+                    groupStatus: deviceGroup.groupStatus,
                     isDarkMode: isDarkMode,
                     theme: theme,
-                    groupName: deviceGroup.groupName,
-                    groupId: deviceGroup.groupId,
                   )
                 ],
               ),
               const SizedBox(height: 35.0),
 
               // Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GroupDeleteButton(
-                      isDarkMode: isDarkMode, groupId: deviceGroup.groupId),
-                  GroupDeviceButton(
-                      groupName: deviceGroup.groupName,
-                      isDarkMode: isDarkMode,
-                      groupId: deviceGroup.groupId),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     GroupDeviceButton(
+              //         groupName: deviceGroup.groupName,
+              //         isDarkMode: isDarkMode,
+              //         groupId: deviceGroup.groupId),
+              //   ],
+              // ),
             ],
           ),
         ),
